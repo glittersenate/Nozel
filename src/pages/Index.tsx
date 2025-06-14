@@ -29,7 +29,14 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      <div
+        className="min-h-screen w-full"
+        style={{
+          // Use a dark blue/indigo base matching your screenshot, with very subtle vignette for depth.
+          background:
+            "linear-gradient(120deg,#132149 0%, #192957 55%, #102038 100%)",
+        }}
+      >
         <div className="container mx-auto py-5">
           {/* Header Section */}
           <div className="mb-4 flex flex-col gap-4">
@@ -38,7 +45,7 @@ const Index = () => {
                 <h1 className="text-[2rem] sm:text-4xl font-extrabold text-white mb-1 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent leading-tight tracking-tight">
                   HR Dashboard
                 </h1>
-                <p className="text-blue-300 text-base sm:text-lg opacity-80">
+                <p className="text-blue-200 text-base sm:text-lg opacity-80">
                   Welcome back! Here's what's happening with your organization today.
                 </p>
               </div>
@@ -46,24 +53,30 @@ const Index = () => {
 
             {/* Premium Payroll Summary Card */}
             <div className="w-full">
-              <Card className="w-full bg-gradient-to-br from-white/10 to-blue-900/60 glass-premium border-0 shadow-lg rounded-2xl p-0">
+              <Card className="w-full bg-[#1D2747] border-0 shadow-lg rounded-2xl p-0"
+                style={{
+                  boxShadow: "0 6px 32px 0 rgba(0,20,66,0.18)", // subtle depth
+                  background: "linear-gradient(120deg,#19274E 0%, #101B3A 100%)",
+                }}
+              >
                 <CardContent className="!p-0">
                   <div className="flex items-center px-5 py-4 gap-4 flex-wrap justify-between">
                     <div className="flex flex-col gap-1 flex-1 min-w-0">
-                      <span className="text-xs sm:text-sm uppercase tracking-wide font-bold text-blue-300/70 whitespace-nowrap">
+                      <span className="text-xs sm:text-sm uppercase tracking-wide font-bold text-blue-100/70 whitespace-nowrap">
                         Pay Period
                       </span>
                       <div className="flex items-center gap-1 text-white text-[15px] sm:text-base font-semibold whitespace-nowrap">
-                        <Calendar className="w-4 h-4 text-blue-400 mr-1" />
+                        <Calendar className="w-4 h-4 text-blue-300 mr-1" />
                         <span>Feb 1 - Feb 29, 2024</span>
                       </div>
                     </div>
                     <Button
                       onClick={handleRunPayroll}
-                      className="bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-500 text-white font-bold px-0 py-3 rounded-xl h-11 w-11 shrink-0 shadow-md border-0 flex items-center justify-center"
+                      className="bg-gradient-to-br from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-500 text-white font-bold px-0 py-3 rounded-xl h-11 w-11 shrink-0 shadow-md border-0 flex items-center justify-center"
                       style={{
                         minWidth: '2.5rem',
                         minHeight: '2.5rem',
+                        boxShadow: '0 3px 10px 0 rgba(52,96,244,0.2)'
                       }}
                     >
                       <Play className="w-5 h-5" />
@@ -72,15 +85,15 @@ const Index = () => {
                   <div className="flex justify-between items-end gap-4 px-5 pb-4 pt-1 flex-wrap">
                     <div className="text-center flex-1 min-w-[84px]">
                       <div className="text-lg font-bold text-white">{activeEmployees.length}</div>
-                      <div className="text-xs text-blue-300/80 font-medium">Employees</div>
+                      <div className="text-xs text-blue-200 font-medium">Employees</div>
                     </div>
                     <div className="text-center flex-1 min-w-[120px]">
                       <div className="text-lg font-bold text-white">${totalPayroll.toLocaleString()}</div>
-                      <div className="text-xs text-blue-300/80 font-medium">Total Cost</div>
+                      <div className="text-xs text-blue-200 font-medium">Total Cost</div>
                     </div>
                     <div className="text-center flex-1 min-w-[84px]">
                       <div className="text-lg font-bold text-white">${totalBonuses.toLocaleString()}</div>
-                      <div className="text-xs text-blue-300/80 font-medium">Bonuses</div>
+                      <div className="text-xs text-blue-200 font-medium">Bonuses</div>
                     </div>
                   </div>
                 </CardContent>
