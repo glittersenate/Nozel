@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -14,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { BackToDashboardButton } from "./BackToDashboardButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,6 +27,7 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
+          <BackToDashboardButton />
           <header className="flex h-20 shrink-0 items-center justify-between gap-2 glass-dark border-b border-blue-500/20 px-6 backdrop-blur-xl">
             <div className="flex items-center gap-4">
               <SidebarTrigger className="text-white hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200" />
