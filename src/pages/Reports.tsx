@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -55,7 +54,12 @@ const Reports = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-[#171d37] via-[#182249]/85 to-[#181f36]">
+      <div
+        className="min-h-screen"
+        style={{
+          background: "rgba(20,26,46,0.7)",
+        }}
+      >
         <div className="container mx-auto py-10">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">

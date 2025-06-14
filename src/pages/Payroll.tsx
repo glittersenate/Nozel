@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Layout } from "@/components/Layout";
 import { PayrollDashboard } from '@/components/payroll/PayrollDashboard';
@@ -6,7 +5,12 @@ import { PayrollDashboard } from '@/components/payroll/PayrollDashboard';
 export default function Payroll() {
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-[#171d37] via-[#182249]/85 to-[#181f36]">
+      <div
+        className="min-h-screen"
+        style={{
+          background: "rgba(20,26,46,0.7)",
+        }}
+      >
         <div className="container mx-auto py-10">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-white mb-2">Payroll Management</h1>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -84,7 +83,12 @@ const Analytics = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-[#171d37] via-[#182249]/85 to-[#181f36]">
+      <div
+        className="min-h-screen"
+        style={{
+          background: "rgba(20,26,46,0.7)",
+        }}
+      >
         <div className="container mx-auto py-10">
           <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
