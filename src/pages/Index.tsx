@@ -30,11 +30,13 @@ const Index = () => {
   return (
     <Layout>
       <div
-        className="min-h-screen w-full"
+        className="min-h-screen w-full flex"
         style={{
-          // Use a dark blue/indigo base matching your screenshot, with very subtle vignette for depth.
           background:
-            "linear-gradient(120deg,#132149 0%, #192957 55%, #102038 100%)",
+            "radial-gradient(ellipse 100% 70% at 60% 110%, rgba(46,80,181,0.72) 5%, transparent 71%)," + // faint blue glow below cards
+            "radial-gradient(circle at 100% 0%, #1d2b54 18%, transparent 78%)," +    // right top blue glow
+            "radial-gradient(ellipse 60% 30% at 10% 100%, #233368 50%, transparent 100%)," + // bottom left blue
+            "linear-gradient(120deg,#0d1530 0%, #14204d 100%)", // main deep blue
         }}
       >
         <div className="container mx-auto py-5">
@@ -53,10 +55,13 @@ const Index = () => {
 
             {/* Premium Payroll Summary Card */}
             <div className="w-full">
-              <Card className="w-full bg-[#1D2747] border-0 shadow-lg rounded-2xl p-0"
+              <Card
+                className="w-full border-0 shadow-lg rounded-2xl p-0"
                 style={{
-                  boxShadow: "0 6px 32px 0 rgba(0,20,66,0.18)", // subtle depth
-                  background: "linear-gradient(120deg,#19274E 0%, #101B3A 100%)",
+                  boxShadow: "0 6px 32px 0 rgba(0,20,66,0.15), 0 2px 24px 0 #427DFF1a",
+                  background:
+                    "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
+                  border: "1px solid rgba(87,120,255,0.06)"
                 }}
               >
                 <CardContent className="!p-0">
@@ -72,11 +77,11 @@ const Index = () => {
                     </div>
                     <Button
                       onClick={handleRunPayroll}
-                      className="bg-gradient-to-br from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-500 text-white font-bold px-0 py-3 rounded-xl h-11 w-11 shrink-0 shadow-md border-0 flex items-center justify-center"
+                      className="bg-gradient-to-br from-blue-700 to-blue-500 hover:from-blue-500 hover:to-blue-500 text-white font-bold px-0 py-3 rounded-xl h-11 w-11 shrink-0 shadow-md border-0 flex items-center justify-center ring-1 ring-blue-600/60"
                       style={{
                         minWidth: '2.5rem',
                         minHeight: '2.5rem',
-                        boxShadow: '0 3px 10px 0 rgba(52,96,244,0.2)'
+                        boxShadow: '0 3px 16px 0 #203e7780,0 1px 5px 0 #8fc1ff40'
                       }}
                     >
                       <Play className="w-5 h-5" />
