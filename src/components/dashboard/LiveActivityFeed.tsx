@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Clock, UserPlus, TrendingUp, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,7 +38,13 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities, isLive 
   };
 
   return (
-    <Card className="bg-[#1a2550]/70 border-blue-950 shadow-md">
+    <Card
+      className="shadow-lg rounded-2xl p-0 border"
+      style={{
+        background: "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
+        border: "1px solid rgba(87,120,255,0.06)",
+      }}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-3 text-blue-100">
           <Clock className="w-5 h-5 text-blue-400" />

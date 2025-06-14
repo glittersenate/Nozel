@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Activity, TrendingUp, Users, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,7 +24,13 @@ const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics, isLive, onTo
     .sort(([,a], [,b]) => b - a)[0];
 
   return (
-    <Card className="bg-[#1a2550]/70 border-blue-950 shadow-md">
+    <Card
+      className="shadow-lg rounded-2xl p-0 border"
+      style={{
+        background: "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
+        border: "1px solid rgba(87,120,255,0.06)",
+      }}
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-3 text-blue-100">

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Sparkles, TrendingUp, AlertTriangle, Brain, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -86,7 +85,13 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
   };
 
   return (
-    <Card className="bg-[#1a2550]/70 dark:bg-[#1a2550]/70 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 shadow-md animate-fade-in">
+    <Card
+      className="shadow-lg rounded-2xl p-0 border"
+      style={{
+        background: "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
+        border: "1px solid rgba(87,120,255,0.06)",
+      }}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-3 text-blue-100 dark:text-blue-100 light:text-gray-900">
           <div className="relative">
