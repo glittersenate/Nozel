@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import EmployeeTable from '@/components/employees/EmployeeTable';
 import AddEmployeeDialog from '@/components/employees/AddEmployeeDialog';
 import EditEmployeeDialog from '@/components/employees/EditEmployeeDialog';
+import EmployeeDetailDialog from "@/components/employees/EmployeeDetailDialog";
 import { useToast } from '@/hooks/use-toast';
 
 export interface Employee {
@@ -67,6 +68,8 @@ const Employees = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+  const [detailEmployee, setDetailEmployee] = useState<Employee | null>(null);
   const { toast } = useToast();
 
   const filteredEmployees = employees.filter(employee =>
@@ -120,6 +123,11 @@ const Employees = () => {
       title: "Employee Updated",
       description: `${updated.name}'s information has been updated.`,
     });
+  };
+
+  const handleViewEmployee = (employee: Employee) => {
+    setDetailEmployee(employee);
+    setIsDetailDialogOpen(true);
   };
 
   return (
@@ -197,6 +205,7 @@ const Employees = () => {
           employees={filteredEmployees}
           onDeleteEmployee={handleDeleteEmployee}
           onEditEmployee={handleEditEmployee}
+          onViewEmployee={handleViewEmployee}
         />
 
         {/* Add Employee Dialog */}
@@ -212,6 +221,13 @@ const Employees = () => {
           onOpenChange={setIsEditDialogOpen}
           employee={selectedEmployee}
           onUpdateEmployee={handleUpdateEmployee}
+        />
+
+        {/* Employee Detail Dialog */}
+        <EmployeeDetailDialog
+          open={isDetailDialogOpen}
+          onOpenChange={setIsDetailDialogOpen}
+          employee={detailEmployee}
         />
       </div>
     </div>
