@@ -7,6 +7,8 @@ import AddEmployeeDialog from '@/components/employees/AddEmployeeDialog';
 import EditEmployeeDialog from '@/components/employees/EditEmployeeDialog';
 import EmployeeDetailDialog from "@/components/employees/EmployeeDetailDialog";
 import EmployeeFilterDrawer from '@/components/employees/EmployeeFilterDrawer';
+import BulkActions from '@/components/employees/BulkActions';
+import AdvancedSearch, { AdvancedSearchFilters } from '@/components/ui/advanced-search';
 import { useToast } from '@/hooks/use-toast';
 import { exportToCSV, formatEmployeeForExport } from '@/utils/exportUtils';
 
@@ -77,13 +79,20 @@ const getUniqueDepartments = (employees: Employee[]) => {
 
 const Employees = () => {
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [detailEmployee, setDetailEmployee] = useState<Employee | null>(null);
   const { toast } = useToast();
+
+  // Advanced search filters
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedSearchFilters>({
+    searchTerm: '',
+    departments: [],
+    positions: []
+  });
 
   // Filter state and filter drawer open
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
@@ -96,26 +105,37 @@ const Employees = () => {
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
   const allDepartments = getUniqueDepartments(employees);
+  const allPositions = [...new Set(employees.map(e => e.position))].sort();
 
   // Enhanced: apply filters, search, and sorting to employee list
   const filteredAndSortedEmployees = employees
     .filter(emp => {
-      // Filter by departments if any
-      if (filterState.departments.length > 0 && !filterState.departments.includes(emp.department)) {
+      // Advanced search filters
+      if (advancedFilters.searchTerm && !emp.name.toLowerCase().includes(advancedFilters.searchTerm.toLowerCase()) &&
+          !emp.email.toLowerCase().includes(advancedFilters.searchTerm.toLowerCase()) &&
+          !emp.department.toLowerCase().includes(advancedFilters.searchTerm.toLowerCase()) &&
+          !emp.position.toLowerCase().includes(advancedFilters.searchTerm.toLowerCase())) {
         return false;
       }
-      // Filter by status if any
-      if (filterState.statuses.length > 0 && !filterState.statuses.includes(emp.status)) {
-        return false;
-      }
+
+      // Salary range filter
+      if (advancedFilters.salaryMin && emp.salary < advancedFilters.salaryMin) return false;
+      if (advancedFilters.salaryMax && emp.salary > advancedFilters.salaryMax) return false;
+
+      // Date range filter
+      if (advancedFilters.startDateFrom && new Date(emp.startDate) < new Date(advancedFilters.startDateFrom)) return false;
+      if (advancedFilters.startDateTo && new Date(emp.startDate) > new Date(advancedFilters.startDateTo)) return false;
+
+      // Department and position filters from advanced search
+      if (advancedFilters.departments.length > 0 && !advancedFilters.departments.includes(emp.department)) return false;
+      if (advancedFilters.positions.length > 0 && !advancedFilters.positions.includes(emp.position)) return false;
+
+      // Legacy filter state
+      if (filterState.departments.length > 0 && !filterState.departments.includes(emp.department)) return false;
+      if (filterState.statuses.length > 0 && !filterState.statuses.includes(emp.status)) return false;
+
       return true;
     })
-    .filter(employee =>
-      employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.position.toLowerCase().includes(searchTerm.toLowerCase())
-    )
     .sort((a, b) => {
       if (!sortConfig) return 0;
 
@@ -208,6 +228,47 @@ const Employees = () => {
     setIsDetailDialogOpen(true);
   };
 
+  // New bulk action handlers
+  const handleBulkDelete = () => {
+    const remainingEmployees = employees.filter(emp => !selectedEmployeeIds.includes(emp.id));
+    setEmployees(remainingEmployees);
+    setSelectedEmployeeIds([]);
+    toast({
+      title: "Employees Deleted",
+      description: `${selectedEmployeeIds.length} employees have been removed.`,
+      variant: "destructive",
+    });
+  };
+
+  const handleBulkStatusChange = (status: 'active' | 'inactive') => {
+    const updatedEmployees = employees.map(emp => 
+      selectedEmployeeIds.includes(emp.id) ? { ...emp, status } : emp
+    );
+    setEmployees(updatedEmployees);
+    setSelectedEmployeeIds([]);
+    toast({
+      title: "Status Updated",
+      description: `${selectedEmployeeIds.length} employees marked as ${status}.`,
+    });
+  };
+
+  const handleBulkExport = () => {
+    const selectedEmployees = employees.filter(emp => selectedEmployeeIds.includes(emp.id));
+    const exportData = formatEmployeeForExport(selectedEmployees);
+    exportToCSV(exportData, `selected-employees-${new Date().toISOString().split('T')[0]}`);
+    toast({
+      title: "Export Complete",
+      description: `Exported ${selectedEmployees.length} selected employees.`,
+    });
+  };
+
+  const handleBulkEmail = () => {
+    toast({
+      title: "Email Feature",
+      description: `Email functionality for ${selectedEmployeeIds.length} employees coming soon!`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0e1c38] to-[#12284a] text-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -256,33 +317,24 @@ const Employees = () => {
           </div>
         </div>
 
-        {/* Search and Filter Bar */}
+        {/* Advanced Search Bar */}
         <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl p-6 mb-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400 w-4 h-4" />
-              <Input
-                placeholder="Search employees by name, email, department..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-[#0e1c38]/50 border-blue-800/30 text-blue-100 placeholder:text-blue-400/70"
-              />
-            </div>
-            <Button
-              variant="outline"
-              className="bg-[#141a2e]/60 border-blue-800/30 text-blue-200 hover:bg-[#141a2e]/80"
-              onClick={() => setIsFilterDrawerOpen(true)}
-            >
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
-              {(filterState.departments.length > 0 || filterState.statuses.length > 0) && (
-                <span className="ml-2 bg-blue-600/60 text-xs rounded-full px-2 py-0.5 text-white">
-                  {filterState.departments.length + filterState.statuses.length}
-                </span>
-              )}
-            </Button>
-          </div>
+          <AdvancedSearch
+            filters={advancedFilters}
+            onFiltersChange={setAdvancedFilters}
+            departments={allDepartments}
+            positions={allPositions}
+          />
         </div>
+
+        {/* Bulk Actions */}
+        <BulkActions
+          selectedCount={selectedEmployeeIds.length}
+          onBulkDelete={handleBulkDelete}
+          onBulkStatusChange={handleBulkStatusChange}
+          onBulkExport={handleBulkExport}
+          onBulkEmail={handleBulkEmail}
+        />
 
         {/* Employee Table */}
         <EmployeeTable
@@ -292,6 +344,8 @@ const Employees = () => {
           onViewEmployee={handleViewEmployee}
           sortConfig={sortConfig}
           onSort={handleSort}
+          selectedIds={selectedEmployeeIds}
+          onSelectionChange={setSelectedEmployeeIds}
         />
 
         {/* Add Employee Dialog */}
