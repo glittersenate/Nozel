@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -29,8 +30,8 @@ export function Layout({ children }: LayoutProps) {
           {/* Consistent SidebarTrigger, always top left, always visible */}
           <div className="fixed top-4 left-4 z-50 md:static md:z-auto">
             <SidebarTrigger 
-              className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-14 h-14 flex items-center justify-center"
-              style={{ fontSize: 34, minWidth: 56, minHeight: 56 }}
+              className="border border-white text-white bg-transparent rounded-2xl p-2 flex items-center justify-center transition-all duration-200 shadow-lg"
+              style={{ fontSize: 38, minWidth: 62, minHeight: 62 }}
             />
           </div>
           <header className="flex h-20 shrink-0 items-center justify-between gap-2 glass-dark border-b border-blue-500/20 px-6 backdrop-blur-xl pl-20 md:pl-0">
