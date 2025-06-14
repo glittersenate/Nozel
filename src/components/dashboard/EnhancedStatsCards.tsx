@@ -34,7 +34,7 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       subtitle: `${activeEmployees.length} active`,
       icon: Users,
       color: 'text-blue-400',
-      bgColor: 'bg-blue-500/10',
+      bgColor: 'bg-blue-500/20',
       borderColor: 'border-blue-500/20',
       trend: { value: 8.2, isPositive: true }
     },
@@ -43,9 +43,9 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       value: `$${totalSalaries.toLocaleString()}`,
       subtitle: 'total compensation',
       icon: DollarSign,
-      color: 'text-green-400',
-      bgColor: 'bg-green-500/10',
-      borderColor: 'border-green-500/20',
+      color: 'text-emerald-400',
+      bgColor: 'bg-emerald-500/20',
+      borderColor: 'border-emerald-500/20',
       trend: { value: 3.1, isPositive: true }
     },
     {
@@ -53,9 +53,9 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       value: `$${Math.round(avgSalary).toLocaleString()}`,
       subtitle: 'per employee',
       icon: TrendingUp,
-      color: 'text-yellow-400',
-      bgColor: 'bg-yellow-500/10',
-      borderColor: 'border-yellow-500/20',
+      color: 'text-amber-400',
+      bgColor: 'bg-amber-500/20',
+      borderColor: 'border-amber-500/20',
       trend: { value: 5.7, isPositive: true }
     },
     {
@@ -63,9 +63,9 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       value: recentHires,
       subtitle: 'last 3 months',
       icon: UserPlus,
-      color: 'text-purple-400',
-      bgColor: 'bg-purple-500/10',
-      borderColor: 'border-purple-500/20',
+      color: 'text-violet-400',
+      bgColor: 'bg-violet-500/20',
+      borderColor: 'border-violet-500/20',
       trend: { value: 12.5, isPositive: true }
     },
     {
@@ -74,7 +74,7 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       subtitle: topDepartment ? `${topDepartment[1]} employees` : 'No data',
       icon: Award,
       color: 'text-orange-400',
-      bgColor: 'bg-orange-500/10',
+      bgColor: 'bg-orange-500/20',
       borderColor: 'border-orange-500/20'
     },
     {
@@ -83,16 +83,22 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       subtitle: 'year over year',
       icon: Clock,
       color: 'text-cyan-400',
-      bgColor: 'bg-cyan-500/10',
+      bgColor: 'bg-cyan-500/20',
       borderColor: 'border-cyan-500/20',
       trend: { value: 2.1, isPositive: true }
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      {metrics.map((metric) => (
-        <MetricCard key={metric.title} {...metric} />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 px-8 pt-8">
+      {metrics.map((metric, index) => (
+        <div 
+          key={metric.title} 
+          className={`animate-fade-in-scale animate-stagger-${Math.min(index + 1, 6)}`}
+          style={{ animationDelay: `${index * 0.1}s` }}
+        >
+          <MetricCard {...metric} />
+        </div>
       ))}
     </div>
   );

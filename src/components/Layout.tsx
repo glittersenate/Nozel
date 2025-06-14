@@ -15,43 +15,57 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-slate-700 bg-slate-900/50 px-4">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger className="text-white hover:bg-slate-700" />
-              <div className="h-4 w-px bg-slate-700" />
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">N</span>
+          <header className="flex h-20 shrink-0 items-center justify-between gap-2 glass-dark border-b border-blue-500/20 px-6 backdrop-blur-xl">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger className="text-white hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200" />
+              <div className="h-6 w-px bg-blue-500/30" />
+              
+              <div className="flex items-center gap-4 animate-slide-in-right">
+                <div className="relative">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-glow animate-pulse-glow">
+                    <span className="text-white font-bold text-lg font-heading">N</span>
+                  </div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-30 blur animate-pulse" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-white">NozelPay</h1>
-                  <p className="text-xs text-blue-300 -mt-1">HR Management System</p>
+                  <h1 className="text-2xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                    NozelPay
+                  </h1>
+                  <p className="text-sm text-blue-300/80 font-medium -mt-1">
+                    HR Management System
+                  </p>
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <RoleSelector />
               
               {user && (
-                <div className="flex items-center gap-3 bg-[#141a2e]/60 hover:bg-[#141a2e]/80 rounded-lg p-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-blue-600 text-white text-sm">
+                <div className="flex items-center gap-4 glass-dark hover:bg-blue-500/10 rounded-2xl p-3 transition-all duration-300 group">
+                  <Avatar className="h-10 w-10 ring-2 ring-blue-500/30 group-hover:ring-blue-400/50 transition-all duration-300">
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-semibold">
                       {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="text-sm">
-                    <p className="text-white font-medium">{user.name}</p>
-                    <p className="text-blue-300 text-xs">{user.email}</p>
+                    <p className="text-white font-semibold font-heading">
+                      {user.name}
+                    </p>
+                    <p className="text-blue-300/80 text-xs">
+                      {user.email}
+                    </p>
                   </div>
                 </div>
               )}
             </div>
           </header>
-          <main className="flex-1">
+          
+          <main className="flex-1 relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
             {children}
           </main>
         </SidebarInset>

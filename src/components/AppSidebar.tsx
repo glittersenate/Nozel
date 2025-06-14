@@ -30,43 +30,60 @@ export function AppSidebar() {
   const currentPath = window.location.pathname;
 
   return (
-    <Sidebar className="bg-slate-900 border-slate-700">
-      <SidebarHeader className="border-b border-slate-700 p-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-lg">N</span>
+    <Sidebar className="glass-dark border-r border-blue-500/20 backdrop-blur-xl">
+      <SidebarHeader className="border-b border-blue-500/20 p-6">
+        <div className="flex items-center gap-4 animate-fade-in-scale">
+          <div className="relative">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-glow">
+              <span className="text-white font-bold text-lg font-heading">N</span>
+            </div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 blur" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white">NozelPay</h2>
-            <p className="text-xs text-blue-300">HR Solutions</p>
+            <h2 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+              NozelPay
+            </h2>
+            <p className="text-xs text-blue-300/70 font-medium">HR Solutions</p>
           </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="px-4 py-6">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-blue-300/70 text-xs uppercase tracking-wider">
+          <SidebarGroupLabel className="text-blue-300/60 text-xs uppercase tracking-wider font-semibold mb-4 px-3">
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => {
+            <SidebarMenu className="space-y-2">
+              {navigationItems.map((item, index) => {
                 const isActive = currentPath === item.url;
                 return (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={item.title} className={`animate-fade-in-up animate-stagger-${Math.min(index + 1, 6)}`}>
                     <SidebarMenuButton 
                       asChild 
                       isActive={isActive}
                       className={`
+                        group relative rounded-xl transition-all duration-300 font-medium
                         ${isActive 
-                          ? 'bg-blue-600/20 text-blue-300 border-l-2 border-blue-400' 
-                          : 'text-blue-200/70 hover:text-blue-200 hover:bg-blue-600/10'
+                          ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border-l-4 border-blue-400 shadow-glow' 
+                          : 'text-blue-200/70 hover:text-white hover:bg-blue-500/10 hover:shadow-lg'
                         }
                       `}
                     >
-                      <a href={item.url} className="flex items-center gap-3">
-                        <item.icon className="w-4 h-4" />
-                        <span>{item.title}</span>
+                      <a href={item.url} className="flex items-center gap-4 px-4 py-3">
+                        <div className={`
+                          p-2 rounded-lg transition-all duration-300
+                          ${isActive 
+                            ? 'bg-blue-500/20 text-blue-300' 
+                            : 'text-blue-400/70 group-hover:bg-blue-500/10 group-hover:text-blue-300'
+                          }
+                        `}>
+                          <item.icon className="w-5 h-5" />
+                        </div>
+                        <span className="font-heading">{item.title}</span>
+                        {isActive && (
+                          <div className="absolute right-2 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+                        )}
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -77,8 +94,8 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-slate-700 p-4">
-        <div className="text-xs text-blue-300/50">
+      <SidebarFooter className="border-t border-blue-500/20 p-6">
+        <div className="text-xs text-blue-300/40 font-mono text-center">
           © 2024 NozelPay System
         </div>
       </SidebarFooter>
