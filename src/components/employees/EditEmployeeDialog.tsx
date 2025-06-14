@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -41,14 +40,22 @@ const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({
   employee,
   onUpdateEmployee,
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    position: string;
+    department: string;
+    salary: string;
+    startDate: string;
+    status: 'active' | 'inactive';
+  }>({
     name: '',
     email: '',
     position: '',
     department: '',
     salary: '',
     startDate: '',
-    status: 'active' as const,
+    status: 'active',
   });
 
   useEffect(() => {
