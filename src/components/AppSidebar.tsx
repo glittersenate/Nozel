@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -27,7 +28,12 @@ const navigationItems = [
 ];
 
 export function AppSidebar() {
-  const currentPath = window.location.pathname;
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavigation = (url: string) => {
+    navigate(url);
+  };
 
   return (
     <Sidebar className="glass-dark border-r border-blue-500/20 backdrop-blur-xl">
@@ -56,21 +62,21 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-2">
               {navigationItems.map((item, index) => {
-                const isActive = currentPath === item.url;
+                const isActive = location.pathname === item.url;
                 return (
                   <SidebarMenuItem key={item.title} className={`animate-fade-in-up animate-stagger-${Math.min(index + 1, 6)}`}>
                     <SidebarMenuButton 
-                      asChild 
+                      onClick={() => handleNavigation(item.url)}
                       isActive={isActive}
                       className={`
-                        group relative rounded-xl transition-all duration-300 font-medium
+                        group relative rounded-xl transition-all duration-300 font-medium cursor-pointer
                         ${isActive 
                           ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border-l-4 border-blue-400 shadow-glow' 
                           : 'text-blue-200/70 hover:text-white hover:bg-blue-500/10 hover:shadow-lg'
                         }
                       `}
                     >
-                      <a href={item.url} className="flex items-center gap-4 px-4 py-3">
+                      <div className="flex items-center gap-4 px-4 py-3 w-full">
                         <div className={`
                           p-2 rounded-lg transition-all duration-300
                           ${isActive 
@@ -84,7 +90,7 @@ export function AppSidebar() {
                         {isActive && (
                           <div className="absolute right-2 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
                         )}
-                      </a>
+                      </div>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );

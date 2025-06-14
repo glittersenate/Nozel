@@ -1,17 +1,26 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
 import RoleSelector from './RoleSelector';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <SidebarProvider>
@@ -45,21 +54,50 @@ export function Layout({ children }: LayoutProps) {
               <RoleSelector />
               
               {user && (
-                <div className="flex items-center gap-4 glass-dark hover:bg-blue-500/10 rounded-2xl p-3 transition-all duration-300 group">
-                  <Avatar className="h-10 w-10 ring-2 ring-blue-500/30 group-hover:ring-blue-400/50 transition-all duration-300">
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-semibold">
-                      {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="text-sm">
-                    <p className="text-white font-semibold font-heading">
-                      {user.name}
-                    </p>
-                    <p className="text-blue-300/80 text-xs">
-                      {user.email}
-                    </p>
-                  </div>
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      className="flex items-center gap-4 glass-dark hover:bg-blue-500/10 rounded-2xl p-3 transition-all duration-300 group h-auto"
+                    >
+                      <Avatar className="h-10 w-10 ring-2 ring-blue-500/30 group-hover:ring-blue-400/50 transition-all duration-300">
+                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-semibold">
+                          {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="text-sm text-left">
+                        <p className="text-white font-semibold font-heading">
+                          {user.name}
+                        </p>
+                        <p className="text-blue-300/80 text-xs">
+                          {user.email}
+                        </p>
+                      </div>
+                      <ChevronDown className="w-4 h-4 text-blue-300/70 group-hover:text-blue-200 transition-colors" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent 
+                    align="end" 
+                    className="w-56 bg-[#141a2e]/95 border-blue-800/30 text-blue-100 backdrop-blur-xl"
+                  >
+                    <DropdownMenuItem className="hover:bg-blue-600/10 cursor-pointer">
+                      <User className="w-4 h-4 mr-2" />
+                      <span>Profile Settings</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="hover:bg-blue-600/10 cursor-pointer">
+                      <Settings className="w-4 h-4 mr-2" />
+                      <span>Preferences</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-blue-800/30" />
+                    <DropdownMenuItem 
+                      className="hover:bg-red-600/10 cursor-pointer text-red-300"
+                      onClick={logout}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      <span>Sign Out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </div>
           </header>
