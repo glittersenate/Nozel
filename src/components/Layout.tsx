@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -26,18 +27,10 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          {/* Mobile hamburger - floating top left */}
-          <div className="fixed top-4 left-4 z-50 md:hidden">
-            <SidebarTrigger 
-              className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-12 h-12 flex items-center justify-center"
-              style={{ fontSize: 28 }}
-            />
-          </div>
-
-          {/* Desktop top bar - clean and minimal */}
-          <div className="hidden md:flex h-16 items-center justify-between px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
+          {/* Top bar - visible for both mobile and desktop */}
+          <div className="flex h-16 items-center justify-between px-4 md:px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
             <div className="flex items-center gap-4">
-              {/* Desktop hamburger - inline with content */}
+              {/* Hamburger always visible */}
               <SidebarTrigger 
                 className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
                 style={{ fontSize: 24 }}
@@ -52,7 +45,7 @@ export function Layout({ children }: LayoutProps) {
                   </div>
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-30 blur animate-pulse" />
                 </div>
-                <div>
+                <div className="hidden xs:block">
                   <h1 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                     NozelPay
                   </h1>
@@ -63,9 +56,9 @@ export function Layout({ children }: LayoutProps) {
               </div>
             </div>
             
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 md:gap-6">
               <RoleSelector />
-              
+
               {user && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -78,11 +71,11 @@ export function Layout({ children }: LayoutProps) {
                           {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="text-sm text-left">
-                        <p className="text-white font-semibold font-heading">
+                      <div className="text-sm text-left max-w-xs truncate">
+                        <p className="text-white font-semibold font-heading truncate">
                           {user.name}
                         </p>
-                        <p className="text-blue-300/80 text-xs">
+                        <p className="text-blue-300/80 text-xs truncate">
                           {user.email}
                         </p>
                       </div>
@@ -124,3 +117,4 @@ export function Layout({ children }: LayoutProps) {
     </SidebarProvider>
   );
 }
+
