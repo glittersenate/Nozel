@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -26,23 +27,17 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          {/* Mobile hamburger - floating top left */}
-          <div className="fixed top-4 left-4 z-50 md:hidden">
+          {/* Floating hamburger for both mobile and desktop */}
+          <div className="fixed top-4 left-4 z-50">
             <SidebarTrigger 
-              className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-12 h-12 flex items-center justify-center"
+              className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-12 h-12 md:w-10 md:h-10 flex items-center justify-center"
               style={{ fontSize: 28 }}
             />
           </div>
 
-          {/* Desktop top bar - clean and minimal */}
+          {/* Desktop top bar - clean and minimal - hidden on mobile */}
           <div className="hidden md:flex h-16 items-center justify-between px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
-            <div className="flex items-center gap-4">
-              {/* Desktop hamburger - inline with content */}
-              <SidebarTrigger 
-                className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                style={{ fontSize: 24 }}
-              />
-              
+            <div className="flex items-center gap-4 ml-12">
               <div className="h-6 w-px bg-blue-500/30" />
               
               <div className="flex items-center gap-4 animate-slide-in-right">
@@ -115,7 +110,7 @@ export function Layout({ children }: LayoutProps) {
             </div>
           </div>
           
-          <main className="flex-1 relative pt-20 md:pt-0">
+          <main className="flex-1 relative pt-16 md:pt-0">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
             {children}
           </main>
