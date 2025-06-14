@@ -1,6 +1,9 @@
+
 import React from "react";
 import EnhancedStatsCards from "@/components/dashboard/EnhancedStatsCards";
 import AnimatedPayrollButton from "@/components/dashboard/AnimatedPayrollButton";
+import { ClockInOutWidget } from "@/components/timeTracking/ClockInOutWidget";
+import { TimeSummaryCards } from "@/components/timeTracking/TimeSummaryCards";
 import { useRealTimeData } from "@/hooks/useRealTimeData";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -136,6 +139,19 @@ export default function Index() {
         </h1>
 
         <EnhancedStatsCards employees={employees} />
+
+        {/* Time Tracking Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">Time Tracking</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1">
+              <ClockInOutWidget />
+            </div>
+            <div className="lg:col-span-2">
+              <TimeSummaryCards />
+            </div>
+          </div>
+        </div>
 
         <AnimatedPayrollButton
           totalPayroll={metrics.totalPayroll}

@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import Employees from "./pages/Employees";
+import TimeTracking from "./pages/TimeTracking";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/employees" element={<Employees />} />
+              <Route path="/time-tracking" element={<TimeTracking />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
