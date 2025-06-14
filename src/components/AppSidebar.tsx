@@ -33,12 +33,12 @@ export function AppSidebar() {
     <Sidebar className="bg-slate-900 border-slate-700">
       <SidebarHeader className="border-b border-slate-700 p-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Users className="w-4 h-4 text-white" />
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+            <span className="text-white font-bold text-lg">N</span>
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white">HRFlow</h2>
-            <p className="text-xs text-blue-300">HR Management</p>
+            <h2 className="text-xl font-bold text-white">NozelPay</h2>
+            <p className="text-xs text-blue-300">HR Solutions</p>
           </div>
         </div>
       </SidebarHeader>
@@ -79,7 +79,7 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t border-slate-700 p-4">
         <div className="text-xs text-blue-300/50">
-          © 2024 HRFlow System
+          © 2024 NozelPay System
         </div>
       </SidebarFooter>
     </Sidebar>
