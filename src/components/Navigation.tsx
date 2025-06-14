@@ -1,11 +1,14 @@
 
 import React from 'react';
-import { Home, Users, DollarSign, Settings, FileText, BarChart3 } from 'lucide-react';
+import { Home, Users, DollarSign, Settings, FileText, BarChart3, Clock, Calendar, Star } from 'lucide-react';
 
 const navigationItems = [
   { icon: Home, label: 'Dashboard', href: '/', active: false },
-  { icon: Users, label: 'Employees', href: '/employees', active: true },
+  { icon: Users, label: 'Employees', href: '/employees', active: false },
+  { icon: Clock, label: 'Time Tracking', href: '/time-tracking', active: false },
   { icon: DollarSign, label: 'Payroll', href: '/payroll', active: false },
+  { icon: Calendar, label: 'Leave', href: '/leave', active: false },
+  { icon: Star, label: 'Performance', href: '/performance', active: false },
   { icon: FileText, label: 'Reports', href: '/reports', active: false },
   { icon: BarChart3, label: 'Analytics', href: '/analytics', active: false },
   { icon: Settings, label: 'Settings', href: '/settings', active: false },

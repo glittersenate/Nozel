@@ -9,6 +9,9 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import Employees from "./pages/Employees";
 import TimeTracking from "./pages/TimeTracking";
+import Payroll from "./pages/Payroll";
+import Leave from "./pages/Leave";
+import Performance from "./pages/Performance";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +27,9 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/employees" element={<Employees />} />
               <Route path="/time-tracking" element={<TimeTracking />} />
+              <Route path="/payroll" element={<Payroll />} />
+              <Route path="/leave" element={<Leave />} />
+              <Route path="/performance" element={<Performance />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
