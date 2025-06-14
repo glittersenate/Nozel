@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
 import RoleSelector from './RoleSelector';
@@ -13,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
-import { BackToDashboardButton } from "./BackToDashboardButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,10 +27,16 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          <BackToDashboardButton />
-          <header className="flex h-20 shrink-0 items-center justify-between gap-2 glass-dark border-b border-blue-500/20 px-6 backdrop-blur-xl">
+          {/* Consistent SidebarTrigger, always top left, always visible */}
+          <div className="fixed top-4 left-4 z-50 md:static md:z-auto">
+            <SidebarTrigger 
+              className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-12 h-12 flex items-center justify-center"
+              style={{ fontSize: 28, minWidth: 48, minHeight: 48 }}
+            />
+          </div>
+          <header className="flex h-20 shrink-0 items-center justify-between gap-2 glass-dark border-b border-blue-500/20 px-6 backdrop-blur-xl pl-20 md:pl-0">
             <div className="flex items-center gap-4">
-              <SidebarTrigger className="text-white hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200" />
+              {/* Hide the inline trigger in main header since we have floating button on top left */}
               <div className="h-6 w-px bg-blue-500/30" />
               
               <div className="flex items-center gap-4 animate-slide-in-right">
@@ -112,3 +118,4 @@ export function Layout({ children }: LayoutProps) {
     </SidebarProvider>
   );
 }
+
