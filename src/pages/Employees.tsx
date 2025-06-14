@@ -8,6 +8,7 @@ import EditEmployeeDialog from '@/components/employees/EditEmployeeDialog';
 import EmployeeDetailDialog from "@/components/employees/EmployeeDetailDialog";
 import EmployeeFilterDrawer from '@/components/employees/EmployeeFilterDrawer';
 import { useToast } from '@/hooks/use-toast';
+import { exportToCSV, formatEmployeeForExport } from '@/utils/exportUtils';
 
 export interface Employee {
   id: string;
@@ -178,9 +179,11 @@ const Employees = () => {
   };
 
   const handleExportData = () => {
+    const exportData = formatEmployeeForExport(filteredAndSortedEmployees);
+    exportToCSV(exportData, `employees-export-${new Date().toISOString().split('T')[0]}`);
     toast({
-      title: "Export Started",
-      description: "Employee data is being exported to CSV...",
+      title: "Export Complete",
+      description: `Successfully exported ${exportData.length} employee records to CSV.`,
     });
   };
 
@@ -221,7 +224,7 @@ const Employees = () => {
               className="bg-[#141a2e]/60 border-blue-800/30 text-blue-200 hover:bg-[#141a2e]/80"
             >
               <Download className="w-4 h-4 mr-2" />
-              Export
+              Export ({filteredAndSortedEmployees.length})
             </Button>
             <Button
               onClick={() => setIsAddDialogOpen(true)}
