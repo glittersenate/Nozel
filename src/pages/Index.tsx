@@ -1,315 +1,249 @@
-import React, { useState } from "react";
-import { Users, DollarSign, Clock, Sparkles, Command } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import Navigation from "@/components/Navigation";
-import UserProfile from "@/components/UserProfile";
-import NotificationCenter from "@/components/NotificationCenter";
-import QuickActions from "@/components/QuickActions";
+import React from "react";
 import EnhancedStatsCards from "@/components/dashboard/EnhancedStatsCards";
-import DepartmentChart from "@/components/dashboard/DepartmentChart";
-import SalaryChart from "@/components/dashboard/SalaryChart";
-import RecentActivity from "@/components/dashboard/RecentActivity";
-import RealTimeMetrics from "@/components/dashboard/RealTimeMetrics";
-import LiveActivityFeed from "@/components/dashboard/LiveActivityFeed";
-import AIInsightsModule from "@/components/dashboard/AIInsightsModule";
 import AnimatedPayrollButton from "@/components/dashboard/AnimatedPayrollButton";
-import RoleSelector from "@/components/RoleSelector";
-import ThemeToggle from "@/components/ThemeToggle";
-import NotificationSystem from "@/components/NotificationSystem";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { useRealTimeData } from "@/hooks/useRealTimeData";
-import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useAuth } from "@/contexts/AuthContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { OnboardingWizardDialog } from "@/components/onboarding/OnboardingWizard";
 
-// Mock employee data for dashboard
-const mockEmployees = [
-  {
-    id: '1',
-    name: 'John Smith',
-    email: 'john.smith@company.com',
-    position: 'Software Engineer',
-    department: 'Engineering',
-    salary: 85000,
-    startDate: '2023-01-15',
-    status: 'active' as const
-  },
-  {
-    id: '2',
-    name: 'Sarah Johnson',
-    email: 'sarah.johnson@company.com',
-    position: 'HR Manager',
-    department: 'Human Resources',
-    salary: 75000,
-    startDate: '2022-06-10',
-    status: 'active' as const
-  },
-  {
-    id: '3',
-    name: 'Mike Davis',
-    email: 'mike.davis@company.com',
-    position: 'Marketing Specialist',
-    department: 'Marketing',
-    salary: 60000,
-    startDate: '2023-03-20',
-    status: 'active' as const
-  },
-  {
-    id: '4',
-    name: 'Emily Chen',
-    email: 'emily.chen@company.com',
-    position: 'Product Manager',
-    department: 'Product',
-    salary: 95000,
-    startDate: '2022-09-05',
-    status: 'inactive' as const
-  },
-  {
-    id: '5',
-    name: 'Alex Rodriguez',
-    email: 'alex.rodriguez@company.com',
-    position: 'Data Analyst',
-    department: 'Engineering',
-    salary: 70000,
-    startDate: '2023-11-01',
-    status: 'active' as const
-  },
-  {
-    id: '6',
-    name: 'Lisa Wang',
-    email: 'lisa.wang@company.com',
-    position: 'Designer',
-    department: 'Product',
-    salary: 68000,
-    startDate: '2023-12-15',
-    status: 'active' as const
-  }
-];
-
-const DashboardContent = () => {
-  const { toast } = useToast();
+export default function Index() {
   const { user, permissions } = useAuth();
-  const { metrics, isLive, toggleLiveMode } = useRealTimeData(mockEmployees);
-  const [showShortcuts, setShowShortcuts] = useState(false);
 
-  // Keyboard shortcuts
-  useKeyboardShortcuts([
+  const employees = [
     {
-      key: 'k',
-      ctrl: true,
-      action: () => toast({ title: "Search", description: "Search functionality activated!" }),
-      description: 'Open search'
+      id: "1",
+      name: "John Doe",
+      email: "john.doe@example.com",
+      position: "Software Engineer",
+      department: "Engineering",
+      salary: 90000,
+      startDate: "2022-01-15",
+      status: "active",
     },
     {
-      key: 'n',
-      ctrl: true,
-      action: () => toast({ title: "New Employee", description: "Add employee dialog opened!" }),
-      description: 'Add new employee'
+      id: "2",
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      position: "HR Manager",
+      department: "Human Resources",
+      salary: 80000,
+      startDate: "2021-05-20",
+      status: "active",
     },
     {
-      key: '/',
-      action: () => setShowShortcuts(!showShortcuts),
-      description: 'Show keyboard shortcuts'
+      id: "3",
+      name: "Mike Johnson",
+      email: "mike.johnson@example.com",
+      position: "Project Manager",
+      department: "Management",
+      salary: 100000,
+      startDate: "2020-11-01",
+      status: "active",
     },
     {
-      key: 'l',
-      ctrl: true,
-      action: toggleLiveMode,
-      description: 'Toggle live mode'
-    }
-  ]);
+      id: "4",
+      name: "Sarah Connor",
+      email: "sarah.connor@example.com",
+      position: "Accountant",
+      department: "Finance",
+      salary: 75000,
+      startDate: "2023-03-10",
+      status: "inactive",
+    },
+    {
+      id: "5",
+      name: "David Lee",
+      email: "david.lee@example.com",
+      position: "Marketing Specialist",
+      department: "Marketing",
+      salary: 85000,
+      startDate: "2022-09-01",
+      status: "active",
+    },
+    {
+      id: "6",
+      name: "Emily White",
+      email: "emily.white@example.com",
+      position: "Data Analyst",
+      department: "Analytics",
+      salary: 95000,
+      startDate: "2021-07-01",
+      status: "active",
+    },
+    {
+      id: "7",
+      name: "Kevin Brown",
+      email: "kevin.brown@example.com",
+      position: "Sales Representative",
+      department: "Sales",
+      salary: 80000,
+      startDate: "2022-04-01",
+      status: "active",
+    },
+    {
+      id: "8",
+      name: "Linda Green",
+      email: "linda.green@example.com",
+      position: "Customer Support",
+      department: "Support",
+      salary: 70000,
+      startDate: "2023-01-01",
+      status: "active",
+    },
+    {
+      id: "9",
+      name: "Brian Black",
+      email: "brian.black@example.com",
+      position: "UX Designer",
+      department: "Design",
+      salary: 90000,
+      startDate: "2022-06-01",
+      status: "active",
+    },
+    {
+      id: "10",
+      name: "Alice Gray",
+      email: "alice.gray@example.com",
+      position: "Product Manager",
+      department: "Product",
+      salary: 100000,
+      startDate: "2021-09-01",
+      status: "active",
+    },
+  ];
 
-  const handleRunPayroll = () => {
-    if (!permissions.canRunPayroll) {
-      toast({
-        title: "Access Denied",
-        description: "You don't have permission to run payroll.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Payroll Run Started",
-      description: "Your payroll is now being processed. You'll be notified when it's complete.",
-      variant: "default",
-    });
-  };
-
-  const totalPayroll = mockEmployees
-    .filter(emp => emp.status === 'active')
-    .reduce((sum, emp) => sum + emp.salary, 0);
-
-  const activeEmployees = mockEmployees.filter(emp => emp.status === 'active').length;
+  const { metrics, isLive, toggleLiveMode } = useRealTimeData(employees);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0e1c38] to-[#12284a] dark:from-[#0e1c38] dark:to-[#12284a] light:from-gray-50 light:to-gray-100 text-white dark:text-white light:text-gray-900 flex">
-      {/* Enhanced Sidebar */}
-      <aside className="w-64 bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white light:border-r shadow-md min-h-screen fixed left-0 flex flex-col z-10 hidden sm:flex">
-        <div className="p-4 border-b border-blue-800/30 dark:border-blue-800/30 light:border-gray-200">
-          <div className="flex items-center gap-3">
-            <img
-              src="/lovable-uploads/2c2dcc83-282d-4d62-9030-5dd87146ff17.png"
-              alt="NozelPay Logo"
-              className="h-8 w-auto"
-            />
-            <span className="font-bold text-xl tracking-wide">NozelPay</span>
-          </div>
-        </div>
-        <div className="flex-1 px-4">
-          <Navigation />
-        </div>
-        <div className="p-4 border-t border-blue-800/30 dark:border-blue-800/30 light:border-gray-200">
-          <RoleSelector />
-        </div>
-        <UserProfile />
-      </aside>
+    <div>
+      <div className="container mx-auto py-10">
+        <h1 className="text-3xl font-bold text-white mb-6">
+          Dashboard Overview
+        </h1>
 
-      {/* Mobile Header */}
-      <div className="sm:hidden w-full bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white shadow-md p-4 fixed top-0 z-10">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img
-              src="/lovable-uploads/2c2dcc83-282d-4d62-9030-5dd87146ff17.png"
-              alt="NozelPay Logo"
-              className="h-8 w-auto"
-            />
-            <span className="font-bold text-lg tracking-wide">NozelPay</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <NotificationSystem />
-            <RoleSelector />
-          </div>
-        </div>
-      </div>
+        <EnhancedStatsCards employees={employees} />
 
-      {/* Main dashboard content */}
-      <main className="flex-1 sm:ml-64 p-6 pt-20 sm:pt-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Enhanced Header Section */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold mb-2">
-                  Welcome back, {user?.name}! 
-                  <span className="ml-3 text-sm font-normal text-blue-300">
-                    Press <kbd className="px-1 py-0.5 bg-blue-600/20 rounded text-xs">?</kbd> for shortcuts
-                  </span>
-                </h1>
-                <div className="text-blue-300 dark:text-blue-300 light:text-gray-600 mb-6 font-semibold">
-                  Supercharge your payroll.<br />
-                  Everything you need. <span className="bg-blue-600/30 px-2 rounded text-blue-100">10-second payroll, powered by AI</span>
-                </div>
-              </div>
-              <div className="hidden sm:flex items-center gap-3">
-                <ThemeToggle />
-                <NotificationSystem />
-              </div>
+        <AnimatedPayrollButton
+          totalPayroll={metrics.totalPayroll}
+          activeEmployees={metrics.activeEmployees}
+          onRunPayroll={() => alert("Payroll run successfully!")}
+          canRunPayroll={permissions.canRunPayroll}
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <Card className="bg-[#141a2e]/80 border border-blue-800/30">
+            <CardHeader>
+              <CardTitle className="text-xl text-white">
+                Department Growth
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-4">
+                {Object.entries(metrics.departmentGrowth).map(
+                  ([department, growth]) => (
+                    <li
+                      key={department}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="text-blue-300">{department}</span>
+                      <span
+                        className={`font-bold ${
+                          growth >= 0 ? "text-green-400" : "text-red-400"
+                        }`}
+                      >
+                        {growth > 0 ? "+" : ""}
+                        {growth}%
+                      </span>
+                    </li>
+                  )
+                )}
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-[#141a2e]/80 border border-blue-800/30">
+            <CardHeader>
+              <CardTitle className="text-xl text-white">Salary Trends</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={250}>
+                <AreaChart data={metrics.salaryTrends}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
+                  <XAxis dataKey="month" stroke="#94a3b8" />
+                  <YAxis stroke="#94a3b8" />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: "#1e293b", border: "none" }}
+                    itemStyle={{ color: "#cbd5e1" }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="average"
+                    stroke="#6366f1"
+                    fill="#312e81"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="bg-[#141a2e]/80 border border-blue-800/30 mb-8">
+          <CardHeader className="flex items-center justify-between">
+            <CardTitle className="text-xl text-white">Activity Feed</CardTitle>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="live-switch" className="text-sm text-blue-300">
+                Live Mode
+              </Label>
+              <Switch id="live-switch" checked={isLive} onCheckedChange={toggleLiveMode} />
             </div>
-
-            {/* Keyboard Shortcuts Help */}
-            {showShortcuts && (
-              <div className="mb-6 p-4 bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-gray-100 border border-blue-800/30 dark:border-blue-800/30 light:border-gray-300 rounded-lg">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold flex items-center gap-2">
-                    <Command className="w-4 h-4" />
-                    Keyboard Shortcuts
-                  </h3>
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    onClick={() => setShowShortcuts(false)}
-                    className="text-blue-300 hover:text-blue-100"
+          </CardHeader>
+          <CardContent className="h-[400px] p-0">
+            <ScrollArea className="h-full">
+              <div className="p-4 space-y-4">
+                {metrics.activityFeed.map((activity) => (
+                  <div
+                    key={activity.id}
+                    className="flex items-start space-x-4"
                   >
-                    ×
-                  </Button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                  <div><kbd className="bg-blue-600/20 px-1 rounded">Ctrl+K</kbd> Open search</div>
-                  <div><kbd className="bg-blue-600/20 px-1 rounded">Ctrl+N</kbd> Add employee</div>
-                  <div><kbd className="bg-blue-600/20 px-1 rounded">Ctrl+L</kbd> Toggle live mode</div>
-                  <div><kbd className="bg-blue-600/20 px-1 rounded">?</kbd> Show/hide shortcuts</div>
-                </div>
+                    <Avatar>
+                      <AvatarImage src={`https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`} />
+                      <AvatarFallback>
+                        {activity.employee?.substring(0, 2)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium leading-none text-white">
+                        {activity.message}
+                      </p>
+                      <p className="text-sm text-blue-300 opacity-70">
+                        {activity.timestamp.toLocaleTimeString()}
+                      </p>
+                      <Badge variant="secondary">{activity.type}</Badge>
+                    </div>
+                  </div>
+                ))}
               </div>
-            )}
-
-            {/* Enhanced Animated Payroll Button */}
-            <AnimatedPayrollButton
-              totalPayroll={totalPayroll}
-              activeEmployees={activeEmployees}
-              onRunPayroll={handleRunPayroll}
-              canRunPayroll={permissions.canRunPayroll}
-            />
-          </div>
-
-          {/* Real-time Analytics */}
-          {permissions.canViewAnalytics && (
-            <div className="mb-8">
-              <RealTimeMetrics 
-                metrics={metrics} 
-                isLive={isLive} 
-                onToggleLive={toggleLiveMode} 
-              />
-            </div>
-          )}
-
-          {/* Enhanced Stats Cards */}
-          <EnhancedStatsCards employees={mockEmployees} />
-
-          {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {permissions.canViewAnalytics ? (
-              <>
-                <DepartmentChart employees={mockEmployees} />
-                <SalaryChart employees={mockEmployees} />
-              </>
-            ) : (
-              <div className="lg:col-span-2 bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-gray-100 border border-blue-950 dark:border-blue-950 light:border-gray-300 rounded-xl p-8 text-center">
-                <p className="text-blue-300 dark:text-blue-300 light:text-gray-600">You don't have permission to view detailed analytics.</p>
-              </div>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Quick Actions */}
-              <QuickActions />
-
-              {/* Enhanced AI Insights */}
-              <AIInsightsModule 
-                employees={mockEmployees} 
-                isLive={isLive}
-              />
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-6">
-              {permissions.canViewAnalytics ? (
-                <LiveActivityFeed activities={metrics.activityFeed} isLive={isLive} />
-              ) : (
-                <RecentActivity employees={mockEmployees} />
-              )}
-              <NotificationCenter />
-            </div>
-          </div>
-
-          {/* Enhanced Footer */}
-          <div className="mt-12 text-center text-xs opacity-60 border-t border-blue-800/20 dark:border-blue-800/20 light:border-gray-200 pt-6">
-            Prototype v6 · Enterprise Features · Advanced UI/UX · Keyboard Shortcuts · Theme Support · AI-Powered Insights
-          </div>
-        </div>
-      </main>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="flex justify-center my-8">
+        <OnboardingWizardDialog />
+      </div>
     </div>
   );
-};
-
-const Index = () => {
-  return (
-    <AuthProvider>
-      <DashboardContent />
-    </AuthProvider>
-  );
-};
-
-export default Index;
+}
