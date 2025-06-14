@@ -40,8 +40,12 @@ export function AppSidebar() {
       <SidebarHeader className="border-b border-blue-500/20 p-6">
         <div className="flex items-center gap-4 animate-fade-in-scale">
           <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-glow">
-              <span className="text-white font-bold text-lg font-heading">N</span>
+            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-glow overflow-hidden">
+              <img 
+                src="/lovable-uploads/d4d1898a-7491-497e-b26f-54279c41e408.png" 
+                alt="NozelPay Logo" 
+                className="w-10 h-10 object-contain"
+              />
             </div>
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 blur" />
           </div>
