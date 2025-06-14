@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface Employee {
   id: string;
@@ -34,7 +34,7 @@ const SalaryChart: React.FC<SalaryChartProps> = ({ employees }) => {
     department,
     avgSalary: Math.round(data.total / data.count),
     employees: data.count
-  })).sort((a, b) => b.avgSalary - a.avgSalary);
+  })).sort((a, b) => a.department.localeCompare(b.department));
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -55,29 +55,53 @@ const SalaryChart: React.FC<SalaryChartProps> = ({ employees }) => {
   };
 
   return (
-    <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl p-6">
-      <h3 className="text-xl font-bold text-blue-100 mb-4">Average Salary by Department</h3>
-      <div className="h-80">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis 
-              dataKey="department" 
-              stroke="#9CA3AF"
-              fontSize={12}
-              angle={-45}
-              textAnchor="end"
-              height={60}
-            />
-            <YAxis 
-              stroke="#9CA3AF"
-              fontSize={12}
-              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="avgSalary" fill="#3B82F6" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+    <div
+      className="shadow-lg rounded-2xl p-0 border"
+      style={{
+        background: "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
+        border: "1px solid rgba(87,120,255,0.06)",
+      }}
+    >
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-blue-100 mb-4">Average Salary by Department</h3>
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+              <defs>
+                <linearGradient id="salaryGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#00D4FF" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#0099CC" stopOpacity={0.1}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+              <XAxis 
+                dataKey="department" 
+                stroke="#9CA3AF"
+                fontSize={12}
+                angle={-45}
+                textAnchor="end"
+                height={80}
+                tick={{ fill: '#9CA3AF' }}
+              />
+              <YAxis 
+                stroke="#9CA3AF"
+                fontSize={12}
+                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                tick={{ fill: '#9CA3AF' }}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Line 
+                type="monotone" 
+                dataKey="avgSalary" 
+                stroke="#00D4FF" 
+                strokeWidth={3}
+                dot={{ fill: '#00D4FF', strokeWidth: 2, r: 6 }}
+                activeDot={{ r: 8, stroke: '#00D4FF', strokeWidth: 2, fill: '#ffffff' }}
+                fill="url(#salaryGradient)"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

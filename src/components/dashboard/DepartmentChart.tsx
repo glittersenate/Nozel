@@ -17,7 +17,19 @@ interface DepartmentChartProps {
   employees: Employee[];
 }
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];
+// Exotic and lovely color palette
+const EXOTIC_COLORS = [
+  '#FF6B9D', // Hot Pink
+  '#45B7D1', // Sky Blue
+  '#96CEB4', // Mint Green
+  '#FFEAA7', // Warm Yellow
+  '#DDA0DD', // Plum
+  '#FFB347', // Peach
+  '#87CEEB', // Light Blue
+  '#F0A500', // Orange
+  '#C44569', // Deep Pink
+  '#40E0D0'  // Turquoise
+];
 
 const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
   // Count employees by department
@@ -38,37 +50,97 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-[#141a2e] border border-blue-800/30 rounded-lg p-3 shadow-lg">
-          <p className="text-blue-100 font-medium">{data.name}</p>
-          <p className="text-blue-300 text-sm">{data.value} employees ({data.percentage}%)</p>
+        <div className="bg-gradient-to-br from-purple-900/90 to-pink-900/90 border border-pink-400/30 rounded-xl p-4 shadow-2xl backdrop-blur-sm">
+          <p className="text-white font-bold text-lg">{data.name}</p>
+          <p className="text-pink-200 text-sm">{data.value} employees</p>
+          <p className="text-purple-200 text-sm">{data.percentage}% of workforce</p>
         </div>
       );
     }
     return null;
   };
 
+  const CustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text 
+        x={x} 
+        y={y} 
+        fill="white" 
+        textAnchor={x > cx ? 'start' : 'end'} 
+        dominantBaseline="central"
+        className="font-bold text-sm drop-shadow-lg"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   return (
-    <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl p-6">
-      <h3 className="text-xl font-bold text-blue-100 mb-4">Department Distribution</h3>
-      <div className="h-80">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={chartData}
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              dataKey="value"
-              label={({ name, percentage }) => `${name} (${percentage}%)`}
-            >
-              {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-          </PieChart>
-        </ResponsiveContainer>
+    <div
+      className="shadow-lg rounded-2xl p-0 border overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, rgba(31,42,70,0.98) 0%, rgba(75,30,133,0.95) 50%, rgba(32,55,116,0.94) 100%)",
+        border: "1px solid rgba(147,51,234,0.3)",
+        boxShadow: "0 20px 40px rgba(147,51,234,0.1), 0 0 60px rgba(236,72,153,0.05)"
+      }}
+    >
+      <div className="p-6">
+        <h3 className="text-xl font-bold bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent mb-4">
+          Department Distribution ✨
+        </h3>
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <defs>
+                {EXOTIC_COLORS.map((color, index) => (
+                  <radialGradient key={index} id={`gradient-${index}`} cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor={color} stopOpacity={1} />
+                    <stop offset="100%" stopColor={color} stopOpacity={0.7} />
+                  </radialGradient>
+                ))}
+              </defs>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                outerRadius={110}
+                innerRadius={40}
+                fill="#8884d8"
+                dataKey="value"
+                labelLine={false}
+                label={CustomLabel}
+                stroke="#ffffff"
+                strokeWidth={2}
+              >
+                {chartData.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={`url(#gradient-${index % EXOTIC_COLORS.length})`}
+                    style={{
+                      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
+                      cursor: 'pointer'
+                    }}
+                  />
+                ))}
+              </Pie>
+              <Tooltip content={<CustomTooltip />} />
+              <Legend 
+                verticalAlign="bottom" 
+                height={36}
+                wrapperStyle={{
+                  paddingTop: '20px',
+                  fontSize: '14px',
+                  color: '#e2e8f0'
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
