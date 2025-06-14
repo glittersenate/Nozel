@@ -21,9 +21,14 @@ import { Employee } from '@/pages/Employees';
 interface EmployeeTableProps {
   employees: Employee[];
   onDeleteEmployee: (id: string) => void;
+  onEditEmployee: (employee: Employee) => void;
 }
 
-const EmployeeTable: React.FC<EmployeeTableProps> = ({ employees, onDeleteEmployee }) => {
+const EmployeeTable: React.FC<EmployeeTableProps> = ({
+  employees,
+  onDeleteEmployee,
+  onEditEmployee
+}) => {
   const formatSalary = (salary: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -97,7 +102,10 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({ employees, onDeleteEmploy
                     align="end" 
                     className="bg-[#141a2e] border-blue-800/30 text-blue-100"
                   >
-                    <DropdownMenuItem className="hover:bg-blue-600/10 cursor-pointer">
+                    <DropdownMenuItem 
+                      className="hover:bg-blue-600/10 cursor-pointer"
+                      onClick={() => onEditEmployee(employee)}
+                    >
                       <Edit className="w-4 h-4 mr-2" />
                       Edit
                     </DropdownMenuItem>

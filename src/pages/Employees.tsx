@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import EmployeeTable from '@/components/employees/EmployeeTable';
 import AddEmployeeDialog from '@/components/employees/AddEmployeeDialog';
+import EditEmployeeDialog from '@/components/employees/EditEmployeeDialog';
 import { useToast } from '@/hooks/use-toast';
 
 export interface Employee {
@@ -65,6 +65,8 @@ const Employees = () => {
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const { toast } = useToast();
 
   const filteredEmployees = employees.filter(employee =>
@@ -101,6 +103,22 @@ const Employees = () => {
     toast({
       title: "Export Started",
       description: "Employee data is being exported to CSV...",
+    });
+  };
+
+  const handleEditEmployee = (employee: Employee) => {
+    setSelectedEmployee(employee);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleUpdateEmployee = (updated: Employee) => {
+    setEmployees((prev) =>
+      prev.map((e) => (e.id === updated.id ? updated : e))
+    );
+    setIsEditDialogOpen(false);
+    toast({
+      title: "Employee Updated",
+      description: `${updated.name}'s information has been updated.`,
     });
   };
 
@@ -178,6 +196,7 @@ const Employees = () => {
         <EmployeeTable
           employees={filteredEmployees}
           onDeleteEmployee={handleDeleteEmployee}
+          onEditEmployee={handleEditEmployee}
         />
 
         {/* Add Employee Dialog */}
@@ -185,6 +204,14 @@ const Employees = () => {
           open={isAddDialogOpen}
           onOpenChange={setIsAddDialogOpen}
           onAddEmployee={handleAddEmployee}
+        />
+
+        {/* Edit Employee Dialog */}
+        <EditEmployeeDialog
+          open={isEditDialogOpen}
+          onOpenChange={setIsEditDialogOpen}
+          employee={selectedEmployee}
+          onUpdateEmployee={handleUpdateEmployee}
         />
       </div>
     </div>
