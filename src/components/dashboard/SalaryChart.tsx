@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface Employee {
   id: string;
@@ -66,11 +66,11 @@ const SalaryChart: React.FC<SalaryChartProps> = ({ employees }) => {
         <h3 className="text-xl font-bold text-blue-100 mb-4">Average Salary by Department</h3>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+            <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
               <defs>
-                <linearGradient id="salaryGradient" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="mountainGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#00D4FF" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#0099CC" stopOpacity={0.1}/>
+                  <stop offset="95%" stopColor="#00D4FF" stopOpacity={0.1}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
@@ -90,16 +90,16 @@ const SalaryChart: React.FC<SalaryChartProps> = ({ employees }) => {
                 tick={{ fill: '#9CA3AF' }}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Line 
+              <Area 
                 type="monotone" 
                 dataKey="avgSalary" 
                 stroke="#00D4FF" 
                 strokeWidth={3}
+                fill="url(#mountainGradient)"
                 dot={{ fill: '#00D4FF', strokeWidth: 2, r: 6 }}
                 activeDot={{ r: 8, stroke: '#00D4FF', strokeWidth: 2, fill: '#ffffff' }}
-                fill="url(#salaryGradient)"
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </div>

@@ -50,10 +50,10 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-gradient-to-br from-purple-900/90 to-pink-900/90 border border-pink-400/30 rounded-xl p-4 shadow-2xl backdrop-blur-sm">
-          <p className="text-white font-bold text-lg">{data.name}</p>
-          <p className="text-pink-200 text-sm">{data.value} employees</p>
-          <p className="text-purple-200 text-sm">{data.percentage}% of workforce</p>
+        <div className="bg-[#141a2e] border border-blue-800/30 rounded-lg p-3 shadow-lg">
+          <p className="text-blue-100 font-medium">{data.name}</p>
+          <p className="text-blue-300 text-sm">{data.value} employees</p>
+          <p className="text-blue-300 text-sm">{data.percentage}% of workforce</p>
         </div>
       );
     }
@@ -82,17 +82,14 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
 
   return (
     <div
-      className="shadow-lg rounded-2xl p-0 border overflow-hidden"
+      className="shadow-lg rounded-2xl p-0 border"
       style={{
-        background: "linear-gradient(135deg, rgba(31,42,70,0.98) 0%, rgba(75,30,133,0.95) 50%, rgba(32,55,116,0.94) 100%)",
-        border: "1px solid rgba(147,51,234,0.3)",
-        boxShadow: "0 20px 40px rgba(147,51,234,0.1), 0 0 60px rgba(236,72,153,0.05)"
+        background: "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
+        border: "1px solid rgba(87,120,255,0.06)",
       }}
     >
       <div className="p-6">
-        <h3 className="text-xl font-bold bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent mb-4">
-          Department Distribution ✨
-        </h3>
+        <h3 className="text-xl font-bold text-blue-100 mb-4">Department Distribution ✨</h3>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -100,7 +97,7 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
                 {EXOTIC_COLORS.map((color, index) => (
                   <radialGradient key={index} id={`gradient-${index}`} cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor={color} stopOpacity={1} />
-                    <stop offset="100%" stopColor={color} stopOpacity={0.7} />
+                    <stop offset="100%" stopColor={color} stopOpacity={0.8} />
                   </radialGradient>
                 ))}
               </defs>
@@ -108,21 +105,21 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
                 data={chartData}
                 cx="50%"
                 cy="50%"
-                outerRadius={110}
-                innerRadius={40}
+                outerRadius={120}
+                innerRadius={50}
                 fill="#8884d8"
                 dataKey="value"
                 labelLine={false}
                 label={CustomLabel}
                 stroke="#ffffff"
-                strokeWidth={2}
+                strokeWidth={3}
               >
                 {chartData.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={`url(#gradient-${index % EXOTIC_COLORS.length})`}
                     style={{
-                      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
+                      filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.4))',
                       cursor: 'pointer'
                     }}
                   />
