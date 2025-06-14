@@ -47,7 +47,20 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         <div className="flex items-center justify-between">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <span className="font-heading font-semibold text-xs sm:text-sm tracking-widest text-blue-200/80 uppercase whitespace-nowrap truncate opacity-90 drop-shadow-sm">
+              <span
+                className="font-heading font-semibold text-xs sm:text-sm tracking-widest text-blue-200/80 uppercase whitespace-normal leading-snug"
+                style={{
+                  // Use normal whitespace and allow up to two lines for headings, improve headroom
+                  display: "block",
+                  overflow: "visible",
+                  textOverflow: "initial",
+                  wordBreak: "break-word",
+                  whiteSpace: "normal",
+                  maxWidth: "100%",
+                  lineHeight: "1.15",
+                  minHeight: "1.2em",
+                }}
+              >
                 {title}
               </span>
               {trend && (
