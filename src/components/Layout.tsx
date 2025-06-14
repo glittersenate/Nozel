@@ -115,7 +115,7 @@ export function Layout({ children }: LayoutProps) {
             </div>
           </div>
           
-          <main className="flex-1 relative pt-20 md:pt-0">
+          <main className="flex-1 relative">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
             {children}
           </main>
