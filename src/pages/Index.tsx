@@ -30,65 +30,71 @@ const Index = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-        <div className="container mx-auto py-10">
+        <div className="container mx-auto py-5">
           {/* Header Section */}
-          <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="mb-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
+              <h1 className="text-[2rem] sm:text-4xl font-extrabold text-white mb-1 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent leading-tight tracking-tight">
                 HR Dashboard
               </h1>
-              <p className="text-blue-300 text-lg">Welcome back! Here's what's happening with your organization today.</p>
+              <p className="text-blue-300 text-base sm:text-lg opacity-80">
+                Welcome back! Here's what's happening with your organization today.
+              </p>
             </div>
             
-            {/* Clean Payroll Card */}
-            <Card className="bg-gradient-to-br from-slate-800/50 to-blue-900/30 border border-blue-500/20 backdrop-blur-xl max-w-md">
-              <CardContent className="p-6">
-                {/* Pay Period */}
-                <div className="mb-6">
-                  <p className="text-blue-300/70 text-sm mb-2">Pay Period</p>
-                  <div className="flex items-center gap-2 text-white">
-                    <Calendar className="w-4 h-4 text-blue-400" />
-                    <span className="font-medium">Feb 1 - Feb 29, 2024</span>
+            {/* Premium Payroll Summary Card */}
+            <Card className="bg-gradient-to-br from-white/10 to-blue-900/60 glass-premium border-0 shadow-lg rounded-2xl max-w-xs sm:max-w-sm p-0">
+              <CardContent className="!p-0">
+                <div className="flex items-center px-5 py-4 gap-4">
+                  <div className="flex flex-col gap-1 flex-1 min-w-0">
+                    <span className="text-xs uppercase tracking-wide font-bold text-blue-300/70">
+                      Pay Period
+                    </span>
+                    <div className="flex items-center gap-1 text-white text-sm font-semibold">
+                      <Calendar className="w-4 h-4 text-blue-400" />
+                      <span className="whitespace-nowrap">Feb 1 - Feb 29, 2024</span>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={handleRunPayroll}
+                    className="bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-500 text-white font-bold px-0 py-3 rounded-xl h-11 w-11 shrink-0 shadow-md border-0 flex items-center justify-center"
+                    style={{
+                      minWidth: '2.5rem',
+                      minHeight: '2.5rem',
+                    }}
+                  >
+                    <Play className="w-5 h-5" />
+                  </Button>
+                </div>
+                <div className="flex justify-between items-end gap-4 px-5 pb-4 pt-1">
+                  <div className="text-center flex-1">
+                    <div className="text-lg font-bold text-white">{activeEmployees.length}</div>
+                    <div className="text-xs text-blue-300/80 font-medium">Employees</div>
+                  </div>
+                  <div className="text-center flex-1">
+                    <div className="text-lg font-bold text-white">${totalPayroll.toLocaleString()}</div>
+                    <div className="text-xs text-blue-300/80 font-medium">Total Cost</div>
+                  </div>
+                  <div className="text-center flex-1">
+                    <div className="text-lg font-bold text-white">${totalBonuses.toLocaleString()}</div>
+                    <div className="text-xs text-blue-300/80 font-medium">Bonuses</div>
                   </div>
                 </div>
-
-                {/* Metrics */}
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-white">{activeEmployees.length}</div>
-                    <div className="text-xs text-blue-300/70">Employees</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-white">${totalPayroll.toLocaleString()}</div>
-                    <div className="text-xs text-blue-300/70">Total Cost</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-white">${totalBonuses.toLocaleString()}</div>
-                    <div className="text-xs text-blue-300/70">Bonuses</div>
-                  </div>
-                </div>
-
-                {/* Run Payroll Button */}
-                <Button
-                  onClick={handleRunPayroll}
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-4 rounded-2xl text-lg tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-xl border-0"
-                >
-                  <Play className="w-5 h-5 mr-2" />
-                  RUN PAYROLL
-                </Button>
               </CardContent>
             </Card>
           </div>
           
-          <div className="space-y-8">
-            <EnhancedStatsCards employees={employees} />
+          {/* Key Metrics Grid */}
+          <EnhancedStatsCards employees={employees} />
+
+          <div className="space-y-7">
             <RealTimeMetrics 
               metrics={metrics} 
               isLive={isLive} 
               onToggleLive={toggleLiveMode} 
             />
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <LiveActivityFeed 
                 activities={metrics.activityFeed} 
                 isLive={isLive} 
@@ -96,7 +102,7 @@ const Index = () => {
               <AIInsightsModule employees={employees} isLive={isLive} />
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <DepartmentChart employees={employees} />
               <SalaryChart employees={employees} />
             </div>

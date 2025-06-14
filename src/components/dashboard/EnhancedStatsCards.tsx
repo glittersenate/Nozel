@@ -76,7 +76,7 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       color: 'text-orange-400',
       bgColor: 'bg-orange-500/20',
       borderColor: 'border-orange-500/20',
-      truncateValue: true  // NEW: enable truncation for dept name
+      truncateValue: true
     },
     {
       title: 'Retention Rate',
@@ -91,12 +91,11 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 px-4 sm:px-8 pt-6 sm:pt-8">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 mb-8 px-0 sm:px-0 pt-2">
       {metrics.map((metric, index) => (
         <div 
-          key={metric.title} 
-          className={`animate-fade-in-scale animate-stagger-${Math.min(index + 1, 6)}`}
-          style={{ animationDelay: `${index * 0.1}s` }}
+          key={metric.title}
+          className={`flex flex-col h-full min-w-0`}
         >
           <MetricCard {...metric} />
         </div>

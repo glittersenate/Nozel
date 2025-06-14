@@ -15,7 +15,7 @@ interface MetricCardProps {
     value: number;
     isPositive: boolean;
   };
-  truncateValue?: boolean; // NEW: allows optional truncation for top department card
+  truncateValue?: boolean;
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
@@ -30,70 +30,73 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   truncateValue
 }) => {
   return (
-    <Card className="group glass-dark hover-lift shadow-glow border-0 rounded-3xl overflow-hidden animate-fade-in-scale relative">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-cyan-600/10 opacity-50" />
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-      
-      {/* Floating orbs */}
-      <div className="absolute top-4 right-4 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl animate-float" />
-      <div className="absolute bottom-4 left-4 w-16 h-16 bg-gradient-to-br from-cyan-400/20 to-green-400/20 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }} />
-      
-      <CardContent className="relative p-6 sm:p-8 z-10">
-        <div className="flex items-start justify-between mb-4 sm:mb-6">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-              <p className="text-blue-200/80 text-xs sm:text-sm font-medium font-heading tracking-wide uppercase">
+    <Card
+      className="group glass-premium border-none rounded-2xl overflow-hidden shadow-glow-lg animate-fade-in-scale relative min-h-[128px]"
+      style={{
+        padding: 0,
+        margin: 0,
+      }}
+    >
+      {/* Subtle layered gradients for glass morph look */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-700/5 via-cyan-800/5 to-white/0 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#171e34]/70 to-[#21273e]/60 opacity-80" />
+      {/* faint highlight line */}
+      <div className="absolute top-0 left-4 right-4 h-1 bg-gradient-to-r from-blue-300/30 via-cyan-200/10 to-transparent rounded-full blur-md z-10" />
+
+      <CardContent className="relative px-4 py-4 sm:px-6 sm:py-5 z-10">
+        <div className="flex items-center justify-between">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-heading font-semibold text-xs sm:text-sm tracking-widest text-blue-200/80 uppercase whitespace-nowrap truncate opacity-90 drop-shadow-sm">
                 {title}
-              </p>
+              </span>
               {trend && (
-                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-mono backdrop-blur-sm ${
-                  trend.isPositive 
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shadow-lg shadow-emerald-500/10' 
-                    : 'bg-red-500/20 text-red-300 border border-red-400/30 shadow-lg shadow-red-500/10'
-                }`}>
-                  <span className="text-sm">{trend.isPositive ? '↗' : '↘'}</span>
-                  <span className="font-semibold">{Math.abs(trend.value)}%</span>
+                <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-opacity-20 border shadow-md 
+                  ${trend.isPositive
+                    ? 'bg-emerald-600/20 text-emerald-300 border-emerald-700/30'
+                    : 'bg-red-600/20 text-red-300 border-red-700/30'
+                  }
+                `}>
+                  <span className="text-xs">{trend.isPositive ? '↗' : '↘'}</span>
+                  <span className="font-bold">{Math.abs(trend.value)}%</span>
                 </div>
               )}
             </div>
-            
-            <div className="mb-2 sm:mb-4 max-w-xs">
-              <p
-                className={
-                  `font-bold font-heading bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent
-                   text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-none ` +
-                  (truncateValue
-                    ? "truncate max-w-[140px] block"
-                    : "")
-                }
+
+            <div className="mb-1">
+              <span
+                className={`
+                  font-extrabold font-heading bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent
+                  text-lg sm:text-xl lg:text-2xl tracking-tight leading-none block
+                  ${truncateValue ? "truncate max-w-[110px]" : ""}
+                `}
                 title={typeof value === 'string' ? value : undefined}
+                style={{ letterSpacing: '-0.025em' }}
               >
                 {typeof value === 'number' ? value.toLocaleString() : value}
-              </p>
+              </span>
             </div>
-            
+
             {subtitle && (
-              <p className="text-blue-300/70 text-xs sm:text-sm font-medium">
+              <div className="text-blue-300/80 text-[11px] sm:text-xs font-medium truncate">
                 {subtitle}
-              </p>
+              </div>
             )}
           </div>
-          
-          <div className="ml-3 sm:ml-8">
-            <div className={`${bgColor} p-4 sm:p-5 rounded-3xl shadow-2xl border border-white/10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 backdrop-blur-sm`}>
-              <Icon className={`w-7 h-7 sm:w-10 sm:h-10 ${color} group-hover:rotate-12 transition-transform duration-300 drop-shadow-lg`} />
+
+          <div className="ml-2 flex-shrink-0">
+            <div className={`${bgColor} p-2 sm:p-3 rounded-xl border border-white/10 shadow-lg group-hover:scale-105 group-hover:rotate-3 transition-all duration-300`}>
+              <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${color} group-hover:rotate-12 transition-transform duration-300 drop-shadow-md`} />
             </div>
           </div>
         </div>
-        
-        {/* Enhanced progress bar */}
-        <div className="relative h-2 bg-gradient-to-r from-slate-800/50 via-slate-700/50 to-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-cyan-500/30 rounded-full" />
-          <div className="h-full bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full transform origin-left scale-x-75 group-hover:scale-x-100 transition-transform duration-700 shadow-lg shadow-blue-500/20" />
+        {/* Stylized micro progress "bar" for extra polish */}
+        <div className="relative h-1 bg-slate-900/40 rounded-full mt-3 overflow-hidden shadow-inner">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-700/30 via-purple-800/20 to-cyan-800/30 rounded-full" />
+          <div className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full transition-transform duration-700 shadow-xl shadow-blue-800/30"
+            style={{ width: '75%' }} />
         </div>
       </CardContent>
     </Card>
   );
 };
-
