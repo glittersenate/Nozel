@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
@@ -105,20 +106,19 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
                 cx="50%"
                 cy="50%"
                 outerRadius={120}
-                innerRadius={50}
+                innerRadius={0}
                 fill="#8884d8"
                 dataKey="value"
                 labelLine={false}
                 label={CustomLabel}
-                stroke="#ffffff"
-                strokeWidth={3}
+                // Removed stroke and strokeWidth
               >
                 {chartData.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={`url(#gradient-${index % EXOTIC_COLORS.length})`}
                     style={{
-                      filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.4))',
+                      filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.2))',
                       cursor: 'pointer'
                     }}
                   />
