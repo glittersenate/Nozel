@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Employee } from '@/pages/Employees';
+import { Employee } from '@/types/employee';
 
 interface AddEmployeeDialogProps {
   open: boolean;

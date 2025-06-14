@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Employee, SortConfig } from '@/pages/Employees';
+import { Employee, SortConfig } from '@/types/employee';
 import EmployeeAvatar from './EmployeeAvatar';
 
 interface EmployeeTableProps {

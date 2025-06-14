@@ -8,8 +8,20 @@ import DepartmentChart from "@/components/dashboard/DepartmentChart";
 import SalaryChart from "@/components/dashboard/SalaryChart";
 import { AIInsightsModule } from "@/components/dashboard/AIInsightsModule";
 import AnimatedPayrollButton from "@/components/dashboard/AnimatedPayrollButton";
+import { useEmployees } from "@/hooks/useEmployees";
+import { useRealTimeData } from "@/hooks/useRealTimeData";
 
 const Index = () => {
+  const { employees } = useEmployees();
+  const { metrics, isLive, toggleLiveMode } = useRealTimeData(employees);
+
+  const activeEmployees = employees.filter(emp => emp.status === 'active');
+  const totalPayroll = activeEmployees.reduce((sum, emp) => sum + emp.salary, 0);
+
+  const handleRunPayroll = () => {
+    console.log('Running payroll for', activeEmployees.length, 'employees');
+  };
+
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
@@ -20,21 +32,33 @@ const Index = () => {
           </div>
           
           <div className="space-y-6">
-            <EnhancedStatsCards />
-            <RealTimeMetrics />
+            <EnhancedStatsCards employees={employees} />
+            <RealTimeMetrics 
+              metrics={metrics} 
+              isLive={isLive} 
+              onToggleLive={toggleLiveMode} 
+            />
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <LiveActivityFeed />
-              <AIInsightsModule />
+              <LiveActivityFeed 
+                activities={metrics.activityFeed} 
+                isLive={isLive} 
+              />
+              <AIInsightsModule employees={employees} isLive={isLive} />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <DepartmentChart />
-              <SalaryChart />
+              <DepartmentChart employees={employees} />
+              <SalaryChart employees={employees} />
             </div>
             
             <div className="flex justify-center">
-              <AnimatedPayrollButton />
+              <AnimatedPayrollButton 
+                totalPayroll={totalPayroll}
+                activeEmployees={activeEmployees.length}
+                onRunPayroll={handleRunPayroll}
+                canRunPayroll={true}
+              />
             </div>
           </div>
         </div>

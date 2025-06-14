@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Dialog,
@@ -8,7 +7,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Employee } from "@/pages/Employees";
+import { Employee } from "@/types/employee";
 
 interface EmployeeDetailDialogProps {
   open: boolean;

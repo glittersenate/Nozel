@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Employee } from '@/pages/Employees';
+import { Employee } from '@/types/employee';
 import EmployeeAvatar from '@/components/employees/EmployeeAvatar';
 
 interface EmployeeProfileModalProps {
