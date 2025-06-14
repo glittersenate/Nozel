@@ -29,8 +29,8 @@ const Index = () => {
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
         <div className="container mx-auto py-10">
-          {/* Header Section with Enhanced Payroll Button */}
-          <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          {/* Header Section with Compact Payroll Button */}
+          <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
               <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
                 HR Dashboard
@@ -38,61 +38,44 @@ const Index = () => {
               <p className="text-blue-300 text-lg">Welcome back! Here's what's happening with your organization today.</p>
             </div>
             
-            {/* Premium Payroll Button */}
+            {/* Compact Premium Payroll Button */}
             <div className="relative group">
-              {/* Animated background glow */}
-              <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 rounded-3xl blur-xl opacity-60 group-hover:opacity-90 animate-pulse-glow transition-all duration-500" />
+              {/* Subtle glow effect */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-2xl blur-md opacity-40 group-hover:opacity-70 transition-all duration-300" />
               
-              {/* Main button container */}
-              <div className="relative glass-dark rounded-3xl p-1 border border-emerald-400/30 shadow-2xl">
-                <Button
-                  onClick={handleRunPayroll}
-                  size="lg"
-                  className="relative w-full bg-gradient-to-r from-emerald-600 via-green-600 to-blue-600 hover:from-emerald-500 hover:via-green-500 hover:to-blue-500 text-white font-bold rounded-3xl px-8 py-6 shadow-2xl transform transition-all duration-300 hover:scale-105 group-hover:shadow-emerald-500/30 border-0"
-                >
-                  {/* Button content */}
-                  <div className="flex items-center gap-4">
-                    {/* Animated icon container */}
-                    <div className="relative">
-                      <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/30">
-                        <Zap className="w-7 h-7 text-white group-hover:rotate-12 transition-transform duration-300" />
-                      </div>
-                      {/* Pulse effect */}
-                      <div className="absolute inset-0 w-12 h-12 bg-white/10 rounded-2xl animate-ping opacity-75" />
-                    </div>
-                    
-                    {/* Text content */}
-                    <div className="text-left">
-                      <div className="text-xl font-bold tracking-tight">Process Payroll</div>
-                      <div className="text-sm opacity-90 flex items-center gap-3 mt-1">
-                        <div className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
-                          <span>{activeEmployees.length} employees</span>
-                        </div>
-                        <div className="w-1 h-1 bg-white/60 rounded-full" />
-                        <div className="flex items-center gap-1">
-                          <DollarSign className="w-4 h-4" />
-                          <span>${totalPayroll.toLocaleString()}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Arrow indicator */}
-                    <div className="ml-2">
-                      <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
+              <Button
+                onClick={handleRunPayroll}
+                className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-500 hover:via-purple-500 hover:to-indigo-500 text-white font-semibold rounded-2xl px-6 py-3 h-auto shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border-0 group"
+              >
+                <div className="flex items-center gap-3">
+                  {/* Icon with subtle animation */}
+                  <div className="w-8 h-8 bg-white/15 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                    <Play className="w-4 h-4 text-white group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  
+                  {/* Text content - more compact */}
+                  <div className="text-left">
+                    <div className="text-base font-bold">Process Payroll</div>
+                    <div className="text-xs opacity-80 flex items-center gap-2">
+                      <span>{activeEmployees.length} employees</span>
+                      <span>•</span>
+                      <span>${(totalPayroll/1000).toFixed(0)}k</span>
                     </div>
                   </div>
                   
-                  {/* Shimmer effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 rounded-3xl" />
-                </Button>
-              </div>
+                  {/* Arrow with hover effect */}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300 opacity-70 group-hover:opacity-100" />
+                </div>
+                
+                {/* Subtle shimmer effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700 rounded-2xl" />
+              </Button>
               
-              {/* Status indicator */}
-              <div className="absolute -top-2 -right-2">
-                <div className="flex items-center gap-1 bg-green-500/20 backdrop-blur-sm border border-green-400/40 rounded-full px-3 py-1">
-                  <CheckCircle2 className="w-3 h-3 text-green-400" />
-                  <span className="text-xs text-green-300 font-medium">Ready</span>
+              {/* Compact status indicator */}
+              <div className="absolute -top-1 -right-1">
+                <div className="flex items-center gap-1 bg-emerald-500/90 backdrop-blur-sm rounded-full px-2 py-1">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                  <span className="text-xs text-white font-medium">Ready</span>
                 </div>
               </div>
             </div>
