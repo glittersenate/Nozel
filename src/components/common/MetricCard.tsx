@@ -29,13 +29,13 @@ export const MetricCard: React.FC<MetricCardProps> = ({
 }) => {
   return (
     <Card className="group glass-dark hover-lift shadow-glow border-0 rounded-3xl overflow-hidden animate-fade-in-scale relative">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-cyan-600/10 opacity-50" />
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+      {/* Blue-themed background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-slate-800/20 to-blue-900/10 opacity-70" />
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
       
-      {/* Floating orbs */}
-      <div className="absolute top-4 right-4 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl animate-float" />
-      <div className="absolute bottom-4 left-4 w-16 h-16 bg-gradient-to-br from-cyan-400/20 to-green-400/20 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }} />
+      {/* Blue floating orbs */}
+      <div className="absolute top-4 right-4 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-cyan-400/15 rounded-full blur-xl animate-float" />
+      <div className="absolute bottom-4 left-4 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-slate-600/15 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }} />
       
       <CardContent className="relative p-8 z-10">
         <div className="flex items-start justify-between mb-6">
@@ -57,7 +57,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             </div>
             
             <div className="mb-4">
-              <p className="text-5xl font-bold font-heading text-white tracking-tight leading-none bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
+              <p className="text-5xl font-bold font-heading text-blue-100 tracking-tight leading-none">
                 {typeof value === 'number' ? value.toLocaleString() : value}
               </p>
             </div>
@@ -70,16 +70,16 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           </div>
           
           <div className="ml-8">
-            <div className={`${bgColor} p-5 rounded-3xl shadow-2xl border border-white/10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 backdrop-blur-sm`}>
+            <div className={`${bgColor} p-5 rounded-3xl shadow-2xl border border-blue-400/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 backdrop-blur-sm`}>
               <Icon className={`w-10 h-10 ${color} group-hover:rotate-12 transition-transform duration-300 drop-shadow-lg`} />
             </div>
           </div>
         </div>
         
-        {/* Enhanced progress bar */}
-        <div className="relative h-2 bg-gradient-to-r from-slate-800/50 via-slate-700/50 to-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-cyan-500/30 rounded-full" />
-          <div className="h-full bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full transform origin-left scale-x-75 group-hover:scale-x-100 transition-transform duration-700 shadow-lg shadow-blue-500/20" />
+        {/* Blue-themed progress bar */}
+        <div className="relative h-2 bg-gradient-to-r from-slate-800/60 via-blue-900/40 to-slate-800/60 rounded-full overflow-hidden backdrop-blur-sm">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-blue-500/30 to-cyan-500/30 rounded-full" />
+          <div className="h-full bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-400 rounded-full transform origin-left scale-x-75 group-hover:scale-x-100 transition-transform duration-700 shadow-lg shadow-blue-500/20" />
         </div>
       </CardContent>
     </Card>
