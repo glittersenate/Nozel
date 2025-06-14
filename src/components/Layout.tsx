@@ -38,7 +38,7 @@ export function Layout({ children }: LayoutProps) {
               
               <div className="h-6 w-px bg-blue-500/30" />
 
-              {/* Branding block: Logo, Title, Subtitle -- visible at all sizes */}
+              {/* Branding block: Logo, Title, Subtitle -- always visible */}
               <div className="flex items-center gap-3 animate-slide-in-right">
                 <div className="relative">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-glow animate-pulse-glow">
@@ -46,17 +46,13 @@ export function Layout({ children }: LayoutProps) {
                   </div>
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-30 blur animate-pulse" />
                 </div>
-                <div className="hidden xs:block">
+                <div className="flex flex-col">
                   <h1 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent leading-none">
                     NozelPay
                   </h1>
                   <p className="text-xs text-blue-300/80 font-medium -mt-1 leading-tight">
                     HR Management System
                   </p>
-                </div>
-                {/* On mobile, show just the big N logo -- subtitle hidden */}
-                <div className="block xs:hidden">
-                  {/* Optionally, you can add a short app name on tiny screens if desired */}
                 </div>
               </div>
             </div>
