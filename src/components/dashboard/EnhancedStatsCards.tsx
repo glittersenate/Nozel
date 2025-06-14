@@ -27,6 +27,18 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
   const topDepartment = Object.entries(departmentCounts)
     .sort(([,a], [,b]) => b - a)[0];
 
+  // Featured metric (Monthly Payroll)
+  const featuredMetric = {
+    title: 'Monthly Payroll',
+    value: `$${totalSalaries.toLocaleString()}`,
+    subtitle: 'total compensation',
+    icon: DollarSign,
+    color: 'text-emerald-400',
+    bgColor: 'bg-emerald-500/20',
+    borderColor: 'border-emerald-500/20',
+    trend: { value: 3.1, isPositive: true }
+  };
+
   const metrics = [
     {
       title: 'Total Employees',
@@ -37,16 +49,6 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       bgColor: 'bg-blue-500/20',
       borderColor: 'border-blue-500/20',
       trend: { value: 8.2, isPositive: true }
-    },
-    {
-      title: 'Monthly Payroll',
-      value: `$${totalSalaries.toLocaleString()}`,
-      subtitle: 'total compensation',
-      icon: DollarSign,
-      color: 'text-emerald-400',
-      bgColor: 'bg-emerald-500/20',
-      borderColor: 'border-emerald-500/20',
-      trend: { value: 3.1, isPositive: true }
     },
     {
       title: 'Average Salary',
@@ -90,16 +92,29 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 px-8 pt-8">
-      {metrics.map((metric, index) => (
-        <div 
-          key={metric.title} 
-          className={`animate-fade-in-scale animate-stagger-${Math.min(index + 1, 6)}`}
-          style={{ animationDelay: `${index * 0.1}s` }}
-        >
-          <MetricCard {...metric} />
+    <div className="px-8 pt-8 mb-12">
+      {/* Featured Monthly Payroll Card */}
+      <div className="mb-8 animate-fade-in-scale">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 via-green-500/20 to-emerald-500/20 rounded-3xl blur-xl" />
+          <div className="relative transform scale-110">
+            <MetricCard {...featuredMetric} />
+          </div>
         </div>
-      ))}
+      </div>
+
+      {/* Regular Metrics Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        {metrics.map((metric, index) => (
+          <div 
+            key={metric.title} 
+            className={`animate-fade-in-scale animate-stagger-${Math.min(index + 1, 6)}`}
+            style={{ animationDelay: `${(index + 1) * 0.1}s` }}
+          >
+            <MetricCard {...metric} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
