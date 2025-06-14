@@ -1,8 +1,9 @@
-
 import React from "react";
 import { Layout } from "@/components/Layout";
 import { Shield, Zap, AlertTriangle, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import ComplianceIssueChart from "@/components/compliance/ComplianceIssueChart";
+import RecentComplianceChecks from "@/components/compliance/RecentComplianceChecks";
 
 // Mock compliance data
 const complianceStats = [
@@ -125,6 +126,11 @@ const Compliance: React.FC = () => {
                 </CardContent>
               </Card>
             </div>
+            {/* ADDED: Compliance Chart and Recent Checks */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ComplianceIssueChart />
+              <RecentComplianceChecks />
+            </div>
           </div>
         </div>
       </div>
@@ -133,4 +139,3 @@ const Compliance: React.FC = () => {
 };
 
 export default Compliance;
-
