@@ -1,33 +1,38 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Layout } from "@/components/Layout";
+import PayslipHistory from "@/components/employeePortal/PayslipHistory";
+import RequestTimeOff from "@/components/employeePortal/RequestTimeOff";
+import ProfileSettings from "@/components/employeePortal/ProfileSettings";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, FileText, User, LogOut, UserCheck } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const actions = [
   {
-    label: "View Payslips",
-    description: "Access your monthly payslips and payment records.",
+    label: "Payslips",
+    description: "View/download your payslips",
     icon: <FileText className="w-7 h-7 text-blue-400" />,
+    component: "payslips",
   },
   {
     label: "Request Time Off",
-    description: "Easily request vacation, sick leave, and more.",
+    description: "Submit a request or view leave balance",
     icon: <Calendar className="w-7 h-7 text-green-400" />,
+    component: "leave",
   },
   {
-    label: "Update Profile",
-    description: "Manage your contact info and password securely.",
+    label: "Profile",
+    description: "View and update your info",
     icon: <User className="w-7 h-7 text-purple-400" />,
-  },
-  {
-    label: "Log Out",
-    description: "Sign out of your account securely.",
-    icon: <LogOut className="w-7 h-7 text-red-400" />,
+    component: "profile",
   },
 ];
 
 const EmployeePortal: React.FC = () => {
+  const [active, setActive] = useState<"payslips" | "leave" | "profile">("payslips");
+  const { logout, user } = useAuth();
+
   return (
     <Layout>
       <div
@@ -45,43 +50,44 @@ const EmployeePortal: React.FC = () => {
                 Employee Portal
               </h1>
               <p className="text-blue-200 text-base opacity-80">
-                Your self-service hub
+                Hi {user?.name?.split(" ")[0] || "Employee"}, this is your self-service hub.
               </p>
             </div>
-          </div>
-          <div className="space-y-6">
-            <Card className="glass-dark rounded-3xl border-0 shadow-lg">
-              <CardContent className="p-7">
-                <p className="text-blue-200 text-lg">
-                  Welcome! The self-service portal is in development.
-                  Soon you'll be able to view your payslips, request time off,
-                  and update your personal details—all in one place.
-                </p>
-              </CardContent>
-            </Card>
-            {/* Feature actions */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-              {actions.map((action, idx) => (
-                <Card
-                  key={action.label}
-                  className="glass-dark border-0 rounded-2xl hover-lift transition-shadow duration-200"
-                >
-                  <CardContent className="flex gap-4 items-center px-5 py-4">
-                    <div className="p-3 sm:p-4 bg-gradient-to-br from-blue-900/70 to-blue-700/40 rounded-lg flex items-center justify-center">
-                      {action.icon}
-                    </div>
-                    <div>
-                      <div className="text-base font-bold text-white">{action.label}</div>
-                      <div className="text-xs text-blue-200">{action.description}</div>
-                      {/* Replace with action button or feature UI when implemented */}
-                      <span className="inline-block mt-1 px-2 py-0.5 rounded bg-blue-600/20 text-xs text-blue-200 opacity-70">
-                        Coming soon
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="sm:ml-auto flex gap-2 mt-3 sm:mt-0">
+              <button
+                type="button"
+                onClick={logout}
+                className="bg-red-600/90 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl shadow transition"
+              >
+                <LogOut className="w-5 h-5 inline mb-0.5 mr-1" />
+                Log Out
+              </button>
             </div>
+          </div>
+
+          {/* Tab Actions */}
+          <div className="flex gap-2 mb-7">
+            {actions.map((act) => (
+              <button
+                key={act.label}
+                className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-4 py-2 rounded-2xl font-medium transition
+                  ${active === act.component
+                    ? "bg-gradient-to-r from-blue-500/40 to-green-500/20 text-white shadow"
+                    : "bg-blue-900/60 text-blue-100 hover:bg-blue-900/80"}
+                `}
+                onClick={() => setActive(act.component as any)}
+              >
+                <span>{act.icon}</span>
+                <span>{act.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          <div className="animate-fade-in">
+            {active === "payslips" && <PayslipHistory />}
+            {active === "leave" && <RequestTimeOff />}
+            {active === "profile" && <ProfileSettings />}
           </div>
         </div>
       </div>
@@ -90,4 +96,3 @@ const EmployeePortal: React.FC = () => {
 };
 
 export default EmployeePortal;
-
