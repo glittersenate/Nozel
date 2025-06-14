@@ -2,6 +2,7 @@
 import React from 'react';
 import { MoreHorizontal, Edit, Trash2, Mail, Phone, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -17,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Employee, SortConfig } from '@/pages/Employees';
+import EmployeeAvatar from './EmployeeAvatar';
 
 interface EmployeeTableProps {
   employees: Employee[];
@@ -25,6 +27,8 @@ interface EmployeeTableProps {
   onViewEmployee: (employee: Employee) => void;
   sortConfig: SortConfig;
   onSort: (key: keyof Employee) => void;
+  selectedIds: string[];
+  onSelectionChange: (selectedIds: string[]) => void;
 }
 
 const EmployeeTable: React.FC<EmployeeTableProps> = ({
@@ -33,7 +37,9 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({
   onEditEmployee,
   onViewEmployee,
   sortConfig,
-  onSort
+  onSort,
+  selectedIds,
+  onSelectionChange
 }) => {
   const formatSalary = (salary: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -60,6 +66,22 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({
       : <ArrowDown className="w-4 h-4 text-blue-400" />;
   };
 
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      onSelectionChange(employees.map(emp => emp.id));
+    } else {
+      onSelectionChange([]);
+    }
+  };
+
+  const handleSelectEmployee = (employeeId: string, checked: boolean) => {
+    if (checked) {
+      onSelectionChange([...selectedIds, employeeId]);
+    } else {
+      onSelectionChange(selectedIds.filter(id => id !== employeeId));
+    }
+  };
+
   const SortableHeader = ({ children, sortKey }: { children: React.ReactNode; sortKey: keyof Employee }) => (
     <TableHead 
       className="text-blue-300 font-semibold cursor-pointer hover:text-blue-200 transition-colors select-none"
@@ -77,6 +99,13 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({
       <Table>
         <TableHeader>
           <TableRow className="border-blue-800/30 hover:bg-[#1a2550]/50">
+            <TableHead className="text-blue-300 font-semibold w-12">
+              <Checkbox
+                checked={selectedIds.length === employees.length && employees.length > 0}
+                onCheckedChange={handleSelectAll}
+                className="border-blue-400 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+              />
+            </TableHead>
             <SortableHeader sortKey="name">Employee</SortableHeader>
             <SortableHeader sortKey="department">Department</SortableHeader>
             <SortableHeader sortKey="position">Position</SortableHeader>
@@ -93,15 +122,26 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({
               className="border-blue-800/30 hover:bg-[#1a2550]/30 transition-colors cursor-pointer"
               onClick={(e) => {
                 // Only trigger row click (for details) if not clicking an action button
-                // Allow editing/deleting without double action
                 if ((e.target as HTMLElement).closest('[data-row-action]')) return;
                 onViewEmployee(employee);
               }}
             >
               <TableCell>
-                <div className="flex flex-col">
-                  <span className="font-medium text-blue-100">{employee.name}</span>
-                  <span className="text-sm text-blue-300/70">{employee.email}</span>
+                <div data-row-action>
+                  <Checkbox
+                    checked={selectedIds.includes(employee.id)}
+                    onCheckedChange={(checked) => handleSelectEmployee(employee.id, checked as boolean)}
+                    className="border-blue-400 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                  />
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <EmployeeAvatar name={employee.name} email={employee.email} size="sm" />
+                  <div className="flex flex-col">
+                    <span className="font-medium text-blue-100">{employee.name}</span>
+                    <span className="text-sm text-blue-300/70">{employee.email}</span>
+                  </div>
                 </div>
               </TableCell>
               <TableCell className="text-blue-200">{employee.department}</TableCell>
