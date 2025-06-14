@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
@@ -89,7 +88,7 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
       }}
     >
       <div className="p-6">
-        <h3 className="text-xl font-bold text-blue-100 mb-4">Department Distribution ✨</h3>
+        <h3 className="text-xl font-bold text-blue-100 mb-4">Department Distribution</h3>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
