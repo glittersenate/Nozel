@@ -27,9 +27,9 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          {/* Responsive top bar - now matches desktop spacing on mobile */}
+          {/* Responsive top bar - brand block always visible, consistent padding */}
           <div className="flex h-16 items-center justify-between px-2 md:px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 xs:gap-4">
               {/* Hamburger - always visible */}
               <SidebarTrigger 
                 className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
@@ -38,7 +38,8 @@ export function Layout({ children }: LayoutProps) {
               
               <div className="h-6 w-px bg-blue-500/30" />
 
-              <div className="flex items-center gap-4 animate-slide-in-right">
+              {/* Branding block: Logo, Title, Subtitle -- visible at all sizes */}
+              <div className="flex items-center gap-3 animate-slide-in-right">
                 <div className="relative">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-glow animate-pulse-glow">
                     <span className="text-white font-bold text-sm font-heading">N</span>
@@ -46,12 +47,16 @@ export function Layout({ children }: LayoutProps) {
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-30 blur animate-pulse" />
                 </div>
                 <div className="hidden xs:block">
-                  <h1 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                  <h1 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent leading-none">
                     NozelPay
                   </h1>
-                  <p className="text-xs text-blue-300/80 font-medium -mt-1">
+                  <p className="text-xs text-blue-300/80 font-medium -mt-1 leading-tight">
                     HR Management System
                   </p>
+                </div>
+                {/* On mobile, show just the big N logo -- subtitle hidden */}
+                <div className="block xs:hidden">
+                  {/* Optionally, you can add a short app name on tiny screens if desired */}
                 </div>
               </div>
             </div>
@@ -117,4 +122,3 @@ export function Layout({ children }: LayoutProps) {
     </SidebarProvider>
   );
 }
-
