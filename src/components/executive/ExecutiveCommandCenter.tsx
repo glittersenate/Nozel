@@ -10,6 +10,10 @@ import WellnessDashboard from "./WellnessDashboard";
 import ComplianceMonitor from "./ComplianceMonitor";
 import WorkforcePlanningPredictor from "./WorkforcePlanningPredictor";
 import PerformanceAnalyticsHub from "./PerformanceAnalyticsHub";
+import RealTimeBIHub from "./RealTimeBIHub";
+import CrisisManagementDashboard from "./CrisisManagementDashboard";
+import StrategicPlanningModule from "./StrategicPlanningModule";
+import ROICalculator from "./ROICalculator";
 
 const ExecutiveCommandCenter: React.FC = () => {
   return (
@@ -35,6 +39,16 @@ const ExecutiveCommandCenter: React.FC = () => {
           <PerformanceTrajectoryAnalysis />
           <CompensationIntelligence />
           <TeamChemistryAnalysis />
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="text-white text-xl font-bold mb-2">Phase 2: Executive Command Center (BI & Crisis)</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+          <RealTimeBIHub />
+          <CrisisManagementDashboard />
+          <StrategicPlanningModule />
+          <ROICalculator />
         </div>
       </div>
 
