@@ -6,7 +6,7 @@ import { TimeTrackingDashboard } from '@/components/timeTracking/TimeTrackingDas
 export default function TimeTracking() {
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      <div className="min-h-screen bg-gradient-to-br from-[#171d37] via-[#182249]/85 to-[#181f36]">
         <div className="container mx-auto py-10">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-white mb-2">Time Tracking</h1>
