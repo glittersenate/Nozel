@@ -1,49 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Employee, SortConfig } from '@/types/employee';
-
-// Mock data for demonstration
-const mockEmployees: Employee[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john.doe@company.com',
-    position: 'Senior Developer',
-    department: 'Engineering',
-    salary: 95000,
-    startDate: '2022-01-15',
-    status: 'active',
-    avatar: '',
-    phone: '+1 (555) 123-4567',
-    address: '123 Main St, San Francisco, CA'
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane.smith@company.com',
-    position: 'Product Manager',
-    department: 'Product',
-    salary: 105000,
-    startDate: '2021-08-20',
-    status: 'active',
-    avatar: '',
-    phone: '+1 (555) 234-5678',
-    address: '456 Oak Ave, San Francisco, CA'
-  },
-  {
-    id: '3',
-    name: 'Mike Johnson',
-    email: 'mike.johnson@company.com',
-    position: 'HR Specialist',
-    department: 'Human Resources',
-    salary: 65000,
-    startDate: '2023-03-10',
-    status: 'active',
-    avatar: '',
-    phone: '+1 (555) 345-6789',
-    address: '789 Pine St, San Francisco, CA'
-  }
-];
+import { mockEmployees } from '@/data/mockEmployees';
 
 export const useEmployees = () => {
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);

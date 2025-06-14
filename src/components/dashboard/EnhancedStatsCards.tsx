@@ -1,18 +1,8 @@
 
 import React from 'react';
-import { Users, DollarSign, TrendingUp, Clock, AlertCircle } from 'lucide-react';
-import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
-
-interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  position: string;
-  department: string;
-  salary: number;
-  startDate: string;
-  status: 'active' | 'inactive';
-}
+import { Users, DollarSign, TrendingUp, Clock, Award, UserPlus } from 'lucide-react';
+import { MetricCard } from '@/components/common/MetricCard';
+import { Employee } from '@/types/employee';
 
 interface EnhancedStatsCardsProps {
   employees: Employee[];
@@ -28,91 +18,81 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
   threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
   const recentHires = employees.filter(emp => new Date(emp.startDate) > threeMonthsAgo).length;
 
-  const stats = [
+  // Get top department by employee count
+  const departmentCounts = activeEmployees.reduce((acc, emp) => {
+    acc[emp.department] = (acc[emp.department] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  
+  const topDepartment = Object.entries(departmentCounts)
+    .sort(([,a], [,b]) => b - a)[0];
+
+  const metrics = [
     {
       title: 'Total Employees',
-      value: employees.length.toString(),
-      subtitle: `${activeEmployees.length} active, ${employees.length - activeEmployees.length} inactive`,
+      value: employees.length,
+      subtitle: `${activeEmployees.length} active`,
       icon: Users,
       color: 'text-blue-400',
       bgColor: 'bg-blue-500/10',
       borderColor: 'border-blue-500/20',
-      hoverGlow: 'hover:shadow-blue-500/25',
-      tooltip: 'Complete headcount across all departments and status levels'
+      trend: { value: 8.2, isPositive: true }
     },
     {
-      title: 'Active Employees',
-      value: activeEmployees.length.toString(),
-      subtitle: 'Currently employed',
-      icon: TrendingUp,
+      title: 'Monthly Payroll',
+      value: `$${totalSalaries.toLocaleString()}`,
+      subtitle: 'total compensation',
+      icon: DollarSign,
       color: 'text-green-400',
       bgColor: 'bg-green-500/10',
       borderColor: 'border-green-500/20',
-      hoverGlow: 'hover:shadow-green-500/25',
-      tooltip: 'Employees with active status, eligible for payroll'
+      trend: { value: 3.1, isPositive: true }
     },
     {
-      title: 'Upcoming Payroll',
-      value: `$${totalSalaries.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
-      subtitle: `Avg: $${avgSalary.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
-      icon: DollarSign,
+      title: 'Average Salary',
+      value: `$${Math.round(avgSalary).toLocaleString()}`,
+      subtitle: 'per employee',
+      icon: TrendingUp,
       color: 'text-yellow-400',
       bgColor: 'bg-yellow-500/10',
       borderColor: 'border-yellow-500/20',
-      hoverGlow: 'hover:shadow-yellow-500/25',
-      tooltip: 'Total monthly payroll cost for all active employees'
+      trend: { value: 5.7, isPositive: true }
     },
     {
       title: 'Recent Hires',
-      value: recentHires.toString(),
-      subtitle: 'Last 3 months',
-      icon: Clock,
+      value: recentHires,
+      subtitle: 'last 3 months',
+      icon: UserPlus,
       color: 'text-purple-400',
       bgColor: 'bg-purple-500/10',
       borderColor: 'border-purple-500/20',
-      hoverGlow: 'hover:shadow-purple-500/25',
-      tooltip: 'New employees onboarded in the past 90 days'
+      trend: { value: 12.5, isPositive: true }
+    },
+    {
+      title: 'Top Department',
+      value: topDepartment ? topDepartment[0] : 'N/A',
+      subtitle: topDepartment ? `${topDepartment[1]} employees` : 'No data',
+      icon: Award,
+      color: 'text-orange-400',
+      bgColor: 'bg-orange-500/10',
+      borderColor: 'border-orange-500/20'
+    },
+    {
+      title: 'Retention Rate',
+      value: '94.2%',
+      subtitle: 'year over year',
+      icon: Clock,
+      color: 'text-cyan-400',
+      bgColor: 'bg-cyan-500/10',
+      borderColor: 'border-cyan-500/20',
+      trend: { value: 2.1, isPositive: true }
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {stats.map((stat) => (
-        <HoverCard key={stat.title}>
-          <HoverCardTrigger asChild>
-            <div
-              className={`bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border ${stat.borderColor} rounded-xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer hover:shadow-lg ${stat.hoverGlow} group`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <p className="text-blue-300/70 dark:text-blue-300/70 light:text-gray-600 text-sm font-medium mb-1">
-                    {stat.title}
-                  </p>
-                  <p className="text-2xl font-bold text-white dark:text-white light:text-gray-900 mb-1 group-hover:scale-105 transition-transform">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-blue-300/50 dark:text-blue-300/50 light:text-gray-500">
-                    {stat.subtitle}
-                  </p>
-                </div>
-                <div className={`${stat.bgColor} p-3 rounded-lg group-hover:scale-110 transition-transform`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                </div>
-              </div>
-            </div>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-80 bg-[#1a2550]/95 border-blue-800/30 text-blue-100">
-            <div className="flex items-start gap-3">
-              <div className={`${stat.bgColor} p-2 rounded-lg`}>
-                <stat.icon className={`w-5 h-5 ${stat.color}`} />
-              </div>
-              <div>
-                <h4 className="font-semibold text-white mb-1">{stat.title}</h4>
-                <p className="text-sm text-blue-200/80">{stat.tooltip}</p>
-              </div>
-            </div>
-          </HoverCardContent>
-        </HoverCard>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {metrics.map((metric) => (
+        <MetricCard key={metric.title} {...metric} />
       ))}
     </div>
   );
