@@ -23,6 +23,7 @@ const navigationItems = [
   { title: 'Performance', url: '/performance', icon: Star },
   { title: 'Reports', url: '/reports', icon: FileText },
   { title: 'Analytics', url: '/analytics', icon: BarChart3 },
+  { title: 'Executive', url: '/executive', icon: Shield },
   { title: 'AI Compliance', url: '/compliance', icon: Shield },
   { title: 'Settings', url: '/settings', icon: Settings },
 ];

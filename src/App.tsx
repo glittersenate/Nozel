@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,7 @@ import Analytics from "./pages/Analytics";
 import Compliance from "./pages/Compliance";
 import EmployeePortal from "./pages/EmployeePortal";
 import NotFound from "./pages/NotFound";
+import ExecutiveCommandCenter from "./components/executive/ExecutiveCommandCenter";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +41,7 @@ const App = () => (
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/compliance" element={<Compliance />} />
                 <Route path="/employee-portal" element={<EmployeePortal />} />
+                <Route path="/executive" element={<ExecutiveCommandCenter />} />
                 <Route path="/settings" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
