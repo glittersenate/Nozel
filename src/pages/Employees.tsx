@@ -112,6 +112,16 @@ const Employees = () => {
   // New: sorting state
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
+  // Define handleExportData before using it in useKeyboardShortcuts
+  const handleExportData = () => {
+    const exportData = formatEmployeeForExport(filteredAndSortedEmployees);
+    exportToCSV(exportData, `employees-export-${new Date().toISOString().split('T')[0]}`);
+    toast({
+      title: "Export Complete",
+      description: `Successfully exported ${exportData.length} employee records to CSV.`,
+    });
+  };
+
   // Keyboard shortcuts
   useKeyboardShortcuts([
     {
@@ -212,15 +222,6 @@ const Employees = () => {
       title: "Employee Removed",
       description: `${employee?.name} has been removed from the system.`,
       variant: "destructive",
-    });
-  };
-
-  const handleExportData = () => {
-    const exportData = formatEmployeeForExport(filteredAndSortedEmployees);
-    exportToCSV(exportData, `employees-export-${new Date().toISOString().split('T')[0]}`);
-    toast({
-      title: "Export Complete",
-      description: `Successfully exported ${exportData.length} employee records to CSV.`,
     });
   };
 
