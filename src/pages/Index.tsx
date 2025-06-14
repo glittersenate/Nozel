@@ -32,7 +32,7 @@ export default function Index() {
       department: "Engineering",
       salary: 90000,
       startDate: "2022-01-15",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "2",
@@ -42,7 +42,7 @@ export default function Index() {
       department: "Human Resources",
       salary: 80000,
       startDate: "2021-05-20",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "3",
@@ -52,7 +52,7 @@ export default function Index() {
       department: "Management",
       salary: 100000,
       startDate: "2020-11-01",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "4",
@@ -62,7 +62,7 @@ export default function Index() {
       department: "Finance",
       salary: 75000,
       startDate: "2023-03-10",
-      status: "inactive",
+      status: "inactive" as const,
     },
     {
       id: "5",
@@ -72,7 +72,7 @@ export default function Index() {
       department: "Marketing",
       salary: 85000,
       startDate: "2022-09-01",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "6",
@@ -82,7 +82,7 @@ export default function Index() {
       department: "Analytics",
       salary: 95000,
       startDate: "2021-07-01",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "7",
@@ -92,7 +92,7 @@ export default function Index() {
       department: "Sales",
       salary: 80000,
       startDate: "2022-04-01",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "8",
@@ -102,7 +102,7 @@ export default function Index() {
       department: "Support",
       salary: 70000,
       startDate: "2023-01-01",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "9",
@@ -112,7 +112,7 @@ export default function Index() {
       department: "Design",
       salary: 90000,
       startDate: "2022-06-01",
-      status: "active",
+      status: "active" as const,
     },
     {
       id: "10",
@@ -122,7 +122,7 @@ export default function Index() {
       department: "Product",
       salary: 100000,
       startDate: "2021-09-01",
-      status: "active",
+      status: "active" as const,
     },
   ];
 

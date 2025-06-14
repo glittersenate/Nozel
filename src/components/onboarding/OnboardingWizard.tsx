@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -31,12 +30,16 @@ function PersonalInfoStep({ methods }: { methods: ReturnType<typeof useForm> }) 
       <label className="block">
         Name
         <Input {...methods.register("name")} placeholder="e.g. Jane Doe" />
-        <p className="text-sm text-red-500 mt-1">{methods.formState.errors.name?.message}</p>
+        <p className="text-sm text-red-500 mt-1">
+          {typeof methods.formState.errors.name?.message === "string" ? methods.formState.errors.name?.message : ""}
+        </p>
       </label>
       <label className="block">
         Email
         <Input {...methods.register("email")} type="email" placeholder="e.g. jane@company.com" />
-        <p className="text-sm text-red-500 mt-1">{methods.formState.errors.email?.message}</p>
+        <p className="text-sm text-red-500 mt-1">
+          {typeof methods.formState.errors.email?.message === "string" ? methods.formState.errors.email?.message : ""}
+        </p>
       </label>
     </div>
   );
@@ -48,12 +51,16 @@ function JobInfoStep({ methods }: { methods: ReturnType<typeof useForm> }) {
       <label className="block">
         Position
         <Input {...methods.register("position")} placeholder="e.g. Product Manager" />
-        <p className="text-sm text-red-500 mt-1">{methods.formState.errors.position?.message}</p>
+        <p className="text-sm text-red-500 mt-1">
+          {typeof methods.formState.errors.position?.message === "string" ? methods.formState.errors.position?.message : ""}
+        </p>
       </label>
       <label className="block">
         Department
         <Input {...methods.register("department")} placeholder="e.g. Engineering" />
-        <p className="text-sm text-red-500 mt-1">{methods.formState.errors.department?.message}</p>
+        <p className="text-sm text-red-500 mt-1">
+          {typeof methods.formState.errors.department?.message === "string" ? methods.formState.errors.department?.message : ""}
+        </p>
       </label>
     </div>
   );
