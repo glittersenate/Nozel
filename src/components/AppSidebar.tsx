@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -40,7 +41,7 @@ export function AppSidebar() {
         <div className="flex items-center gap-4 animate-fade-in-scale">
           <div className="relative">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-glow">
-              <span className="text-white font-bold text-2xl font-heading">N</span>
+              <span className="text-white font-bold text-lg font-heading">N</span>
             </div>
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 blur" />
           </div>
