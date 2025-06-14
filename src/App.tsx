@@ -14,6 +14,8 @@ import Leave from "./pages/Leave";
 import Performance from "./pages/Performance";
 import Reports from "./pages/Reports";
 import Analytics from "./pages/Analytics";
+import Compliance from "./pages/Compliance";
+import EmployeePortal from "./pages/EmployeePortal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +37,8 @@ const App = () => (
               <Route path="/performance" element={<Performance />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/compliance" element={<Compliance />} />
+              <Route path="/employee-portal" element={<EmployeePortal />} />
               <Route path="/settings" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

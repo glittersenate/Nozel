@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings } from 'lucide-react';
+import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, UserCheck } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Sidebar,
@@ -24,6 +24,8 @@ const navigationItems = [
   { title: 'Performance', url: '/performance', icon: Star },
   { title: 'Reports', url: '/reports', icon: FileText },
   { title: 'Analytics', url: '/analytics', icon: BarChart3 },
+  { title: 'AI Compliance', url: '/compliance', icon: Shield },
+  { title: 'Employee Portal', url: '/employee-portal', icon: UserCheck },
   { title: 'Settings', url: '/settings', icon: Settings },
 ];
 
