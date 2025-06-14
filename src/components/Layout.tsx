@@ -28,30 +28,37 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          {/* Consistent SidebarTrigger, always top left, always visible */}
-          <div className="fixed top-4 left-4 z-50 md:static md:z-auto">
+          {/* Mobile hamburger - floating top left */}
+          <div className="fixed top-4 left-4 z-50 md:hidden">
             <SidebarTrigger 
               className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-12 h-12 flex items-center justify-center"
               style={{ fontSize: 28 }}
             />
           </div>
-          <header className="flex h-20 shrink-0 items-center justify-between gap-2 glass-dark border-b border-blue-500/20 px-6 backdrop-blur-xl pl-20 md:pl-0">
+
+          {/* Desktop top bar - clean and minimal */}
+          <div className="hidden md:flex h-16 items-center justify-between px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
             <div className="flex items-center gap-4">
-              {/* Hide the inline trigger in main header since we have floating button on top left */}
+              {/* Desktop hamburger - inline with content */}
+              <SidebarTrigger 
+                className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                style={{ fontSize: 24 }}
+              />
+              
               <div className="h-6 w-px bg-blue-500/30" />
               
               <div className="flex items-center gap-4 animate-slide-in-right">
                 <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-glow animate-pulse-glow">
-                    <span className="text-white font-bold text-lg font-heading">N</span>
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-glow animate-pulse-glow">
+                    <span className="text-white font-bold text-sm font-heading">N</span>
                   </div>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-30 blur animate-pulse" />
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-30 blur animate-pulse" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                  <h1 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                     NozelPay
                   </h1>
-                  <p className="text-sm text-blue-300/80 font-medium -mt-1">
+                  <p className="text-xs text-blue-300/80 font-medium -mt-1">
                     HR Management System
                   </p>
                 </div>
@@ -68,7 +75,7 @@ export function Layout({ children }: LayoutProps) {
                       variant="ghost" 
                       className="flex items-center gap-4 glass-dark hover:bg-blue-500/10 rounded-2xl p-3 transition-all duration-300 group h-auto"
                     >
-                      <Avatar className="h-10 w-10 ring-2 ring-blue-500/30 group-hover:ring-blue-400/50 transition-all duration-300">
+                      <Avatar className="h-8 w-8 ring-2 ring-blue-500/30 group-hover:ring-blue-400/50 transition-all duration-300">
                         <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-semibold">
                           {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                         </AvatarFallback>
@@ -108,9 +115,9 @@ export function Layout({ children }: LayoutProps) {
                 </DropdownMenu>
               )}
             </div>
-          </header>
+          </div>
           
-          <main className="flex-1 relative">
+          <main className="flex-1 relative pt-20 md:pt-0">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
             {children}
           </main>
