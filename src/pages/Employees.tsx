@@ -6,6 +6,7 @@ import EmployeeTable from '@/components/employees/EmployeeTable';
 import AddEmployeeDialog from '@/components/employees/AddEmployeeDialog';
 import EditEmployeeDialog from '@/components/employees/EditEmployeeDialog';
 import EmployeeDetailDialog from "@/components/employees/EmployeeDetailDialog";
+import EmployeeFilterDrawer from '@/components/employees/EmployeeFilterDrawer';
 import { useToast } from '@/hooks/use-toast';
 
 export interface Employee {
@@ -62,6 +63,12 @@ const mockEmployees: Employee[] = [
   }
 ];
 
+const getUniqueDepartments = (employees: Employee[]) => {
+  const depts = new Set<string>();
+  employees.forEach((e) => depts.add(e.department));
+  return Array.from(depts).sort();
+};
+
 const Employees = () => {
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [searchTerm, setSearchTerm] = useState('');
@@ -72,12 +79,34 @@ const Employees = () => {
   const [detailEmployee, setDetailEmployee] = useState<Employee | null>(null);
   const { toast } = useToast();
 
-  const filteredEmployees = employees.filter(employee =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.position.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // New: filter state and filter drawer open
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const [filterState, setFilterState] = useState<{ departments: string[]; statuses: Array<'active' | 'inactive'> }>({
+    departments: [],
+    statuses: []
+  });
+
+  const allDepartments = getUniqueDepartments(employees);
+
+  // Enhanced: apply filters and search to employee list
+  const filteredEmployees = employees
+    .filter(emp => {
+      // Filter by departments if any
+      if (filterState.departments.length > 0 && !filterState.departments.includes(emp.department)) {
+        return false;
+      }
+      // Filter by status if any
+      if (filterState.statuses.length > 0 && !filterState.statuses.includes(emp.status)) {
+        return false;
+      }
+      return true;
+    })
+    .filter(employee =>
+      employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.position.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   const handleAddEmployee = (newEmployee: Omit<Employee, 'id'>) => {
     const employee: Employee = {
@@ -193,9 +222,15 @@ const Employees = () => {
             <Button
               variant="outline"
               className="bg-[#141a2e]/60 border-blue-800/30 text-blue-200 hover:bg-[#141a2e]/80"
+              onClick={() => setIsFilterDrawerOpen(true)}
             >
               <Filter className="w-4 h-4 mr-2" />
               Filters
+              {(filterState.departments.length > 0 || filterState.statuses.length > 0) && (
+                <span className="ml-2 bg-blue-600/60 text-xs rounded-full px-2 py-0.5 text-white">
+                  {filterState.departments.length + filterState.statuses.length}
+                </span>
+              )}
             </Button>
           </div>
         </div>
@@ -228,6 +263,16 @@ const Employees = () => {
           open={isDetailDialogOpen}
           onOpenChange={setIsDetailDialogOpen}
           employee={detailEmployee}
+        />
+
+        {/* Employee Filter Drawer */}
+        <EmployeeFilterDrawer
+          open={isFilterDrawerOpen}
+          onOpenChange={setIsFilterDrawerOpen}
+          allDepartments={allDepartments}
+          filterState={filterState}
+          setFilterState={setFilterState}
+          onClear={() => setFilterState({ departments: [], statuses: [] })}
         />
       </div>
     </div>
