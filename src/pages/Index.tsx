@@ -32,11 +32,8 @@ const Index = () => {
       <div
         className="min-h-screen w-full flex"
         style={{
-          background:
-            "radial-gradient(ellipse 100% 70% at 60% 110%, rgba(46,80,181,0.72) 5%, transparent 71%)," + // faint blue glow below cards
-            "radial-gradient(circle at 100% 0%, #1d2b54 18%, transparent 78%)," +    // right top blue glow
-            "radial-gradient(ellipse 60% 30% at 10% 100%, #233368 50%, transparent 100%)," + // bottom left blue
-            "linear-gradient(120deg,#0d1530 0%, #14204d 100%)", // main deep blue
+          // Experiment: Set the background to match the top badge/header (`.glass-dark`: rgba(20,26,46,0.7))
+          background: "rgba(20,26,46,0.7)",
         }}
       >
         <div className="container mx-auto py-5">
@@ -136,3 +133,4 @@ const Index = () => {
 };
 
 export default Index;
+
