@@ -15,6 +15,7 @@ interface MetricCardProps {
     value: number;
     isPositive: boolean;
   };
+  truncateValue?: boolean; // NEW: allows optional truncation for top department card
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
@@ -25,7 +26,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   color = 'text-blue-400',
   bgColor = 'bg-blue-500/10',
   borderColor = 'border-blue-500/20',
-  trend
+  trend,
+  truncateValue
 }) => {
   return (
     <Card className="group glass-dark hover-lift shadow-glow border-0 rounded-3xl overflow-hidden animate-fade-in-scale relative">
@@ -37,15 +39,15 @@ export const MetricCard: React.FC<MetricCardProps> = ({
       <div className="absolute top-4 right-4 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl animate-float" />
       <div className="absolute bottom-4 left-4 w-16 h-16 bg-gradient-to-br from-cyan-400/20 to-green-400/20 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }} />
       
-      <CardContent className="relative p-8 z-10">
-        <div className="flex items-start justify-between mb-6">
+      <CardContent className="relative p-6 sm:p-8 z-10">
+        <div className="flex items-start justify-between mb-4 sm:mb-6">
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <p className="text-blue-200/80 text-sm font-medium font-heading tracking-wide uppercase">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+              <p className="text-blue-200/80 text-xs sm:text-sm font-medium font-heading tracking-wide uppercase">
                 {title}
               </p>
               {trend && (
-                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono backdrop-blur-sm ${
+                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-mono backdrop-blur-sm ${
                   trend.isPositive 
                     ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shadow-lg shadow-emerald-500/10' 
                     : 'bg-red-500/20 text-red-300 border border-red-400/30 shadow-lg shadow-red-500/10'
@@ -56,22 +58,31 @@ export const MetricCard: React.FC<MetricCardProps> = ({
               )}
             </div>
             
-            <div className="mb-4">
-              <p className="text-5xl font-bold font-heading text-white tracking-tight leading-none bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
+            <div className="mb-2 sm:mb-4 max-w-xs">
+              <p
+                className={
+                  `font-bold font-heading bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent
+                   text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-none ` +
+                  (truncateValue
+                    ? "truncate max-w-[140px] block"
+                    : "")
+                }
+                title={typeof value === 'string' ? value : undefined}
+              >
                 {typeof value === 'number' ? value.toLocaleString() : value}
               </p>
             </div>
             
             {subtitle && (
-              <p className="text-blue-300/70 text-sm font-medium">
+              <p className="text-blue-300/70 text-xs sm:text-sm font-medium">
                 {subtitle}
               </p>
             )}
           </div>
           
-          <div className="ml-8">
-            <div className={`${bgColor} p-5 rounded-3xl shadow-2xl border border-white/10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 backdrop-blur-sm`}>
-              <Icon className={`w-10 h-10 ${color} group-hover:rotate-12 transition-transform duration-300 drop-shadow-lg`} />
+          <div className="ml-3 sm:ml-8">
+            <div className={`${bgColor} p-4 sm:p-5 rounded-3xl shadow-2xl border border-white/10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 backdrop-blur-sm`}>
+              <Icon className={`w-7 h-7 sm:w-10 sm:h-10 ${color} group-hover:rotate-12 transition-transform duration-300 drop-shadow-lg`} />
             </div>
           </div>
         </div>
@@ -85,3 +96,4 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     </Card>
   );
 };
+
