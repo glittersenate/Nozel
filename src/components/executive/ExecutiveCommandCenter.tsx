@@ -1,7 +1,12 @@
-
 import React from "react";
 import FlightRiskPredictor from "./FlightRiskPredictor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import TalentPipelineInsights from "./TalentPipelineInsights";
+import CompensationOptimizer from "./CompensationOptimizer";
+import WellnessDashboard from "./WellnessDashboard";
+import ComplianceMonitor from "./ComplianceMonitor";
+import WorkforcePlanningPredictor from "./WorkforcePlanningPredictor";
+import PerformanceAnalyticsHub from "./PerformanceAnalyticsHub";
 
 const ExecutiveCommandCenter: React.FC = () => {
   return (
@@ -19,12 +24,14 @@ const ExecutiveCommandCenter: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         <FlightRiskPredictor />
-        {/* Future widgets (TalentPipeline, CompensationOptimizer, etc) can go here */}
-        <div className="rounded-2xl shadow bg-[#172142]/50 border border-purple-700/40 flex flex-col justify-center items-center min-h-[300px]">
-          <span className="text-blue-200 opacity-70">More executive intelligence coming soon…</span>
-        </div>
+        <TalentPipelineInsights />
+        <CompensationOptimizer />
+        <WellnessDashboard />
+        <ComplianceMonitor />
+        <WorkforcePlanningPredictor />
+        <PerformanceAnalyticsHub />
       </div>
     </div>
   );
