@@ -13,11 +13,19 @@ import { Button } from "@/components/ui/button";
 import { Play, DollarSign, Users, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import EmployeePortal from "./EmployeePortal";
 
 const Index = () => {
   const { employees } = useEmployees();
   const { metrics, isLive, toggleLiveMode } = useRealTimeData(employees);
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // If the current user is an employee, show Employee Portal
+  if (user && user.role === "employee") {
+    return <EmployeePortal />;
+  }
 
   const activeEmployees = employees.filter(emp => emp.status === 'active');
   const totalPayroll = activeEmployees.reduce((sum, emp) => sum + emp.salary, 0);
@@ -133,4 +141,3 @@ const Index = () => {
 };
 
 export default Index;
-
