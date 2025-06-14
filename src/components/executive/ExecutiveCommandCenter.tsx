@@ -1,5 +1,8 @@
 import React from "react";
 import FlightRiskPredictor from "./FlightRiskPredictor";
+import PerformanceTrajectoryAnalysis from "./PerformanceTrajectoryAnalysis";
+import CompensationIntelligence from "./CompensationIntelligence";
+import TeamChemistryAnalysis from "./TeamChemistryAnalysis";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TalentPipelineInsights from "./TalentPipelineInsights";
 import CompensationOptimizer from "./CompensationOptimizer";
@@ -24,8 +27,18 @@ const ExecutiveCommandCenter: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        <FlightRiskPredictor />
+
+      <div className="mb-8">
+        <div className="text-white text-xl font-bold mb-2">Phase 1: AI-Powered Predictive Dashboard</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+          <FlightRiskPredictor />
+          <PerformanceTrajectoryAnalysis />
+          <CompensationIntelligence />
+          <TeamChemistryAnalysis />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-10">
         <TalentPipelineInsights />
         <CompensationOptimizer />
         <WellnessDashboard />
