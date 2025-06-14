@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { MoreHorizontal, Edit, Trash2, Mail, Phone } from 'lucide-react';
+import { MoreHorizontal, Edit, Trash2, Mail, Phone, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -15,20 +16,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Employee } from '@/pages/Employees';
+import { Employee, SortConfig } from '@/pages/Employees';
 
 interface EmployeeTableProps {
   employees: Employee[];
   onDeleteEmployee: (id: string) => void;
   onEditEmployee: (employee: Employee) => void;
   onViewEmployee: (employee: Employee) => void;
+  sortConfig: SortConfig;
+  onSort: (key: keyof Employee) => void;
 }
 
 const EmployeeTable: React.FC<EmployeeTableProps> = ({
   employees,
   onDeleteEmployee,
   onEditEmployee,
-  onViewEmployee
+  onViewEmployee,
+  sortConfig,
+  onSort
 }) => {
   const formatSalary = (salary: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -46,17 +51,38 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({
     });
   };
 
+  const getSortIcon = (columnKey: keyof Employee) => {
+    if (!sortConfig || sortConfig.key !== columnKey) {
+      return <ArrowUpDown className="w-4 h-4 opacity-50" />;
+    }
+    return sortConfig.direction === 'asc' 
+      ? <ArrowUp className="w-4 h-4 text-blue-400" />
+      : <ArrowDown className="w-4 h-4 text-blue-400" />;
+  };
+
+  const SortableHeader = ({ children, sortKey }: { children: React.ReactNode; sortKey: keyof Employee }) => (
+    <TableHead 
+      className="text-blue-300 font-semibold cursor-pointer hover:text-blue-200 transition-colors select-none"
+      onClick={() => onSort(sortKey)}
+    >
+      <div className="flex items-center gap-2">
+        {children}
+        {getSortIcon(sortKey)}
+      </div>
+    </TableHead>
+  );
+
   return (
     <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="border-blue-800/30 hover:bg-[#1a2550]/50">
-            <TableHead className="text-blue-300 font-semibold">Employee</TableHead>
-            <TableHead className="text-blue-300 font-semibold">Department</TableHead>
-            <TableHead className="text-blue-300 font-semibold">Position</TableHead>
-            <TableHead className="text-blue-300 font-semibold">Salary</TableHead>
-            <TableHead className="text-blue-300 font-semibold">Start Date</TableHead>
-            <TableHead className="text-blue-300 font-semibold">Status</TableHead>
+            <SortableHeader sortKey="name">Employee</SortableHeader>
+            <SortableHeader sortKey="department">Department</SortableHeader>
+            <SortableHeader sortKey="position">Position</SortableHeader>
+            <SortableHeader sortKey="salary">Salary</SortableHeader>
+            <SortableHeader sortKey="startDate">Start Date</SortableHeader>
+            <SortableHeader sortKey="status">Status</SortableHeader>
             <TableHead className="text-blue-300 font-semibold text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>

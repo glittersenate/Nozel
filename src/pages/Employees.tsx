@@ -20,6 +20,11 @@ export interface Employee {
   status: 'active' | 'inactive';
 }
 
+export type SortConfig = {
+  key: keyof Employee;
+  direction: 'asc' | 'desc';
+} | null;
+
 const mockEmployees: Employee[] = [
   {
     id: '1',
@@ -79,17 +84,20 @@ const Employees = () => {
   const [detailEmployee, setDetailEmployee] = useState<Employee | null>(null);
   const { toast } = useToast();
 
-  // New: filter state and filter drawer open
+  // Filter state and filter drawer open
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const [filterState, setFilterState] = useState<{ departments: string[]; statuses: Array<'active' | 'inactive'> }>({
     departments: [],
     statuses: []
   });
 
+  // New: sorting state
+  const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+
   const allDepartments = getUniqueDepartments(employees);
 
-  // Enhanced: apply filters and search to employee list
-  const filteredEmployees = employees
+  // Enhanced: apply filters, search, and sorting to employee list
+  const filteredAndSortedEmployees = employees
     .filter(emp => {
       // Filter by departments if any
       if (filterState.departments.length > 0 && !filterState.departments.includes(emp.department)) {
@@ -106,7 +114,45 @@ const Employees = () => {
       employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.position.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
+    .sort((a, b) => {
+      if (!sortConfig) return 0;
+
+      const { key, direction } = sortConfig;
+      let aValue = a[key];
+      let bValue = b[key];
+
+      // Handle different data types
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+
+      if (key === 'startDate') {
+        aValue = new Date(aValue as string).getTime();
+        bValue = new Date(bValue as string).getTime();
+      }
+
+      if (aValue < bValue) {
+        return direction === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+
+  const handleSort = (key: keyof Employee) => {
+    setSortConfig(current => {
+      if (!current || current.key !== key) {
+        return { key, direction: 'asc' };
+      }
+      if (current.direction === 'asc') {
+        return { key, direction: 'desc' };
+      }
+      return null; // Clear sorting
+    });
+  };
 
   const handleAddEmployee = (newEmployee: Omit<Employee, 'id'>) => {
     const employee: Employee = {
@@ -237,10 +283,12 @@ const Employees = () => {
 
         {/* Employee Table */}
         <EmployeeTable
-          employees={filteredEmployees}
+          employees={filteredAndSortedEmployees}
           onDeleteEmployee={handleDeleteEmployee}
           onEditEmployee={handleEditEmployee}
           onViewEmployee={handleViewEmployee}
+          sortConfig={sortConfig}
+          onSort={handleSort}
         />
 
         {/* Add Employee Dialog */}
