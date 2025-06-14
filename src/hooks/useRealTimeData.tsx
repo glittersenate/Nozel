@@ -1,6 +1,5 @@
-
 import { useState, useEffect, useCallback } from 'react';
-import { Employee } from '@/pages/Employees';
+import { Employee } from '@/types/employee';
 
 interface RealTimeMetrics {
   totalEmployees: number;

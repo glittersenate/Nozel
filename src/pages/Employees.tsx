@@ -1,10 +1,10 @@
 
 import React from "react";
 import { Layout } from "@/components/Layout";
-import { EmployeeTable } from "@/components/employees/EmployeeTable";
-import { AddEmployeeDialog } from "@/components/employees/AddEmployeeDialog";
-import { BulkActions } from "@/components/employees/BulkActions";
-import { EmployeeFilterDrawer } from "@/components/employees/EmployeeFilterDrawer";
+import EmployeeTable from "@/components/employees/EmployeeTable";
+import AddEmployeeDialog from "@/components/employees/AddEmployeeDialog";
+import BulkActions from "@/components/employees/BulkActions";
+import EmployeeFilterDrawer from "@/components/employees/EmployeeFilterDrawer";
 
 const Employees = () => {
   return (

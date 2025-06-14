@@ -3,24 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, TrendingUp, AlertTriangle, Brain, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-
-interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  position: string;
-  department: string;
-  salary: number;
-  startDate: string;
-  status: 'active' | 'inactive';
-}
+import { Employee } from '@/types/employee';
 
 interface AIInsightsModuleProps {
-  employees: Employee[];
-  isLive: boolean;
+  employees?: Employee[];
+  isLive?: boolean;
 }
 
-const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({ employees, isLive }) => {
+export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({ 
+  employees = [], 
+  isLive = false 
+}) => {
   const [currentInsight, setCurrentInsight] = useState(0);
   
   const activeEmployees = employees.filter(emp => emp.status === 'active');
@@ -51,7 +44,7 @@ const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({ employees, isLive }
       color: 'text-yellow-400',
       bgColor: 'bg-yellow-500/10',
       title: '🚨 2 Red Flags Detected',
-      content: `Department imbalance detected: ${largestDept?.[0]} has ${largestDept?.[1]} employees (${Math.round((largestDept?.[1] || 0) / employees.length * 100)}% of workforce). Consider restructuring.`,
+      content: `Department imbalance detected: ${largestDept?.[0] || 'N/A'} has ${largestDept?.[1] || 0} employees (${Math.round(((largestDept?.[1] || 0) / Math.max(employees.length, 1)) * 100)}% of workforce). Consider restructuring.`,
       severity: 'warning'
     },
     {
@@ -69,7 +62,7 @@ const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({ employees, isLive }
       color: 'text-blue-400',
       bgColor: 'bg-blue-500/10',
       title: 'Department Efficiency',
-      content: `⚡ ${Object.keys(departmentCounts).length} active departments. Average team size: ${Math.round(employees.length / Object.keys(departmentCounts).length)} employees. Optimal for current scale.`,
+      content: `⚡ ${Object.keys(departmentCounts).length} active departments. Average team size: ${Math.round(employees.length / Math.max(Object.keys(departmentCounts).length, 1))} employees. Optimal for current scale.`,
       severity: 'success'
     }
   ];
@@ -156,5 +149,3 @@ const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({ employees, isLive }
     </Card>
   );
 };
-
-export default AIInsightsModule;

@@ -1,13 +1,13 @@
 
 import React from "react";
 import { Layout } from "@/components/Layout";
-import { EnhancedStatsCards } from "@/components/dashboard/EnhancedStatsCards";
-import { RealTimeMetrics } from "@/components/dashboard/RealTimeMetrics";
-import { LiveActivityFeed } from "@/components/dashboard/LiveActivityFeed";
-import { DepartmentChart } from "@/components/dashboard/DepartmentChart";
-import { SalaryChart } from "@/components/dashboard/SalaryChart";
+import EnhancedStatsCards from "@/components/dashboard/EnhancedStatsCards";
+import RealTimeMetrics from "@/components/dashboard/RealTimeMetrics";
+import LiveActivityFeed from "@/components/dashboard/LiveActivityFeed";
+import DepartmentChart from "@/components/dashboard/DepartmentChart";
+import SalaryChart from "@/components/dashboard/SalaryChart";
 import { AIInsightsModule } from "@/components/dashboard/AIInsightsModule";
-import { AnimatedPayrollButton } from "@/components/dashboard/AnimatedPayrollButton";
+import AnimatedPayrollButton from "@/components/dashboard/AnimatedPayrollButton";
 
 const Index = () => {
   return (
