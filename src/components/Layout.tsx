@@ -27,17 +27,17 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          {/* Top bar - visible for both mobile and desktop */}
-          <div className="flex h-16 items-center justify-between px-4 md:px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
+          {/* Responsive top bar - now matches desktop spacing on mobile */}
+          <div className="flex h-16 items-center justify-between px-2 md:px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
             <div className="flex items-center gap-4">
-              {/* Hamburger always visible */}
+              {/* Hamburger - always visible */}
               <SidebarTrigger 
                 className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
                 style={{ fontSize: 24 }}
               />
               
               <div className="h-6 w-px bg-blue-500/30" />
-              
+
               <div className="flex items-center gap-4 animate-slide-in-right">
                 <div className="relative">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-glow animate-pulse-glow">
