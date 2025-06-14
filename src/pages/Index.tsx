@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Users, DollarSign, Clock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,11 @@ import StatsCards from "@/components/dashboard/StatsCards";
 import DepartmentChart from "@/components/dashboard/DepartmentChart";
 import SalaryChart from "@/components/dashboard/SalaryChart";
 import RecentActivity from "@/components/dashboard/RecentActivity";
+import RealTimeMetrics from "@/components/dashboard/RealTimeMetrics";
+import LiveActivityFeed from "@/components/dashboard/LiveActivityFeed";
+import RoleSelector from "@/components/RoleSelector";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useRealTimeData } from "@/hooks/useRealTimeData";
 
 // Mock employee data for dashboard
 const mockEmployees = [
@@ -76,10 +80,21 @@ const mockEmployees = [
   }
 ];
 
-const Index = () => {
+const DashboardContent = () => {
   const { toast } = useToast();
+  const { user, permissions } = useAuth();
+  const { metrics, isLive, toggleLiveMode } = useRealTimeData(mockEmployees);
 
   const handleRunPayroll = () => {
+    if (!permissions.canRunPayroll) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to run payroll.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Payroll Run Started",
       description: "Your payroll is now being processed. You'll be notified when it's complete.",
@@ -110,6 +125,9 @@ const Index = () => {
         <div className="flex-1 px-4">
           <Navigation />
         </div>
+        <div className="p-4 border-t border-blue-800/30">
+          <RoleSelector />
+        </div>
         <UserProfile />
       </aside>
 
@@ -124,6 +142,7 @@ const Index = () => {
             />
             <span className="font-bold text-lg tracking-wide">NozelPay</span>
           </div>
+          <RoleSelector />
         </div>
       </div>
 
@@ -132,29 +151,56 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
           <div className="mb-8">
-            <h1 className="text-2xl sm:text-3xl font-extrabold mb-2">Welcome to NozelPay</h1>
-            <div className="text-blue-300 mb-6 font-semibold">
-              Supercharge your payroll.<br />
-              Everything you need. <span className="bg-blue-600/30 px-2 rounded text-blue-100">10-second payroll, powered by AI</span>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold mb-2">
+                  Welcome back, {user?.name}!
+                </h1>
+                <div className="text-blue-300 mb-6 font-semibold">
+                  Supercharge your payroll.<br />
+                  Everything you need. <span className="bg-blue-600/30 px-2 rounded text-blue-100">10-second payroll, powered by AI</span>
+                </div>
+              </div>
             </div>
 
             {/* Run Payroll CTA */}
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-blue-400 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all animate-fade-in"
-              onClick={handleRunPayroll}
-            >
-              Run Payroll - ${totalPayroll.toLocaleString()} for {activeEmployees} employees
-            </Button>
+            {permissions.canRunPayroll && (
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-blue-400 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all animate-fade-in"
+                onClick={handleRunPayroll}
+              >
+                Run Payroll - ${totalPayroll.toLocaleString()} for {activeEmployees} employees
+              </Button>
+            )}
           </div>
+
+          {/* Real-time Analytics */}
+          {permissions.canViewAnalytics && (
+            <div className="mb-8">
+              <RealTimeMetrics 
+                metrics={metrics} 
+                isLive={isLive} 
+                onToggleLive={toggleLiveMode} 
+              />
+            </div>
+          )}
 
           {/* Stats Cards */}
           <StatsCards employees={mockEmployees} />
 
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <DepartmentChart employees={mockEmployees} />
-            <SalaryChart employees={mockEmployees} />
+            {permissions.canViewAnalytics ? (
+              <>
+                <DepartmentChart employees={mockEmployees} />
+                <SalaryChart employees={mockEmployees} />
+              </>
+            ) : (
+              <div className="lg:col-span-2 bg-[#141a2e]/80 border border-blue-950 rounded-xl p-8 text-center">
+                <p className="text-blue-300">You don't have permission to view detailed analytics.</p>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -170,27 +216,44 @@ const Index = () => {
                   <h2 className="text-xl font-extrabold">AI Insights</h2>
                 </div>
                 <div className="text-blue-100 text-sm opacity-90 leading-relaxed">
-                  "Payroll run successfully completed. No anomalies detected. Employees were paid in record time! 
-                  Consider reviewing the overtime hours for Q1 - there's been a 15% increase compared to last quarter. 
-                  Engineering department shows highest average salary at $77.5k."
+                  {permissions.canViewAnalytics ? (
+                    `"Payroll run successfully completed. No anomalies detected. Employees were paid in record time! 
+                    Consider reviewing the overtime hours for Q1 - there's been a 15% increase compared to last quarter. 
+                    Engineering department shows highest average salary at $77.5k."`
+                  ) : (
+                    `"Welcome to NozelPay! As a ${user?.role}, you have access to core features. 
+                    Contact your administrator for additional permissions."`
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Right Column */}
             <div className="space-y-6">
-              <RecentActivity employees={mockEmployees} />
+              {permissions.canViewAnalytics ? (
+                <LiveActivityFeed activities={metrics.activityFeed} isLive={isLive} />
+              ) : (
+                <RecentActivity employees={mockEmployees} />
+              )}
               <NotificationCenter />
             </div>
           </div>
 
           {/* Footer */}
           <div className="mt-12 text-center text-xs opacity-60 border-t border-blue-800/20 pt-6">
-            Prototype v2 · Advanced Analytics · Real-time Dashboard
+            Prototype v5 · Real-time Analytics · Role-based Access · Live Data
           </div>
         </div>
       </main>
     </div>
+  );
+};
+
+const Index = () => {
+  return (
+    <AuthProvider>
+      <DashboardContent />
+    </AuthProvider>
   );
 };
 
