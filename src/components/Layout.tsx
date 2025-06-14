@@ -35,7 +35,7 @@ export function Layout({ children }: LayoutProps) {
                 className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
                 style={{ fontSize: 24 }}
               />
-              
+
               <div className="h-6 w-px bg-blue-500/30" />
 
               {/* Branding block: Logo, Title, Subtitle -- always visible */}
@@ -46,11 +46,17 @@ export function Layout({ children }: LayoutProps) {
                   </div>
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-30 blur animate-pulse" />
                 </div>
-                <div className="flex flex-col">
-                  <h1 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent leading-none">
+                <div className="flex flex-col justify-center h-11">
+                  <h1
+                    className="text-lg sm:text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent leading-snug"
+                    style={{ lineHeight: '1.2', marginBottom: '0.14em' }}
+                  >
                     NozelPay
                   </h1>
-                  <p className="text-xs text-blue-300/80 font-medium -mt-1 leading-tight">
+                  <p
+                    className="text-xs sm:text-sm text-blue-300/80 font-medium leading-tight"
+                    style={{ lineHeight: '1.1' }}
+                  >
                     HR Management System
                   </p>
                 </div>
