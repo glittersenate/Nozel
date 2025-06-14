@@ -3,21 +3,32 @@ import React from 'react';
 import { PayrollSummaryCards } from './PayrollSummaryCards';
 import { PayrollTable } from './PayrollTable';
 import { PayrollChart } from './PayrollChart';
-import { RunPayrollDialog } from './RunPayrollDialog';
+-import { RunPayrollDialog } from './RunPayrollDialog';
++import { PayrollScheduler } from './PayrollScheduler';
++import { ScheduleStatusCard } from './ScheduleStatusCard';
 
 export const PayrollDashboard = () => {
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-white">Payroll Management</h2>
-          <p className="text-blue-300">Process payroll and manage employee compensation</p>
-        </div>
-        <RunPayrollDialog />
-      </div>
+-      <div className="flex justify-between items-center">
+-        <div>
+-          <h2 className="text-2xl font-bold text-white">Payroll Management</h2>
+-          <p className="text-blue-300">Process payroll and manage employee compensation</p>
+-        </div>
+-        <RunPayrollDialog />
+-      </div>
++      <div className="flex flex-col gap-4">
++        <div className="flex justify-between items-center">
++          <div>
++            <h2 className="text-2xl font-bold text-white">Payroll Management</h2>
++            <p className="text-blue-300">Process payroll and manage employee compensation</p>
++          </div>
++          <PayrollScheduler />
++        </div>
++        <ScheduleStatusCard />
++      </div>
       
       <PayrollSummaryCards />
-      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <PayrollChart />
         <div className="space-y-4">
@@ -38,7 +49,6 @@ export const PayrollDashboard = () => {
           </div>
         </div>
       </div>
-
       <PayrollTable />
     </div>
   );
