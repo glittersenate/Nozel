@@ -8,9 +8,13 @@ import EditEmployeeDialog from '@/components/employees/EditEmployeeDialog';
 import EmployeeDetailDialog from "@/components/employees/EmployeeDetailDialog";
 import EmployeeFilterDrawer from '@/components/employees/EmployeeFilterDrawer';
 import BulkActions from '@/components/employees/BulkActions';
-import AdvancedSearch, { AdvancedSearchFilters } from '@/components/ui/advanced-search';
+import AdvancedSearch from '@/components/AdvancedSearch';
+import EmployeeProfileModal from '@/components/EmployeeProfileModal';
+import ThemeToggle from '@/components/ThemeToggle';
+import NotificationSystem from '@/components/NotificationSystem';
 import { useToast } from '@/hooks/use-toast';
 import { exportToCSV, formatEmployeeForExport } from '@/utils/exportUtils';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export interface Employee {
   id: string;
@@ -85,13 +89,17 @@ const Employees = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [detailEmployee, setDetailEmployee] = useState<Employee | null>(null);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [profileEmployee, setProfileEmployee] = useState<Employee | null>(null);
   const { toast } = useToast();
 
   // Advanced search filters
-  const [advancedFilters, setAdvancedFilters] = useState<AdvancedSearchFilters>({
+  const [advancedFilters, setAdvancedFilters] = useState({
     searchTerm: '',
     departments: [],
-    positions: []
+    salaryRange: { min: null, max: null },
+    dateRange: { from: '', to: '' },
+    status: []
   });
 
   // Filter state and filter drawer open
@@ -104,10 +112,25 @@ const Employees = () => {
   // New: sorting state
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
-  const allDepartments = getUniqueDepartments(employees);
-  const allPositions = [...new Set(employees.map(e => e.position))].sort();
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    {
+      key: 'n',
+      ctrl: true,
+      action: () => setIsAddDialogOpen(true),
+      description: 'Add new employee'
+    },
+    {
+      key: 'e',
+      ctrl: true,
+      action: handleExportData,
+      description: 'Export data'
+    }
+  ]);
 
-  // Enhanced: apply filters, search, and sorting to employee list
+  const allDepartments = getUniqueDepartments(employees);
+
+  // Enhanced filtering logic
   const filteredAndSortedEmployees = employees
     .filter(emp => {
       // Advanced search filters
@@ -119,20 +142,14 @@ const Employees = () => {
       }
 
       // Salary range filter
-      if (advancedFilters.salaryMin && emp.salary < advancedFilters.salaryMin) return false;
-      if (advancedFilters.salaryMax && emp.salary > advancedFilters.salaryMax) return false;
+      if (advancedFilters.salaryRange.min && emp.salary < advancedFilters.salaryRange.min) return false;
+      if (advancedFilters.salaryRange.max && emp.salary > advancedFilters.salaryRange.max) return false;
 
-      // Date range filter
-      if (advancedFilters.startDateFrom && new Date(emp.startDate) < new Date(advancedFilters.startDateFrom)) return false;
-      if (advancedFilters.startDateTo && new Date(emp.startDate) > new Date(advancedFilters.startDateTo)) return false;
-
-      // Department and position filters from advanced search
+      // Department filters
       if (advancedFilters.departments.length > 0 && !advancedFilters.departments.includes(emp.department)) return false;
-      if (advancedFilters.positions.length > 0 && !advancedFilters.positions.includes(emp.position)) return false;
 
-      // Legacy filter state
-      if (filterState.departments.length > 0 && !filterState.departments.includes(emp.department)) return false;
-      if (filterState.statuses.length > 0 && !filterState.statuses.includes(emp.status)) return false;
+      // Status filters
+      if (advancedFilters.status.length > 0 && !advancedFilters.status.includes(emp.status)) return false;
 
       return true;
     })
@@ -269,20 +286,32 @@ const Employees = () => {
     });
   };
 
+  const handleViewEmployeeProfile = (employee: Employee) => {
+    setProfileEmployee(employee);
+    setIsProfileModalOpen(true);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0e1c38] to-[#12284a] text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#0e1c38] to-[#12284a] dark:from-[#0e1c38] dark:to-[#12284a] light:from-gray-50 light:to-gray-100 text-white dark:text-white light:text-gray-900 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Enhanced Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Employee Management</h1>
-            <p className="text-blue-300">Manage your team members and their information</p>
+            <p className="text-blue-300 dark:text-blue-300 light:text-gray-600">
+              Manage your team members with advanced tools
+              <span className="ml-2 text-sm opacity-75">
+                Press <kbd className="px-1 py-0.5 bg-blue-600/20 rounded text-xs">Ctrl+N</kbd> to add employee
+              </span>
+            </p>
           </div>
           <div className="flex gap-3">
+            <ThemeToggle />
+            <NotificationSystem />
             <Button
               variant="outline"
               onClick={handleExportData}
-              className="bg-[#141a2e]/60 border-blue-800/30 text-blue-200 hover:bg-[#141a2e]/80"
+              className="bg-[#141a2e]/60 dark:bg-[#141a2e]/60 light:bg-white border-blue-800/30 dark:border-blue-800/30 light:border-gray-300 text-blue-200 dark:text-blue-200 light:text-gray-700 hover:bg-[#141a2e]/80"
             >
               <Download className="w-4 h-4 mr-2" />
               Export ({filteredAndSortedEmployees.length})
@@ -297,33 +326,38 @@ const Employees = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl p-6">
-            <h3 className="text-blue-300 text-sm font-medium">Total Employees</h3>
-            <p className="text-2xl font-bold text-white mt-1">{employees.length}</p>
+        {/* Enhanced Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
+            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Total Employees</h3>
+            <p className="text-2xl font-bold text-white dark:text-white light:text-gray-900 mt-1">{employees.length}</p>
           </div>
-          <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl p-6">
-            <h3 className="text-blue-300 text-sm font-medium">Active</h3>
+          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
+            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Active</h3>
             <p className="text-2xl font-bold text-green-400 mt-1">
               {employees.filter(emp => emp.status === 'active').length}
             </p>
           </div>
-          <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl p-6">
-            <h3 className="text-blue-300 text-sm font-medium">Inactive</h3>
-            <p className="text-2xl font-bold text-red-400 mt-1">
-              {employees.filter(emp => emp.status === 'inactive').length}
+          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
+            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Filtered</h3>
+            <p className="text-2xl font-bold text-blue-400 mt-1">
+              {filteredAndSortedEmployees.length}
+            </p>
+          </div>
+          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
+            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Selected</h3>
+            <p className="text-2xl font-bold text-purple-400 mt-1">
+              {selectedEmployeeIds.length}
             </p>
           </div>
         </div>
 
         {/* Advanced Search Bar */}
-        <div className="bg-[#141a2e]/80 border border-blue-950 rounded-xl p-6 mb-6">
+        <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6 mb-6">
           <AdvancedSearch
             filters={advancedFilters}
             onFiltersChange={setAdvancedFilters}
-            departments={allDepartments}
-            positions={allPositions}
+            availableDepartments={allDepartments}
           />
         </div>
 
@@ -341,21 +375,20 @@ const Employees = () => {
           employees={filteredAndSortedEmployees}
           onDeleteEmployee={handleDeleteEmployee}
           onEditEmployee={handleEditEmployee}
-          onViewEmployee={handleViewEmployee}
+          onViewEmployee={handleViewEmployeeProfile}
           sortConfig={sortConfig}
           onSort={handleSort}
           selectedIds={selectedEmployeeIds}
           onSelectionChange={setSelectedEmployeeIds}
         />
 
-        {/* Add Employee Dialog */}
+        {/* All Dialogs */}
         <AddEmployeeDialog
           open={isAddDialogOpen}
           onOpenChange={setIsAddDialogOpen}
           onAddEmployee={handleAddEmployee}
         />
 
-        {/* Edit Employee Dialog */}
         <EditEmployeeDialog
           open={isEditDialogOpen}
           onOpenChange={setIsEditDialogOpen}
@@ -363,21 +396,16 @@ const Employees = () => {
           onUpdateEmployee={handleUpdateEmployee}
         />
 
-        {/* Employee Detail Dialog */}
         <EmployeeDetailDialog
           open={isDetailDialogOpen}
           onOpenChange={setIsDetailDialogOpen}
           employee={detailEmployee}
         />
 
-        {/* Employee Filter Drawer */}
-        <EmployeeFilterDrawer
-          open={isFilterDrawerOpen}
-          onOpenChange={setIsFilterDrawerOpen}
-          allDepartments={allDepartments}
-          filterState={filterState}
-          setFilterState={setFilterState}
-          onClear={() => setFilterState({ departments: [], statuses: [] })}
+        <EmployeeProfileModal
+          employee={profileEmployee}
+          open={isProfileModalOpen}
+          onOpenChange={setIsProfileModalOpen}
         />
       </div>
     </div>
