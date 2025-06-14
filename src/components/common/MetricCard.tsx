@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -48,15 +47,23 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-1">
               <span
-                className="font-heading font-semibold text-xs sm:text-sm tracking-widest text-blue-200/80 uppercase whitespace-normal leading-snug"
+                className={`
+                  font-heading font-semibold
+                  text-[10px] xs:text-xs sm:text-sm
+                  tracking-widest
+                  text-blue-200/80
+                  uppercase
+                  whitespace-nowrap
+                  sm:whitespace-normal
+                  leading-snug
+                  block
+                  max-w-[10em] sm:max-w-full
+                `}
                 style={{
-                  // Use normal whitespace and allow up to two lines for headings, improve headroom
-                  display: "block",
+                  // Prevent word breaking on mobile, allow on desktop
                   overflow: "visible",
                   textOverflow: "initial",
-                  wordBreak: "break-word",
-                  whiteSpace: "normal",
-                  maxWidth: "100%",
+                  // `whitespace-nowrap` in class for mobile, `normal` for sm+
                   lineHeight: "1.15",
                   minHeight: "1.2em",
                 }}
