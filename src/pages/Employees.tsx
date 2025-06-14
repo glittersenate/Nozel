@@ -15,6 +15,7 @@ import NotificationSystem from '@/components/NotificationSystem';
 import { useToast } from '@/hooks/use-toast';
 import { exportToCSV, formatEmployeeForExport } from '@/utils/exportUtils';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import EnhancedStatsCards from '@/components/dashboard/EnhancedStatsCards';
 
 export interface Employee {
   id: string;
@@ -328,30 +329,7 @@ const Employees = () => {
         </div>
 
         {/* Enhanced Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
-          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
-            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Total Employees</h3>
-            <p className="text-2xl font-bold text-white dark:text-white light:text-gray-900 mt-1">{employees.length}</p>
-          </div>
-          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
-            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Active</h3>
-            <p className="text-2xl font-bold text-green-400 mt-1">
-              {employees.filter(emp => emp.status === 'active').length}
-            </p>
-          </div>
-          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
-            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Filtered</h3>
-            <p className="text-2xl font-bold text-blue-400 mt-1">
-              {filteredAndSortedEmployees.length}
-            </p>
-          </div>
-          <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6">
-            <h3 className="text-blue-300 dark:text-blue-300 light:text-gray-600 text-sm font-medium">Selected</h3>
-            <p className="text-2xl font-bold text-purple-400 mt-1">
-              {selectedEmployeeIds.length}
-            </p>
-          </div>
-        </div>
+        <EnhancedStatsCards employees={employees} />
 
         {/* Advanced Search Bar */}
         <div className="bg-[#141a2e]/80 dark:bg-[#141a2e]/80 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 rounded-xl p-6 mb-6">

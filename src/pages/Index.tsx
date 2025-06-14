@@ -6,12 +6,14 @@ import Navigation from "@/components/Navigation";
 import UserProfile from "@/components/UserProfile";
 import NotificationCenter from "@/components/NotificationCenter";
 import QuickActions from "@/components/QuickActions";
-import StatsCards from "@/components/dashboard/StatsCards";
+import EnhancedStatsCards from "@/components/dashboard/EnhancedStatsCards";
 import DepartmentChart from "@/components/dashboard/DepartmentChart";
 import SalaryChart from "@/components/dashboard/SalaryChart";
 import RecentActivity from "@/components/dashboard/RecentActivity";
 import RealTimeMetrics from "@/components/dashboard/RealTimeMetrics";
 import LiveActivityFeed from "@/components/dashboard/LiveActivityFeed";
+import AIInsightsModule from "@/components/dashboard/AIInsightsModule";
+import AnimatedPayrollButton from "@/components/dashboard/AnimatedPayrollButton";
 import RoleSelector from "@/components/RoleSelector";
 import ThemeToggle from "@/components/ThemeToggle";
 import NotificationSystem from "@/components/NotificationSystem";
@@ -231,16 +233,13 @@ const DashboardContent = () => {
               </div>
             )}
 
-            {/* Run Payroll CTA */}
-            {permissions.canRunPayroll && (
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-blue-400 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all animate-fade-in"
-                onClick={handleRunPayroll}
-              >
-                Run Payroll - ${totalPayroll.toLocaleString()} for {activeEmployees} employees
-              </Button>
-            )}
+            {/* Enhanced Animated Payroll Button */}
+            <AnimatedPayrollButton
+              totalPayroll={totalPayroll}
+              activeEmployees={activeEmployees}
+              onRunPayroll={handleRunPayroll}
+              canRunPayroll={permissions.canRunPayroll}
+            />
           </div>
 
           {/* Real-time Analytics */}
@@ -254,8 +253,8 @@ const DashboardContent = () => {
             </div>
           )}
 
-          {/* Stats Cards */}
-          <StatsCards employees={mockEmployees} />
+          {/* Enhanced Stats Cards */}
+          <EnhancedStatsCards employees={mockEmployees} />
 
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -277,23 +276,11 @@ const DashboardContent = () => {
               {/* Quick Actions */}
               <QuickActions />
 
-              {/* AI Insights */}
-              <div className="rounded-2xl bg-[#1a2550]/70 dark:bg-[#1a2550]/70 light:bg-white border border-blue-950 dark:border-blue-950 light:border-gray-200 shadow-md p-6 animate-fade-in">
-                <div className="flex items-center gap-3 mb-4">
-                  <Sparkles className="text-yellow-300" />
-                  <h2 className="text-xl font-extrabold">AI Insights</h2>
-                </div>
-                <div className="text-blue-100 dark:text-blue-100 light:text-gray-700 text-sm opacity-90 leading-relaxed">
-                  {permissions.canViewAnalytics ? (
-                    `"Payroll run successfully completed. No anomalies detected. Employees were paid in record time! 
-                    Consider reviewing the overtime hours for Q1 - there's been a 15% increase compared to last quarter. 
-                    Engineering department shows highest average salary at $77.5k. Live mode is ${isLive ? 'active' : 'inactive'}."`
-                  ) : (
-                    `"Welcome to NozelPay! As a ${user?.role}, you have access to core features. 
-                    Contact your administrator for additional permissions. Try using keyboard shortcuts for faster navigation!"`
-                  )}
-                </div>
-              </div>
+              {/* Enhanced AI Insights */}
+              <AIInsightsModule 
+                employees={mockEmployees} 
+                isLive={isLive}
+              />
             </div>
 
             {/* Right Column */}
@@ -309,7 +296,7 @@ const DashboardContent = () => {
 
           {/* Enhanced Footer */}
           <div className="mt-12 text-center text-xs opacity-60 border-t border-blue-800/20 dark:border-blue-800/20 light:border-gray-200 pt-6">
-            Prototype v6 · Enterprise Features · Advanced UI/UX · Keyboard Shortcuts · Theme Support
+            Prototype v6 · Enterprise Features · Advanced UI/UX · Keyboard Shortcuts · Theme Support · AI-Powered Insights
           </div>
         </div>
       </main>
