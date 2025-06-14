@@ -106,12 +106,12 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
                 cx="50%"
                 cy="50%"
                 outerRadius={120}
-                innerRadius={0}
+                innerRadius={50}
                 fill="#8884d8"
                 dataKey="value"
                 labelLine={false}
                 label={CustomLabel}
-                // Removed stroke and strokeWidth
+                // Do NOT set stroke or strokeWidth!
               >
                 {chartData.map((entry, index) => (
                   <Cell 
@@ -143,3 +143,4 @@ const DepartmentChart: React.FC<DepartmentChartProps> = ({ employees }) => {
 };
 
 export default DepartmentChart;
+
