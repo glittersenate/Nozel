@@ -1,14 +1,11 @@
-
 import React from "react";
 import { Settings, Sun, Bell } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-// Visually appealing placeholder for right section
-const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=650&q=80";
+// Desktop-only sidebar nav
+import SettingsSidebarNav from "@/components/settings/SettingsSidebarNav";
 
 const SettingsPage: React.FC = () => {
   return (
@@ -83,121 +80,111 @@ const SettingsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Desktop Layout */}
-      <div className="hidden lg:block p-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Desktop Header */}
-          <div className="flex items-center gap-6 mb-12">
-            <span className="inline-flex items-center justify-center bg-gradient-to-br from-blue-400/70 to-purple-500/80 p-8 rounded-2xl shadow-2xl">
-              <Settings size={64} className="text-white drop-shadow-glow" />
-            </span>
-            <div>
-              <h1 className="font-extrabold text-5xl bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent tracking-tight mb-2">
-                Settings
-              </h1>
-              <p className="text-blue-200/90 text-xl font-medium">
-                Personalize NozelPay to fit your workflow
-              </p>
+      {/* Desktop Layout redesigned: */}
+      <div className="hidden lg:block px-0 py-12">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="grid grid-cols-12 gap-9">
+            {/* Sticky Sidebar Navigation */}
+            <div className="col-span-3 xl:col-span-2 flex flex-col">
+              <SettingsSidebarNav />
             </div>
-          </div>
 
-          {/* Desktop Content Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            {/* Left Column - Settings */}
-            <div className="xl:col-span-2 space-y-8">
-              {/* Appearance Card */}
-              <div className="bg-slate-900/90 border border-blue-800/20 rounded-2xl p-8 shadow-xl">
-                <h2 className="font-bold text-2xl text-blue-100 mb-6 flex items-center gap-3">
-                  <Sun className="w-7 h-7 text-yellow-300" />
-                  <span>Appearance</span>
-                </h2>
-                <div className="bg-blue-950/40 border border-blue-800/20 rounded-xl p-6">
-                  <div className="flex items-center justify-between">
+            {/* Settings Cards Main Content */}
+            <div className="col-span-9 xl:col-span-8 flex flex-col gap-8">
+              {/* Heading */}
+              <div className="flex items-center gap-5 mb-2 animate-fade-in">
+                <span className="inline-flex items-center justify-center bg-gradient-to-br from-blue-400/70 to-purple-500/80 p-7 rounded-2xl shadow-2xl">
+                  <Settings size={48} className="text-white drop-shadow-glow" />
+                </span>
+                <div>
+                  <h1 className="font-extrabold text-4xl bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent tracking-tight mb-1">Settings</h1>
+                  <p className="text-blue-200/90 text-lg font-medium">Personalize NozelPay to fit your workflow</p>
+                </div>
+              </div>
+
+              {/* Appearance */}
+              <section id="appearance" className="w-full">
+                <div className="bg-slate-900/95 border border-blue-800/20 rounded-2xl p-8 shadow-glow animate-fade-in mb-4">
+                  <h2 className="font-bold text-xl text-blue-100 mb-4 flex items-center gap-2">
+                    <Sun className="w-6 h-6 text-yellow-300" />
+                    Appearance
+                  </h2>
+                  <div className="flex flex-row items-center justify-between gap-6">
                     <div>
-                      <span className="text-blue-100 text-lg font-medium">Theme</span>
-                      <p className="text-blue-300/60 text-sm mt-1">Switch between light and dark mode</p>
+                      <span className="text-blue-100 text-base font-medium">Theme</span>
+                      <p className="text-blue-300/70 text-sm mt-1">Switch between light and dark mode</p>
                     </div>
                     <ThemeToggle />
                   </div>
                 </div>
-              </div>
+              </section>
 
-              {/* Notifications Card */}
-              <div className="bg-slate-900/90 border border-blue-800/20 rounded-2xl p-8 shadow-xl">
-                <h2 className="font-bold text-2xl text-blue-100 mb-6 flex items-center gap-3">
-                  <Bell className="w-7 h-7 text-blue-300" />
-                  <span>Notifications</span>
-                </h2>
-                <div className="space-y-4">
-                  <div className="bg-slate-800/50 border border-blue-800/20 rounded-xl p-6">
-                    <div className="flex items-center justify-between">
+              {/* Notifications */}
+              <section id="notifications" className="w-full">
+                <div className="bg-slate-900/95 border border-blue-800/20 rounded-2xl p-8 shadow-glow animate-fade-in mb-4">
+                  <h2 className="font-bold text-xl text-blue-100 mb-4 flex items-center gap-2">
+                    <Bell className="w-6 h-6 text-blue-300" />
+                    Notifications
+                  </h2>
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex-1 bg-slate-800/50 border border-blue-800/20 rounded-xl p-6 flex items-center justify-between">
                       <div>
-                        <span className="text-blue-100 text-lg font-medium">Email notifications</span>
-                        <p className="text-blue-300/60 text-sm mt-1">Receive updates via email</p>
+                        <span className="text-blue-100 text-base font-medium">Email notifications</span>
+                        <p className="text-blue-300/70 text-sm mt-1">Receive updates via email</p>
+                      </div>
+                      <Switch disabled checked={false} />
+                    </div>
+                    <div className="flex-1 bg-slate-800/50 border border-blue-800/20 rounded-xl p-6 flex items-center justify-between">
+                      <div>
+                        <span className="text-blue-100 text-base font-medium">Push notifications</span>
+                        <p className="text-blue-300/70 text-sm mt-1">Get instant browser notifications</p>
                       </div>
                       <Switch disabled checked={false} />
                     </div>
                   </div>
-                  <div className="bg-slate-800/50 border border-blue-800/20 rounded-xl p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-blue-100 text-lg font-medium">Push notifications</span>
-                        <p className="text-blue-300/60 text-sm mt-1">Get instant browser notifications</p>
-                      </div>
-                      <Switch disabled checked={false} />
-                    </div>
-                  </div>
-                  <p className="text-blue-300/60 text-sm pl-2">(Coming soon)</p>
+                  <p className="text-blue-300/60 text-sm mt-3">(Coming soon)</p>
                 </div>
-              </div>
+              </section>
 
-              {/* Profile Card */}
-              <div className="bg-slate-900/90 border border-blue-800/20 rounded-2xl p-8 shadow-xl">
-                <h2 className="font-bold text-2xl text-blue-100 mb-6">Profile</h2>
-                <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="name" className="text-blue-200 text-base font-medium">Name</Label>
-                    <Input 
-                      id="name" 
-                      disabled 
-                      value="Jane Doe" 
-                      className="bg-blue-950/40 border-blue-800/20 text-blue-100 mt-2 h-12 text-base" 
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email" className="text-blue-200 text-base font-medium">Email</Label>
-                    <Input 
-                      id="email" 
-                      disabled 
-                      value="jane.doe@email.com" 
-                      className="bg-blue-950/40 border-blue-800/20 text-blue-100 mt-2 h-12 text-base" 
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Label htmlFor="role" className="text-blue-200 text-base font-medium">Role</Label>
-                    <Input 
-                      id="role" 
-                      disabled 
-                      value="Payroll Manager" 
-                      className="bg-blue-950/40 border-blue-800/20 text-blue-100 mt-2 h-12 text-base" 
-                    />
-                  </div>
-                </form>
-                <p className="text-blue-300/60 text-sm mt-4">(Profile editing coming soon)</p>
-              </div>
+              {/* Profile */}
+              <section id="profile" className="w-full">
+                <div className="bg-slate-900/95 border border-blue-800/20 rounded-2xl p-8 shadow-glow animate-fade-in">
+                  <h2 className="font-bold text-xl text-blue-100 mb-4">Profile</h2>
+                  <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <Label htmlFor="name" className="text-blue-200 text-base font-medium">Name</Label>
+                      <Input 
+                        id="name" 
+                        disabled 
+                        value="Jane Doe" 
+                        className="bg-blue-950/40 border-blue-800/20 text-blue-100 mt-2 h-12 text-base" 
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email" className="text-blue-200 text-base font-medium">Email</Label>
+                      <Input 
+                        id="email" 
+                        disabled 
+                        value="jane.doe@email.com" 
+                        className="bg-blue-950/40 border-blue-800/20 text-blue-100 mt-2 h-12 text-base" 
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <Label htmlFor="role" className="text-blue-200 text-base font-medium">Role</Label>
+                      <Input 
+                        id="role" 
+                        disabled 
+                        value="Payroll Manager" 
+                        className="bg-blue-950/40 border-blue-800/20 text-blue-100 mt-2 h-12 text-base" 
+                      />
+                    </div>
+                  </form>
+                  <p className="text-blue-300/60 text-sm mt-4">(Profile editing coming soon)</p>
+                </div>
+              </section>
             </div>
-
-            {/* Right Column - Illustration */}
-            <div className="xl:col-span-1">
-              <div className="bg-slate-900/90 border border-blue-800/20 rounded-2xl p-8 shadow-xl h-full">
-                <img
-                  src={PLACEHOLDER}
-                  alt="Settings illustration"
-                  className="rounded-xl w-full h-full object-cover shadow-lg border border-blue-800/10"
-                  draggable={false}
-                />
-              </div>
-            </div>
+            {/* Third col: accent or whitespace (not used now, reserved for future) */}
+            <div className="col-span-2 xl:col-span-2" />
           </div>
         </div>
       </div>
