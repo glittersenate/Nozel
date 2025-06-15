@@ -42,18 +42,32 @@ const EmployeeUploadDialog: React.FC<EmployeeUploadDialogProps> = ({
       // Parse to json
       const rows: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet, { defval: "" });
       // Map the data to Omit<Employee, "id">
-      const mapped = rows.map((row) => ({
-        name: row["Name"] || row["name"] || "",
-        email: row["Email"] || row["email"] || "",
-        position: row["Position"] || row["position"] || "",
-        department: row["Department"] || row["department"] || "",
-        salary: Number(row["Salary"] || row["salary"] || 0),
-        startDate: row["Start Date"] || row["startDate"] || "",
-        status: (row["Status"] || row["status"] || "active").toLowerCase() === "inactive" ? "inactive" : "active",
-        avatar: row["Avatar"] || row["avatar"] || undefined,
-        phone: row["Phone"] || row["phone"] || undefined,
-        address: row["Address"] || row["address"] || undefined,
-      }));
+      const mapped = rows.map((row) => {
+        // Robust status normalization
+        let rawStatus = row["Status"] || row["status"] || "";
+        rawStatus = String(rawStatus).toLowerCase().trim();
+        let status: "active" | "inactive" = "active";
+        if (
+          rawStatus === "inactive" ||
+          rawStatus === "disabled" ||
+          rawStatus === "terminated"
+        ) {
+          status = "inactive";
+        }
+
+        return {
+          name: row["Name"] || row["name"] || "",
+          email: row["Email"] || row["email"] || "",
+          position: row["Position"] || row["position"] || "",
+          department: row["Department"] || row["department"] || "",
+          salary: Number(row["Salary"] || row["salary"] || 0),
+          startDate: row["Start Date"] || row["startDate"] || "",
+          status,
+          avatar: row["Avatar"] || row["avatar"] || undefined,
+          phone: row["Phone"] || row["phone"] || undefined,
+          address: row["Address"] || row["address"] || undefined,
+        };
+      });
 
       // Filter invalid entries
       const validEmployees = mapped.filter(emp =>
