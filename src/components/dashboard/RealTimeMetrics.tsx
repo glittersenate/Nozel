@@ -70,6 +70,7 @@ const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics }) => {
             <div className="text-lg font-bold text-white">
               {topGrowthDept ? topGrowthDept[0] : 'N/A'}
             </div>
+            {/* No pulse animation below */}
             <div className="text-xs text-blue-300/70">
               {topGrowthDept ? `+${topGrowthDept[1]}%` : 'No data'}
             </div>
@@ -78,8 +79,9 @@ const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics }) => {
 
         <div className="mt-4 pt-4 border-t border-blue-800/30">
           <div className="flex items-center justify-center gap-2 text-xs text-blue-300/70">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            Data refreshes every 10 seconds
+            {/* Remove .animate-pulse and update badge text */}
+            <div className="w-2 h-2 bg-green-400 rounded-full" />
+            Data refreshes every 60 seconds
           </div>
         </div>
       </CardContent>
