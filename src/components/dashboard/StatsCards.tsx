@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Users, DollarSign, TrendingUp, Clock } from 'lucide-react';
 
@@ -67,12 +66,12 @@ const StatsCards: React.FC<StatsCardsProps> = ({ employees }) => {
       {stats.map((stat) => (
         <div
           key={stat.title}
-          className={`bg-[#141a2e]/80 border ${stat.borderColor} rounded-xl p-6 hover:scale-105 transition-transform`}
+          className={`bg-white dark:bg-[#141a2e]/80 border ${stat.borderColor} rounded-xl p-6 hover:scale-105 transition-transform text-black dark:text-white`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-blue-300/70 text-sm font-medium">{stat.title}</p>
-              <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
+              <p className="text-slate-800/70 dark:text-blue-300/70 text-sm font-medium">{stat.title}</p>
+              <p className="text-2xl font-bold text-black dark:text-white mt-1">{stat.value}</p>
             </div>
             <div className={`${stat.bgColor} p-3 rounded-lg`}>
               <stat.icon className={`w-6 h-6 ${stat.color}`} />

@@ -30,17 +30,16 @@ export const MetricCard: React.FC<MetricCardProps> = ({
 }) => {
   return (
     <Card
-      className="group glass-premium border-none rounded-2xl overflow-hidden shadow-glow-lg animate-fade-in-scale relative min-h-[128px]"
+      className="group border-none rounded-2xl overflow-hidden shadow-glow-lg animate-fade-in-scale relative min-h-[128px] bg-white dark:glass-premium text-black dark:text-white"
       style={{
         padding: 0,
         margin: 0,
       }}
     >
       {/* Subtle layered gradients for glass morph look */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-700/5 via-cyan-800/5 to-white/0 pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#171e34]/70 to-[#21273e]/60 opacity-80" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/4 via-slate-400/10 to-transparent pointer-events-none z-0 dark:bg-gradient-to-br dark:from-blue-700/5 dark:via-cyan-800/5 dark:to-white/0" />
       {/* faint highlight line */}
-      <div className="absolute top-0 left-4 right-4 h-1 bg-gradient-to-r from-blue-300/30 via-cyan-200/10 to-transparent rounded-full blur-md z-10" />
+      <div className="absolute top-0 left-4 right-4 h-1 bg-gradient-to-r from-slate-400/30 via-slate-200/10 to-transparent rounded-full blur-md z-10 dark:bg-gradient-to-r dark:from-blue-300/30 dark:via-cyan-200/10 dark:to-transparent" />
 
       <CardContent className="relative px-4 py-4 sm:px-6 sm:py-5 z-10">
         <div className="flex items-center justify-between">
@@ -51,7 +50,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
                   font-heading font-semibold
                   text-[10px] xs:text-xs sm:text-sm
                   tracking-widest
-                  text-blue-200/80
+                  text-slate-800/80 dark:text-blue-200/80
                   uppercase
                   whitespace-nowrap
                   sm:whitespace-normal
@@ -60,10 +59,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({
                   max-w-[10em] sm:max-w-full
                 `}
                 style={{
-                  // Prevent word breaking on mobile, allow on desktop
                   overflow: "visible",
                   textOverflow: "initial",
-                  // `whitespace-nowrap` in class for mobile, `normal` for sm+
                   lineHeight: "1.15",
                   minHeight: "1.2em",
                 }}
@@ -86,7 +83,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             <div className="mb-1">
               <span
                 className={`
-                  font-extrabold font-heading bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent
+                  font-extrabold font-heading bg-gradient-to-r from-black via-neutral-700 to-slate-400 bg-clip-text text-transparent dark:bg-gradient-to-r dark:from-white dark:via-blue-100 dark:to-cyan-200 dark:bg-clip-text dark:text-transparent
                   text-lg sm:text-xl lg:text-2xl tracking-tight leading-none block
                   ${truncateValue ? "truncate max-w-[110px]" : ""}
                 `}
@@ -98,7 +95,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             </div>
 
             {subtitle && (
-              <div className="text-blue-300/80 text-[11px] sm:text-xs font-medium truncate">
+              <div className="text-slate-800/80 dark:text-blue-300/80 text-[11px] sm:text-xs font-medium truncate">
                 {subtitle}
               </div>
             )}
@@ -111,8 +108,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           </div>
         </div>
         {/* Stylized micro progress "bar" for extra polish */}
-        <div className="relative h-1 bg-slate-900/40 rounded-full mt-3 overflow-hidden shadow-inner">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-700/30 via-purple-800/20 to-cyan-800/30 rounded-full" />
+        <div className="relative h-1 bg-slate-200 rounded-full mt-3 overflow-hidden shadow-inner dark:bg-slate-900/40">
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-400/30 via-slate-200/20 to-slate-200/30 rounded-full dark:bg-gradient-to-r dark:from-blue-700/30 dark:via-purple-800/20 dark:to-cyan-800/30" />
           <div className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full transition-transform duration-700 shadow-xl shadow-blue-800/30"
             style={{ width: '75%' }} />
         </div>

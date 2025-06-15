@@ -42,18 +42,18 @@ export const PayrollSummaryCards = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card) => (
-        <Card key={card.title} className="bg-[#141a2e]/80 border border-blue-800/30">
+        <Card key={card.title} className="bg-white dark:bg-[#141a2e]/80 border border-blue-800/30 text-black dark:text-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-300">
+            <CardTitle className="text-sm font-medium text-slate-800 dark:text-blue-300">
               {card.title}
             </CardTitle>
             <card.icon className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white mb-1">
+            <div className="text-2xl font-bold text-black dark:text-white mb-1">
               {card.value}
             </div>
-            <p className="text-xs text-blue-300/70">
+            <p className="text-xs text-slate-700 dark:text-blue-300/70">
               {card.subtitle}
             </p>
           </CardContent>
