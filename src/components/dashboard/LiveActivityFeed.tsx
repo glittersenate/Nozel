@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Clock, UserPlus, TrendingUp, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,10 +14,11 @@ interface Activity {
 
 interface LiveActivityFeedProps {
   activities: Activity[];
-  isLive: boolean;
 }
 
-const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities, isLive }) => {
+const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
+  const [showAll, setShowAll] = useState(false);
+
   const getActivityIcon = (type: Activity['type']) => {
     switch (type) {
       case 'hire': return UserPlus;
@@ -37,6 +39,8 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities, isLive 
     }
   };
 
+  const displayActivities = showAll ? activities : activities.slice(0, 10);
+
   return (
     <Card
       className="shadow-lg rounded-2xl p-0 border"
@@ -49,11 +53,14 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities, isLive 
         <CardTitle className="flex items-center gap-3 text-blue-100">
           <Clock className="w-5 h-5 text-blue-400" />
           Live Activity Feed
-          {isLive && (
-            <Badge variant="default" className="bg-green-600 text-white">
-              Live
-            </Badge>
-          )}
+          <button
+            type="button"
+            onClick={() => setShowAll(!showAll)}
+            className="ml-auto px-2 py-1 text-xs rounded bg-blue-800 text-blue-100 hover:bg-blue-700 transition-colors"
+            aria-label="See all activity"
+          >
+            {showAll ? "Hide" : "See all"}
+          </button>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -61,7 +68,7 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities, isLive 
           {activities.length === 0 ? (
             <p className="text-blue-300/70 text-center py-4">No recent activities</p>
           ) : (
-            activities.slice(0, 10).map((activity) => {
+            displayActivities.map((activity) => {
               const Icon = getActivityIcon(activity.type);
               return (
                 <div key={activity.id} className="flex items-start gap-3 p-3 bg-[#0e1c38]/50 rounded-lg">
@@ -78,6 +85,11 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities, isLive 
               );
             })
           )}
+        </div>
+        <div className="flex justify-center mt-3">
+          <span className="text-xs text-blue-300/70">
+            Updates every 15 seconds
+          </span>
         </div>
       </CardContent>
     </Card>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Layout } from "@/components/Layout";
 import EnhancedStatsCards from "@/components/dashboard/EnhancedStatsCards";
@@ -18,7 +17,7 @@ import EmployeePortal from "./EmployeePortal";
 
 const Index = () => {
   const { employees } = useEmployees();
-  const { metrics, isLive, toggleLiveMode } = useRealTimeData(employees);
+  const { metrics } = useRealTimeData(employees);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -117,16 +116,13 @@ const Index = () => {
           <div className="space-y-7">
             <RealTimeMetrics 
               metrics={metrics} 
-              isLive={isLive} 
-              onToggleLive={toggleLiveMode} 
             />
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <LiveActivityFeed 
                 activities={metrics.activityFeed} 
-                isLive={isLive} 
               />
-              <AIInsightsModule employees={employees} isLive={isLive} />
+              <AIInsightsModule employees={employees} isLive={false} />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

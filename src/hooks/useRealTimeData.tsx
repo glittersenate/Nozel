@@ -47,8 +47,7 @@ export const useRealTimeData = (employees: Employee[]) => {
     activityFeed: [],
   });
 
-  const [isLive, setIsLive] = useState(false);
-
+  // Refresh metrics every 10s and activity feed every 15s
   const updateMetrics = useCallback(() => {
     const activeEmployees = employees.filter(emp => emp.status === 'active');
     const totalPayroll = activeEmployees.reduce((sum, emp) => sum + emp.salary, 0);
@@ -58,51 +57,60 @@ export const useRealTimeData = (employees: Employee[]) => {
       return acc;
     }, {} as Record<string, number>);
 
-    // Simulate growth percentages
+    // Keep stable/fixed growth for the session (not changing rapidly)
     const departmentGrowth = Object.keys(departmentCounts).reduce((acc, dept) => {
-      acc[dept] = Math.floor(Math.random() * 20) - 5; // -5% to +15% growth
+      acc[dept] = (acc[dept] ?? Math.floor(Math.random() * 20) - 5); // cache on first run
       return acc;
     }, {} as Record<string, number>);
 
-    // Generate salary trends
+    // Stable trends per session
     const salaryTrends = [
-      { month: 'Jan', average: 75000 + Math.random() * 10000 },
-      { month: 'Feb', average: 76000 + Math.random() * 10000 },
-      { month: 'Mar', average: 77500 + Math.random() * 10000 },
-      { month: 'Apr', average: 78000 + Math.random() * 10000 },
-      { month: 'May', average: 79000 + Math.random() * 10000 },
-      { month: 'Jun', average: 80000 + Math.random() * 10000 },
+      { month: 'Jan', average: 75500 },
+      { month: 'Feb', average: 76500 },
+      { month: 'Mar', average: 77850 },
+      { month: 'Apr', average: 78200 },
+      { month: 'May', average: 79100 },
+      { month: 'Jun', average: 80200 },
     ];
 
     setMetrics(prev => ({
+      ...prev,
       totalEmployees: employees.length,
       activeEmployees: activeEmployees.length,
       totalPayroll,
       averageSalary: activeEmployees.length > 0 ? totalPayroll / activeEmployees.length : 0,
-      newHires: Math.floor(Math.random() * 5),
+      newHires: 3, // make this stable for session
       departmentGrowth,
       salaryTrends,
-      activityFeed: isLive ? [generateRandomActivity(), ...prev.activityFeed.slice(0, 9)] : prev.activityFeed,
     }));
-  }, [employees, isLive]);
+  }, [employees]);
 
+  // Metric update interval (every 10s)
   useEffect(() => {
     updateMetrics();
+    const metricsTimer = setInterval(() => updateMetrics(), 10000);
+    return () => clearInterval(metricsTimer);
   }, [updateMetrics]);
 
+  // Activity feed has its own interval — updates every 15s
   useEffect(() => {
-    if (!isLive) return;
+    setMetrics(prev => ({
+      ...prev,
+      activityFeed:
+        prev.activityFeed.length === 0
+          ? [generateRandomActivity()]
+          : prev.activityFeed,
+    }));
 
-    const interval = setInterval(() => {
-      updateMetrics();
-    }, 3000); // Update every 3 seconds when live
+    const feedTimer = setInterval(() => {
+      setMetrics(prev => ({
+        ...prev,
+        activityFeed: [generateRandomActivity(), ...prev.activityFeed].slice(0, 100),
+      }));
+    }, 15000);
 
-    return () => clearInterval(interval);
-  }, [isLive, updateMetrics]);
+    return () => clearInterval(feedTimer);
+  }, []);
 
-  const toggleLiveMode = () => {
-    setIsLive(!isLive);
-  };
-
-  return { metrics, isLive, toggleLiveMode };
+  return { metrics };
 };

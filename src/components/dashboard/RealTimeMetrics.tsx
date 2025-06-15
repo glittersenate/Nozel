@@ -1,8 +1,7 @@
+
 import React from 'react';
 import { Activity, TrendingUp, Users, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 
 interface RealTimeMetrics {
   totalEmployees: number;
@@ -15,11 +14,9 @@ interface RealTimeMetrics {
 
 interface RealTimeMetricsProps {
   metrics: RealTimeMetrics;
-  isLive: boolean;
-  onToggleLive: () => void;
 }
 
-const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics, isLive, onToggleLive }) => {
+const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics }) => {
   const topGrowthDept = Object.entries(metrics.departmentGrowth)
     .sort(([,a], [,b]) => b - a)[0];
 
@@ -37,14 +34,6 @@ const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics, isLive, onTo
             <Activity className="w-5 h-5 text-green-400" />
             Real-Time Metrics
           </CardTitle>
-          <Button
-            onClick={onToggleLive}
-            size="sm"
-            variant={isLive ? "default" : "outline"}
-            className={isLive ? "bg-green-600 hover:bg-green-700" : "border-blue-600 text-blue-300"}
-          >
-            {isLive ? 'Stop Live' : 'Go Live'}
-          </Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -87,14 +76,12 @@ const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics, isLive, onTo
           </div>
         </div>
 
-        {isLive && (
-          <div className="mt-4 pt-4 border-t border-blue-800/30">
-            <div className="flex items-center justify-center gap-2 text-xs text-blue-300/70">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              Live data updating every 3 seconds
-            </div>
+        <div className="mt-4 pt-4 border-t border-blue-800/30">
+          <div className="flex items-center justify-center gap-2 text-xs text-blue-300/70">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            Data refreshes every 10 seconds
           </div>
-        )}
+        </div>
       </CardContent>
     </Card>
   );
