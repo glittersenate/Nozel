@@ -52,23 +52,52 @@ export default function Settings() {
   return (
     <Layout>
       <div className="container mx-auto max-w-5xl py-10 px-3 sm:px-10 flex flex-col sm:flex-row gap-8 animate-fade-in">
-        <aside className="w-full sm:w-64 shrink-0 flex-none">
+        {/* Sidebar (responsive + a11y) */}
+        <aside
+          className="w-full sm:w-64 shrink-0 flex-none mb-4 sm:mb-0"
+          aria-label="Settings Navigation"
+        >
           <SettingsSidebarNav />
         </aside>
         <section className="flex-1 min-w-0 space-y-8">
           {/* APPEARANCE */}
-          <div id="appearance" className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6">
-            <h2 className="text-blue-100 text-xl font-bold mb-2">Appearance</h2>
+          <div
+            id="appearance"
+            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            tabIndex={-1}
+            aria-labelledby="appearance-heading"
+          >
+            <h2
+              className="text-blue-100 text-xl font-bold mb-2"
+              id="appearance-heading"
+              tabIndex={0}
+            >
+              Appearance
+            </h2>
             <div className="flex items-center gap-4">
-              <Label htmlFor="theme" className="text-blue-200 font-medium">Theme</Label>
+              <Label htmlFor="theme" className="text-blue-200 font-medium">
+                Theme
+              </Label>
+              {/* Theme toggle already accessible */}
               <ThemeToggle />
               <span className="ml-4 text-blue-400/70 text-xs">{`Switch light / dark`}</span>
             </div>
           </div>
 
           {/* NOTIFICATIONS */}
-          <div id="notifications" className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6">
-            <h2 className="text-blue-100 text-xl font-bold mb-2">Notification Preferences</h2>
+          <div
+            id="notifications"
+            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            tabIndex={-1}
+            aria-labelledby="notifications-heading"
+          >
+            <h2
+              className="text-blue-100 text-xl font-bold mb-2"
+              id="notifications-heading"
+              tabIndex={0}
+            >
+              Notification Preferences
+            </h2>
             <form className="flex flex-col gap-3 max-w-xs">
               <div className="flex items-center justify-between gap-4">
                 <Label
@@ -85,6 +114,7 @@ export default function Settings() {
                   aria-checked={emailNotify}
                   aria-label={emailNotify ? "Disable Email Notifications" : "Enable Email Notifications"}
                   tabIndex={0}
+                  className="focus-visible:ring-2 ring-blue-400 focus-visible:outline-none"
                 />
               </div>
               <div className="flex items-center justify-between gap-4">
@@ -102,13 +132,14 @@ export default function Settings() {
                   aria-checked={pushNotify}
                   aria-label={pushNotify ? "Disable Push Notifications" : "Enable Push Notifications"}
                   tabIndex={0}
+                  className="focus-visible:ring-2 ring-blue-400 focus-visible:outline-none"
                 />
               </div>
               <Button
                 variant="outline"
                 type="button"
                 onClick={handleResetPreferences}
-                className="mt-3"
+                className="mt-3 focus-visible:ring-2 ring-blue-300 focus-visible:outline-none"
                 aria-label="Reset notification preferences"
               >
                 Reset Preferences
@@ -117,23 +148,59 @@ export default function Settings() {
           </div>
 
           {/* PROFILE */}
-          <div id="profile" className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6">
-            <h2 className="text-blue-100 text-xl font-bold mb-2">Profile</h2>
-            <p className="text-blue-300/80 text-sm mb-2">Manage your personal information and account details here. (More editing features coming soon!)</p>
-            <Button asChild variant="outline">
-              <Link to="/employee-portal">Go to Employee Portal</Link>
+          <div
+            id="profile"
+            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            tabIndex={-1}
+            aria-labelledby="profile-heading"
+          >
+            <h2
+              className="text-blue-100 text-xl font-bold mb-2"
+              id="profile-heading"
+              tabIndex={0}
+            >
+              Profile
+            </h2>
+            <p className="text-blue-300/80 text-sm mb-2">
+              Manage your personal information and account details here. (More editing features coming soon!)
+            </p>
+            <Button
+              asChild
+              variant="outline"
+              className="focus-visible:ring-2 ring-blue-300 focus-visible:outline-none"
+            >
+              <Link to="/employee-portal" tabIndex={0} aria-label="Go to Employee Portal">
+                Go to Employee Portal
+              </Link>
             </Button>
           </div>
 
           {/* INTEGRATIONS */}
-          <div id="integrations" className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-3">
-            <h2 className="text-blue-100 text-xl font-bold mb-2">Integrations</h2>
+          <div
+            id="integrations"
+            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-3"
+            tabIndex={-1}
+            aria-labelledby="integrations-heading"
+          >
+            <h2
+              className="text-blue-100 text-xl font-bold mb-2"
+              id="integrations-heading"
+              tabIndex={0}
+            >
+              Integrations
+            </h2>
             <div className="flex flex-col gap-2 text-blue-300/80">
               <span>
                 Connect your HR data with third-party tools and automate workflows.
               </span>
-              <Button asChild variant="secondary" className="max-w-xs">
-                <Link to="/integrations">View Available Integrations</Link>
+              <Button
+                asChild
+                variant="secondary"
+                className="max-w-xs focus-visible:ring-2 ring-blue-300 focus-visible:outline-none"
+              >
+                <Link to="/integrations" tabIndex={0} aria-label="View Available Integrations">
+                  View Available Integrations
+                </Link>
               </Button>
             </div>
           </div>
