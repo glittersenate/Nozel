@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield } from 'lucide-react';
+import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, Gift } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Sidebar,
@@ -21,6 +20,7 @@ const navigationItems = [
   { title: 'Time Tracking', url: '/time-tracking', icon: Clock },
   { title: 'Payroll', url: '/payroll', icon: DollarSign },
   { title: 'Leave', url: '/leave', icon: Calendar },
+  { title: 'Benefits', url: '/benefits', icon: Gift },
   { title: 'Performance', url: '/performance', icon: Star },
   { title: 'Reports', url: '/reports', icon: FileText },
   { title: 'Analytics', url: '/analytics', icon: BarChart3 },
