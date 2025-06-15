@@ -9,8 +9,9 @@ import EmployeeProfileModal from "@/components/EmployeeProfileModal";
 import EditEmployeeDialog from "@/components/employees/EditEmployeeDialog";
 import { useEmployees } from "@/hooks/useEmployees";
 import { Employee } from "@/types/employee";
-import { Plus, Filter } from "lucide-react";
+import { Plus, Filter, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import EmployeeUploadDialog from "@/components/employees/EmployeeUploadDialog";
 
 const Employees = () => {
   const {
@@ -26,6 +27,7 @@ const Employees = () => {
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -50,6 +52,11 @@ const Employees = () => {
 
   const handleBulkExport = () => {
     console.log('Exporting employees:', selectedIds);
+  };
+
+  // Handler to add multiple employees at once
+  const handleImportEmployees = (importedEmployees: Omit<Employee, "id">[]) => {
+    importedEmployees.forEach(emp => addEmployee(emp));
   };
 
   return (
@@ -80,6 +87,14 @@ const Employees = () => {
             >
               <Filter className="w-4 h-4 mr-2" />
               Filter
+            </Button>
+            <Button
+              onClick={() => setShowUploadDialog(true)}
+              variant="outline"
+              className="w-full xs:w-auto border-blue-600 text-blue-300 hover:bg-blue-600/10"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Upload
             </Button>
           </div>
 
@@ -121,6 +136,12 @@ const Employees = () => {
             onAddEmployee={addEmployee}
           />
 
+          <EmployeeUploadDialog
+            open={showUploadDialog}
+            onOpenChange={setShowUploadDialog}
+            onImport={handleImportEmployees}
+          />
+
           <EmployeeFilterDrawer
             open={showFilterDrawer}
             onOpenChange={setShowFilterDrawer}
@@ -153,3 +174,4 @@ const Employees = () => {
 };
 
 export default Employees;
+
