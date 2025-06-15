@@ -60,7 +60,7 @@ export const PerformanceProvider: React.FC<{children: React.ReactNode}> = ({ chi
         scheduledDate: review.scheduledDate,
         completedAt: undefined,
         developmentPlan: review.developmentPlan,
-        employeeFeedback: review.areasForImprovement || "",
+        employeeFeedback: review.employeeFeedback || "",
       } as PerformanceReview,
       ...prev
     ]);
