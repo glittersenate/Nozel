@@ -2,6 +2,7 @@ import React from 'react';
 import { Users, DollarSign, TrendingUp, Clock, Award, UserPlus } from 'lucide-react';
 import { MetricCard } from '@/components/common/MetricCard';
 import { Employee } from '@/types/employee';
+import PremiumCard from '../common/PremiumCard';
 
 interface EnhancedStatsCardsProps {
   employees: Employee[];
@@ -30,74 +31,56 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
     {
       title: 'Total Employees',
       value: employees.length,
-      subtitle: `${activeEmployees.length} active`,
       icon: Users,
-      color: 'text-blue-400',
-      bgColor: 'bg-blue-500/20',
-      borderColor: 'border-blue-500/20',
-      trend: { value: 8.2, isPositive: true }
+      subtitle: `${activeEmployees.length} active`,
     },
     {
       title: 'Monthly Payroll',
       value: `$${totalSalaries.toLocaleString()}`,
-      subtitle: 'total compensation',
       icon: DollarSign,
-      color: 'text-emerald-400',
-      bgColor: 'bg-emerald-500/20',
-      borderColor: 'border-emerald-500/20',
-      trend: { value: 3.1, isPositive: true }
+      subtitle: 'total compensation',
     },
     {
       title: 'Average Salary',
       value: `$${Math.round(avgSalary).toLocaleString()}`,
-      subtitle: 'per employee',
       icon: TrendingUp,
-      color: 'text-amber-400',
-      bgColor: 'bg-amber-500/20',
-      borderColor: 'border-amber-500/20',
-      trend: { value: 5.7, isPositive: true }
+      subtitle: 'per employee',
     },
     {
       title: 'Recent Hires',
       value: recentHires,
-      subtitle: 'last 3 months',
       icon: UserPlus,
-      color: 'text-violet-400',
-      bgColor: 'bg-violet-500/20',
-      borderColor: 'border-violet-500/20',
-      trend: { value: 12.5, isPositive: true }
+      subtitle: 'last 3 months',
     },
     {
       title: 'Top Department',
       value: topDepartment ? topDepartment[0] : 'N/A',
-      subtitle: topDepartment ? `${topDepartment[1]} employees` : 'No data',
       icon: Award,
-      color: 'text-orange-400',
-      bgColor: 'bg-orange-500/20',
-      borderColor: 'border-orange-500/20',
-      truncateValue: true
+      subtitle: topDepartment ? `${topDepartment[1]} employees` : 'No data',
     },
     {
       title: 'Retention Rate',
       value: '94.2%',
-      subtitle: 'year over year',
       icon: Clock,
-      color: 'text-cyan-400',
-      bgColor: 'bg-cyan-500/20',
-      borderColor: 'border-cyan-500/20',
-      trend: { value: 2.1, isPositive: true }
+      subtitle: 'year over year',
     }
   ];
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 mb-8 px-0 sm:px-0 pt-2">
-      {metrics.map((metric, index) => (
-        <div 
-          key={metric.title}
-          className="flex flex-col h-full min-w-0"
-        >
-          <MetricCard {...metric} />
-        </div>
+      {metrics.map((metric, idx) => (
+        <PremiumCard key={metric.title}>
+          <div className="flex items-center justify-between pb-1">
+            <span className="uppercase text-xs font-bold tracking-wider text-black/60 dark:text-blue-200/60">{metric.title}</span>
+            <metric.icon className="w-5 h-5 text-black dark:text-blue-200" />
+          </div>
+          <div className="pt-2 pb-1">
+            <span className="text-2xl font-bold text-black dark:text-white truncate">{typeof metric.value === "number" ? metric.value.toLocaleString() : metric.value}</span>
+          </div>
+          {metric.subtitle && (
+            <div className="text-xs text-black/40 dark:text-blue-300/50 truncate">{metric.subtitle}</div>
+          )}
+        </PremiumCard>
       ))}
     </div>
   );
