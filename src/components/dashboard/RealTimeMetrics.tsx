@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Activity, TrendingUp, Users, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,9 +15,13 @@ interface RealTimeMetricsProps {
   metrics: RealTimeMetrics;
 }
 
-const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics }) => {
-  const topGrowthDept = Object.entries(metrics.departmentGrowth)
-    .sort(([,a], [,b]) => b - a)[0];
+const RealTimeMetrics: React.FC<RealTimeMetricsProps & {
+  metrics: RealTimeMetrics & {
+    topGrowthDept?: { name: string; value: number } | null;
+  }
+}> = ({ metrics }) => {
+  // NO per-render sorting, just use the stable topGrowthDept from metrics.
+  const top = metrics.topGrowthDept ?? null;
 
   return (
     <Card
@@ -68,18 +71,16 @@ const RealTimeMetrics: React.FC<RealTimeMetricsProps> = ({ metrics }) => {
               <span className="text-blue-300 text-sm">Top Growth</span>
             </div>
             <div className="text-lg font-bold text-white">
-              {topGrowthDept ? topGrowthDept[0] : 'N/A'}
+              {top ? top.name : 'N/A'}
             </div>
-            {/* No pulse animation below */}
             <div className="text-xs text-blue-300/70">
-              {topGrowthDept ? `+${topGrowthDept[1]}%` : 'No data'}
+              {top ? `+${top.value}%` : 'No data'}
             </div>
           </div>
         </div>
 
         <div className="mt-4 pt-4 border-t border-blue-800/30">
           <div className="flex items-center justify-center gap-2 text-xs text-blue-300/70">
-            {/* Remove .animate-pulse and update badge text */}
             <div className="w-2 h-2 bg-green-400 rounded-full" />
             Data refreshes every 60 seconds
           </div>

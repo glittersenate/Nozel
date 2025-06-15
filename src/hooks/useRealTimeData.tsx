@@ -36,7 +36,9 @@ const generateRandomActivity = (): RealTimeMetrics['activityFeed'][0] => {
 };
 
 export const useRealTimeData = (employees: Employee[]) => {
-  const [metrics, setMetrics] = useState<RealTimeMetrics>({
+  const [metrics, setMetrics] = useState<RealTimeMetrics & {
+    topGrowthDept?: { name: string; value: number } | null
+  }>({
     totalEmployees: 0,
     activeEmployees: 0,
     totalPayroll: 0,
@@ -45,24 +47,44 @@ export const useRealTimeData = (employees: Employee[]) => {
     departmentGrowth: {},
     salaryTrends: [],
     activityFeed: [],
+    topGrowthDept: null,
   });
 
-  // Refresh metrics every 10s and activity feed every 15s
-  const updateMetrics = useCallback(() => {
+  // --- Stable department growth for session ----
+  const [stableGrowth, setStableGrowth] = useState<Record<string, number>>({});
+  const [stableTopGrowth, setStableTopGrowth] = useState<{ name: string; value: number } | null>(null);
+
+  // Stable initialization of department growth for the session
+  useEffect(() => {
     const activeEmployees = employees.filter(emp => emp.status === 'active');
-    const totalPayroll = activeEmployees.reduce((sum, emp) => sum + emp.salary, 0);
-    
     const departmentCounts = activeEmployees.reduce((acc, emp) => {
       acc[emp.department] = (acc[emp.department] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
+    const growth: Record<string, number> = {};
+    Object.keys(departmentCounts).forEach(dept => {
+      // Generate stable random number for each department once per session
+      growth[dept] = Math.floor(Math.random() * 20) - 5;
+    });
+    setStableGrowth(growth);
 
-    // Keep stable/fixed growth for the session (not changing rapidly)
-    const departmentGrowth = Object.keys(departmentCounts).reduce((acc, dept) => {
-      acc[dept] = (acc[dept] ?? Math.floor(Math.random() * 20) - 5); // cache on first run
-      return acc;
-    }, {} as Record<string, number>);
+    // Also compute top growth department stably
+    let top: { name: string; value: number } | null = null;
+    Object.entries(growth).forEach(([name, value]) => {
+      if (!top || value > top.value) {
+        top = { name, value };
+      }
+    });
+    setStableTopGrowth(top);
+    // eslint-disable-next-line
+  }, [employees.map(e => e.department).sort().join()]); // run only when department list changes
 
+  // Refresh metrics every 10s and activity feed every 45s
+  const updateMetrics = useCallback(() => {
+    const activeEmployees = employees.filter(emp => emp.status === 'active');
+    const totalPayroll = activeEmployees.reduce((sum, emp) => sum + emp.salary, 0);
+
+    // Use stableGrowth for departmentGrowth and stableTopGrowth for topGrowthDept
     // Stable trends per session
     const salaryTrends = [
       { month: 'Jan', average: 75500 },
@@ -79,11 +101,12 @@ export const useRealTimeData = (employees: Employee[]) => {
       activeEmployees: activeEmployees.length,
       totalPayroll,
       averageSalary: activeEmployees.length > 0 ? totalPayroll / activeEmployees.length : 0,
-      newHires: 3, // make this stable for session
-      departmentGrowth,
+      newHires: 3, // stable for session
+      departmentGrowth: stableGrowth,
       salaryTrends,
+      topGrowthDept: stableTopGrowth,
     }));
-  }, [employees]);
+  }, [employees, stableGrowth, stableTopGrowth]);
 
   // Metric update interval (every 10s)
   useEffect(() => {
@@ -92,7 +115,7 @@ export const useRealTimeData = (employees: Employee[]) => {
     return () => clearInterval(metricsTimer);
   }, [updateMetrics]);
 
-  // Activity feed has its own interval — updates every 45s (changed from 15s)
+  // Activity feed (every 45s)
   useEffect(() => {
     setMetrics(prev => ({
       ...prev,
@@ -107,7 +130,7 @@ export const useRealTimeData = (employees: Employee[]) => {
         ...prev,
         activityFeed: [generateRandomActivity(), ...prev.activityFeed].slice(0, 100),
       }));
-    }, 45000); // changed from 15000 to 45000
+    }, 45000);
 
     return () => clearInterval(feedTimer);
   }, []);
