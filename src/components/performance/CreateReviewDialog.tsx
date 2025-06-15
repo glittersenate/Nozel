@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -38,7 +39,14 @@ export const CreateReviewDialog = () => {
     setOpen(false);
   };
 
+  // Used for Input and Textarea
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // Used for Select (reviewType)
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -90,7 +98,7 @@ export const CreateReviewDialog = () => {
                 id="reviewType"
                 name="reviewType"
                 value={formData.reviewType}
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 className="col-span-3 bg-[#141a2e]/80 border-blue-800/50 rounded px-2 py-1 text-blue-100"
               >
                 <option value="quarterly">Quarterly</option>
@@ -208,3 +216,5 @@ export const CreateReviewDialog = () => {
     </>
   );
 };
+
+// ... end of file
