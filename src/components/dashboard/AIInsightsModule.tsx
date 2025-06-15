@@ -90,15 +90,10 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
       style={{
         background: "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
         border: "1px solid rgba(87,120,255,0.06)",
-        minHeight: "0",
-        height: "74%",       // about 30% less than original
-        maxHeight: "285px",  // shrink the maxHeight (~30% less)
-        display: "flex",
-        flexDirection: "column"
       }}
     >
-      <CardHeader className="py-3 px-4">
-        <CardTitle className="flex items-center gap-3 text-blue-100 dark:text-blue-100 light:text-gray-900 text-base">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-3 text-blue-100 dark:text-blue-100 light:text-gray-900">
           <div className="relative">
             <Sparkles className="text-yellow-300 w-6 h-6" />
             {isLive && (
@@ -111,13 +106,13 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
           </Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="py-2 px-4 flex-grow">
-        <div className="space-y-2">
+      <CardContent>
+        <div className="space-y-4">
           {insights.map((insight, index) => (
             <div
               key={index}
               className={`
-                p-3 rounded-lg border transition-all duration-500
+                p-4 rounded-lg border transition-all duration-500
                 ${currentInsight === index || !isLive 
                   ? `${insight.bgColor} border-current opacity-100 scale-100` 
                   : 'opacity-50 scale-95 border-transparent'
@@ -146,8 +141,9 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
             </div>
           ))}
         </div>
+        
         {isLive && (
-          <div className="mt-3 pt-3 border-t border-blue-800/30 dark:border-blue-800/30 light:border-gray-300">
+          <div className="mt-4 pt-4 border-t border-blue-800/30 dark:border-blue-800/30 light:border-gray-300">
             <div className="flex items-center justify-center gap-2 text-xs text-blue-300/70 dark:text-blue-300/70 light:text-gray-500">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
               Auto-refreshing insights every 4 seconds

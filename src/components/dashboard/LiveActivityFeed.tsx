@@ -49,15 +49,10 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
         style={{
           background: "linear-gradient(115deg,rgba(31,42,70,0.98) 65%,rgba(32,55,116,0.94) 100%)",
           border: "1px solid rgba(87,120,255,0.06)",
-          minHeight: "0",     // allow container to shrink
-          height: "74%",      // reduced about 30% (was 100%/default)
-          maxHeight: "285px", // shrink the maxHeight to be about 30% less
-          display: "flex",
-          flexDirection: "column"
         }}
       >
-        <CardHeader className="py-3 px-4"> {/* less vertical padding */}
-          <CardTitle className="flex items-center gap-3 text-blue-100 text-base">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-blue-100">
             <Clock className="w-5 h-5 text-blue-400" />
             Live Activity Feed
             <button
@@ -70,15 +65,15 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
             </button>
           </CardTitle>
         </CardHeader>
-        <CardContent className="py-2 px-4 flex-grow"> {/* less vertical padding */}
-          <div className="space-y-2"> {/* less spacing */}
+        <CardContent>
+          <div className="space-y-4">
             {activities.length === 0 ? (
               <p className="text-blue-300/70 text-center py-4">No recent activities</p>
             ) : (
               displayActivities.map((activity) => {
                 const Icon = getActivityIcon(activity.type);
                 return (
-                  <div key={activity.id} className="flex items-start gap-2 p-2 bg-[#0e1c38]/50 rounded-lg">
+                  <div key={activity.id} className="flex items-start gap-3 p-3 bg-[#0e1c38]/50 rounded-lg">
                     <div className={`p-2 rounded-lg bg-[#141a2e]`}>
                       <Icon className={`w-4 h-4 ${getActivityColor(activity.type)}`} />
                     </div>
@@ -93,7 +88,7 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
               })
             )}
           </div>
-          <div className="flex justify-center mt-2">
+          <div className="flex justify-center mt-3">
             <span className="text-xs text-blue-300/70">
               Updates every 15 seconds
             </span>
@@ -103,7 +98,7 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
 
       {/* See All Dialog */}
       <Dialog open={seeAllOpen} onOpenChange={setSeeAllOpen}>
-        <DialogContent className="max-w-3xl bg-[#151e34] text-blue-100 p-0">
+        <DialogContent className="max-w-2xl bg-[#151e34] text-blue-100 p-0">
           <DialogHeader className="px-6 pt-6 pb-2">
             <DialogTitle className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-blue-400" />
@@ -118,7 +113,7 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
               </button>
             </DialogClose>
           </DialogHeader>
-          <div className="px-6 pb-6 max-h-[75vh] overflow-y-auto">
+          <div className="px-6 pb-6 max-h-[70vh] overflow-y-auto">
             {activities.length === 0 ? (
               <p className="text-blue-300/70 text-center py-8">No activities yet</p>
             ) : (
@@ -149,4 +144,3 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
 };
 
 export default LiveActivityFeed;
-
