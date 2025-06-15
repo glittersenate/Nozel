@@ -25,11 +25,12 @@ const PayslipHistory: React.FC = () => {
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Pay Period</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Net Pay</TableHead>
-              <TableHead className="text-right">Download</TableHead>
+            <TableRow className="bg-blue-950/70 cursor-default">
+              {/* Table headers - no hover effect */}
+              <TableHead className="text-blue-200 font-semibold select-none">Pay Period</TableHead>
+              <TableHead className="text-blue-200 font-semibold select-none">Status</TableHead>
+              <TableHead className="text-blue-200 font-semibold select-none text-right">Net Pay</TableHead>
+              <TableHead className="text-blue-200 font-semibold select-none text-right">Download</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

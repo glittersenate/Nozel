@@ -4,6 +4,7 @@ import PayslipHistory from "@/components/employeePortal/PayslipHistory";
 import RequestTimeOff from "@/components/employeePortal/RequestTimeOff";
 import ProfileSettings from "@/components/employeePortal/ProfileSettings";
 import EmployeeStatsCards from "@/components/employeePortal/EmployeeStatsCards";
+import CompanyDirectory from "@/components/employeePortal/CompanyDirectory";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, FileText, User, LogOut, UserCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -27,10 +28,16 @@ const actions = [
     icon: <User className="w-7 h-7 text-purple-400" />,
     component: "profile",
   },
+  {
+    label: "Directory",
+    description: "Browse all employees",
+    icon: <User className="w-7 h-7 text-yellow-400" />,
+    component: "directory",
+  }
 ];
 
 const EmployeePortal: React.FC = () => {
-  const [active, setActive] = useState<"payslips" | "leave" | "profile">("payslips");
+  const [active, setActive] = useState<"payslips" | "leave" | "profile" | "directory">("payslips");
   const { logout, user } = useAuth();
 
   return (
@@ -91,6 +98,7 @@ const EmployeePortal: React.FC = () => {
             {active === "payslips" && <PayslipHistory />}
             {active === "leave" && <RequestTimeOff />}
             {active === "profile" && <ProfileSettings />}
+            {active === "directory" && <CompanyDirectory />}
           </div>
         </div>
       </div>
