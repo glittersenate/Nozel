@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import EmployeePortal from "./EmployeePortal";
-import { cn } from "@/lib/utils";
 
 const Index = () => {
   const { employees } = useEmployees();
@@ -56,26 +55,17 @@ const Index = () => {
 
             {/* Premium Payroll Summary Card */}
             <div className="w-full">
-              <div
-                className={cn(
-                  // LIGHT: white card
-                  "w-full bg-white dark:bg-none border-0 shadow-lg rounded-2xl p-0",
-                  // DARK: true glass/gradient premium card restore
-                  "dark:bg-gradient-to-br dark:from-[#223364]/95 dark:via-[#202649]/94 dark:to-[#18315c]/93",
-                  "dark:border dark:border-blue-400/20 dark:shadow-glow-lg",
-                  "transition-all duration-300"
-                )}
+              <Card
+                className="w-full bg-white dark:bg-gradient-to-br dark:from-[#1f2a46]/98 dark:to-[#203774]/94 border-0 shadow-lg rounded-2xl p-0"
                 style={{
-                  // sub-shadow on both modes
-                  boxShadow:
-                    "0 6px 32px 0 rgba(16,26,56,0.19), 0 2px 18px 0 #4f8cff0c",
+                  boxShadow: "0 6px 32px 0 rgba(0,20,66,0.12), 0 2px 18px 0 #427DFF11",
                   border: "1px solid rgba(87,120,255,0.06)"
                 }}
               >
                 <CardContent className="!p-0 text-black dark:text-white">
                   <div className="flex items-center px-5 py-4 gap-4 flex-wrap justify-between">
                     <div className="flex flex-col gap-1 flex-1 min-w-0">
-                      <span className="text-xs sm:text-sm uppercase tracking-wide font-bold text-slate-800/70 dark:text-blue-100/90 whitespace-nowrap">
+                      <span className="text-xs sm:text-sm uppercase tracking-wide font-bold text-slate-800/70 dark:text-blue-100/70 whitespace-nowrap">
                         Pay Period
                       </span>
                       <div className="flex items-center gap-1 text-black dark:text-white text-[15px] sm:text-base font-semibold whitespace-nowrap">
@@ -85,11 +75,7 @@ const Index = () => {
                     </div>
                     <Button
                       onClick={handleRunPayroll}
-                      className={cn(
-                        "bg-sky-500 hover:bg-sky-600 dark:bg-gradient-to-br dark:from-blue-700 dark:to-blue-500",
-                        "text-white font-bold px-0 py-3 rounded-xl h-11 w-11 shrink-0 shadow-md border-0 flex items-center justify-center ring-1 ring-blue-400/60",
-                        "transition-all duration-300"
-                      )}
+                      className="bg-sky-500 hover:bg-sky-600 dark:bg-gradient-to-br dark:from-blue-700 dark:to-blue-500 text-white font-bold px-0 py-3 rounded-xl h-11 w-11 shrink-0 shadow-md border-0 flex items-center justify-center ring-1 ring-blue-400/60"
                       style={{
                         minWidth: '2.5rem',
                         minHeight: '2.5rem',
@@ -114,7 +100,7 @@ const Index = () => {
                     </div>
                   </div>
                 </CardContent>
-              </div>
+              </Card>
             </div>
           </div>
           
