@@ -1,7 +1,5 @@
-
 import React from "react";
 import { Settings, Sun, Bell } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,18 +29,6 @@ const SettingsPage: React.FC = () => {
             </div>
             
             {/* Mobile sections */}
-            <section>
-              <h2 className="font-semibold text-base text-blue-100 mb-2 flex items-center gap-2">
-                <Sun className="w-4 h-4 inline-block text-yellow-300" />
-                <span>Appearance</span>
-              </h2>
-              <div className="flex items-center justify-between p-4 rounded-lg border border-blue-800/20 bg-blue-950/40 mb-2">
-                <span className="text-blue-100">Theme</span>
-                <ThemeToggle />
-              </div>
-              <p className="text-xs text-blue-300/60 pl-2">Switch between light and dark mode.</p>
-            </section>
-
             <section>
               <h2 className="font-semibold text-base text-blue-100 mb-2 flex items-center gap-2">
                 <Bell className="w-4 h-4 text-blue-300" />
@@ -104,24 +90,7 @@ const SettingsPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Appearance */}
-                <section id="appearance" className="w-full">
-                  <div className="bg-slate-900/95 border border-blue-800/20 rounded-2xl p-8 shadow-glow animate-fade-in mb-4">
-                    <h2 className="font-bold text-xl text-blue-100 mb-4 flex items-center gap-2">
-                      <Sun className="w-6 h-6 text-yellow-300" />
-                      Appearance
-                    </h2>
-                    <div className="flex flex-row items-center justify-between gap-6">
-                      <div>
-                        <span className="text-blue-100 text-base font-medium">Theme</span>
-                        <p className="text-blue-300/70 text-sm mt-1">Switch between light and dark mode</p>
-                      </div>
-                      <ThemeToggle />
-                    </div>
-                  </div>
-                </section>
-
-                {/* Notifications */}
+                {/* Desktop Notifications Section */}
                 <section id="notifications" className="w-full">
                   <div className="bg-slate-900/95 border border-blue-800/20 rounded-2xl p-8 shadow-glow animate-fade-in mb-4">
                     <h2 className="font-bold text-xl text-blue-100 mb-4 flex items-center gap-2">

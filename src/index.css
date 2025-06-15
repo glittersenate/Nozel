@@ -2,47 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Premium Design System - God-tier UI */
+/* --- PREMIUM DESIGN SYSTEM: DARK ONLY --- */
 
 @layer base {
   :root {
-    /* Base light mode colors: FLAT UI, NO BLUE! */
-    --background: 0 0% 100%;                /* #fff */
-    --foreground: 0 0% 0%;                  /* #000 */
-    --card: 0 0% 100%;                      /* white cards */
-    --card-foreground: 0 0% 0%;             /* black text on cards */
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 0 0% 100%;        /* blue text/buttons on white or contrast */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 0 0% 0%;        /* black text for secondary */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 0 0% 46%;           /* softer gray for muted */
-    --accent: 210 40% 95%;
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 215 18% 90%;                  /* subtle gray borders */
-    --input: 215 18% 90%;
-    --ring: 215 35% 53%;
-    --radius: 0.75rem;                      /* rounder cards/buttons */
-
-    /* Sidebar in light mode: white and flat */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 0%;
-    --sidebar-primary: 0 0% 0%;      /* brand blue if needed */
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 210 40% 97%;
-    --sidebar-accent-foreground: 0 0% 0%;
-    --sidebar-border: 215 18% 90%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    /* Base dark blue/indigo, as before, but all text pure white */
+    /* Moved dark variables to root: This is now always dark */
     --background: 222.2 84% 4.9%;
-    --foreground: 0 0% 100%;                /* white text everywhere */
+    --foreground: 0 0% 100%;
     --card: 225 48% 10%;
     --card-foreground: 0 0% 100%;
     --popover: 225 48% 10%;
@@ -57,11 +23,11 @@
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
-    --border: 217 20% 23%;     /* deep blue border */
+    --border: 217 20% 23%;
     --input: 217 20% 23%;
     --ring: 217.2 91.2% 59.8%;
+    --radius: 0.75rem;
 
-    /* Sidebar in dark mode: dark blue, white text */
     --sidebar-background: 225 48% 10%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -71,29 +37,17 @@
     --sidebar-border: 217 20% 23%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-    /* Light mode: pure flat white bg, dark mode: deep navy */
-    background: hsl(var(--background));
+    background: hsl(var(--background)) !important;
     background-attachment: fixed;
-    color: hsl(var(--foreground));
+    color: hsl(var(--foreground)) !important;
   }
-
-  .dark body {
-    background: hsl(var(--background));
-    background-attachment: fixed;
-    color: hsl(var(--foreground));
-  }
-
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', 'Inter', sans-serif;
     font-weight: 600;
@@ -101,7 +55,6 @@
     letter-spacing: -0.025em;
     color: hsl(var(--foreground));
   }
-
   .font-heading {
     font-family: 'Outfit', 'Inter', sans-serif;
   }

@@ -1,11 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import SettingsSidebarNav from "@/components/settings/SettingsSidebarNav";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import ThemeToggle from "@/components/ThemeToggle";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
@@ -61,30 +58,6 @@ export default function Settings() {
           <SettingsSidebarNav />
         </aside>
         <section className="flex-1 min-w-0 space-y-8">
-          {/* APPEARANCE */}
-          <div
-            id="appearance"
-            className="card-flat flex flex-col gap-6"
-            tabIndex={-1}
-            aria-labelledby="appearance-heading"
-          >
-            <h2
-              className="text-foreground text-xl font-bold mb-2"
-              id="appearance-heading"
-              tabIndex={0}
-            >
-              Appearance
-            </h2>
-            <div className="flex items-center gap-4">
-              <Label htmlFor="theme" className="text-muted-foreground font-medium">
-                Theme
-              </Label>
-              {/* Theme toggle already accessible */}
-              <ThemeToggle />
-              <span className="ml-4 text-muted-foreground text-xs">{`Switch light / dark`}</span>
-            </div>
-          </div>
-
           {/* NOTIFICATIONS */}
           <div
             id="notifications"
