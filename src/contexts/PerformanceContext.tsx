@@ -3,14 +3,13 @@ import React, { createContext, useContext, useState } from "react";
 import { PerformanceReview } from "@/types/performance";
 import { v4 as uuidv4 } from "uuid";
 
-// Create context
 type PerformanceContextType = {
   reviews: PerformanceReview[];
-  addReview: (review: Omit<PerformanceReview, "id" | "employeeId" | "reviewerId" | "period" | "status" | "competencies" | "goals" | "completedAt"> & {type: string; overallRating: number; scheduledDate: string}) => void;
+  addReview: (review: Partial<PerformanceReview> & {type: string; overallRating: number; scheduledDate: string; employeeName?: string;}) => void;
+  editReview: (id: string, updates: Partial<PerformanceReview> & {employeeName?: string}) => void;
 };
 const PerformanceContext = createContext<PerformanceContextType | undefined>(undefined);
 
-// Provide initial dummy reviews (copied from usePerformance)
 const initialReviews: PerformanceReview[] = [
   {
     id: '1',
@@ -45,8 +44,7 @@ const initialReviews: PerformanceReview[] = [
 export const PerformanceProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [reviews, setReviews] = useState<PerformanceReview[]>(initialReviews);
 
-  const addReview = (review: Omit<PerformanceReview, "id" | "employeeId" | "reviewerId" | "period" | "status" | "competencies" | "goals" | "completedAt"> & {type: string; overallRating: number; scheduledDate: string}) => {
-    // For simplicity, fake the period and status.
+  const addReview = (review: Partial<PerformanceReview> & {type: string; overallRating: number; scheduledDate: string; employeeName?: string;}) => {
     setReviews(prev => [
       {
         ...review,
@@ -57,23 +55,43 @@ export const PerformanceProvider: React.FC<{children: React.ReactNode}> = ({ chi
         status: "draft",
         competencies: [],
         goals: [],
+        feedback: review.feedback || "",
+        overallRating: review.overallRating,
+        scheduledDate: review.scheduledDate,
         completedAt: undefined,
-      },
+        developmentPlan: review.developmentPlan,
+        employeeFeedback: review.areasForImprovement || "",
+      } as PerformanceReview,
       ...prev
     ]);
   };
 
+  const editReview = (id: string, updates: Partial<PerformanceReview> & {employeeName?: string}) => {
+    setReviews(prev =>
+      prev.map(r =>
+        r.id === id
+          ? {
+              ...r,
+              ...updates,
+              overallRating: updates.overallRating ?? r.overallRating,
+              feedback: updates.feedback ?? r.feedback,
+              employeeFeedback: updates.employeeFeedback ?? r.employeeFeedback,
+              developmentPlan: updates.developmentPlan ?? r.developmentPlan,
+            }
+          : r
+      )
+    );
+  };
+
   return (
-    <PerformanceContext.Provider value={{ reviews, addReview }}>
+    <PerformanceContext.Provider value={{ reviews, addReview, editReview }}>
       {children}
     </PerformanceContext.Provider>
   );
 };
 
-// Hook to use
 export const usePerformanceContext = () => {
   const ctx = useContext(PerformanceContext);
   if (!ctx) throw new Error("usePerformanceContext must be used within PerformanceProvider");
   return ctx;
 };
-
