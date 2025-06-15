@@ -38,20 +38,23 @@ export function Layout({ children }: LayoutProps) {
 
               <div className="h-6 w-px bg-blue-500/30" />
 
-              {/* Branding block: Logo, Title, Subtitle -- always visible */}
+              {/* Branding block: Logo placeholder, Company Name, Subtitle */}
               <div className="flex items-center gap-3 animate-slide-in-right">
+                {/* Placeholder for client logo */}
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-glow animate-pulse-glow">
-                    <span className="text-white font-bold text-sm font-heading">N</span>
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-200 to-blue-500/80 rounded-xl flex items-center justify-center shadow-glow">
+                    <span className="text-blue-900 font-extrabold font-heading text-base select-none">
+                      LOGO
+                    </span>
                   </div>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl opacity-30 blur animate-pulse" />
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-300 rounded-xl opacity-10 blur" />
                 </div>
                 <div className="flex flex-col justify-center h-11">
                   <h1
                     className="text-lg sm:text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent leading-snug"
                     style={{ lineHeight: '1.2', marginBottom: '0.14em' }}
                   >
-                    NozelPay
+                    Your Company
                   </h1>
                   <p
                     className="text-xs sm:text-sm text-blue-300/80 font-medium leading-tight"
@@ -124,3 +127,4 @@ export function Layout({ children }: LayoutProps) {
     </SidebarProvider>
   );
 }
+
