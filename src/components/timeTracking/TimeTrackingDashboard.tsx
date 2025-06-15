@@ -7,7 +7,7 @@ import { WeeklyTimeChart } from './WeeklyTimeChart';
 
 export const TimeTrackingDashboard = () => {
   return (
-    <div className="max-w-4xl mx-auto w-full space-y-8 px-2 sm:px-6">
+    <div className="w-full space-y-8 px-2 sm:px-6">
       {/* Cozy 2-column layout: AI insight + summary cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
         <AIStatusInsight />
