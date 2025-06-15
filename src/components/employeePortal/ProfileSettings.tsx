@@ -1,9 +1,12 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
-import { User } from "lucide-react";
+import { User, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const DEFAULT_AVATAR =
+  "https://ui-avatars.com/api/?background=4f46e5&color=fff&name=U";
 
 const ProfileSettings: React.FC = () => {
   const { user } = useAuth();
@@ -13,6 +16,13 @@ const ProfileSettings: React.FC = () => {
     department: user?.department || "",
   });
   const [editing, setEditing] = useState(false);
+  // Avatar logic
+  const [avatar, setAvatar] = useState<string>(
+    user?.avatar || DEFAULT_AVATAR
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  // For image preview before save
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,10 +30,27 @@ const ProfileSettings: React.FC = () => {
 
   const handleEditToggle = () => setEditing((v) => !v);
 
+  const handleAvatarClick = () => {
+    if (editing && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const url = URL.createObjectURL(file);
+    setPreview(url);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setEditing(false);
-    // In a real app: update user (API call etc)
+    if (preview) {
+      setAvatar(preview);
+      setPreview(null);
+    }
+    // In a real app: upload avatar, update user (API call etc)
   };
 
   return (
@@ -38,9 +65,50 @@ const ProfileSettings: React.FC = () => {
             <p className="text-blue-300 text-sm">View and update your details</p>
           </div>
         </div>
+
         <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* Profile picture */}
+          <div className="flex items-center gap-4">
+            <div
+              className={`relative w-20 h-20 rounded-full ring-4 ring-blue-700/30 overflow-hidden cursor-pointer
+                group transition duration-200 ${editing ? "hover:ring-blue-400/90" : "opacity-80"}`
+              }
+              onClick={handleAvatarClick}
+              title={editing ? "Click to change profile picture" : ""}
+              style={{ background: "#262c3b" }}
+            >
+              <img
+                src={preview || avatar}
+                alt="profile"
+                className="object-cover w-full h-full"
+                draggable={false}
+              />
+              {editing && (
+                <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                  <Camera className="w-6 h-6 text-white mb-1" />
+                  <span className="text-xs text-white font-medium">Change</span>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+                disabled={!editing}
+              />
+            </div>
+            <div>
+              <div className="font-bold text-base text-white">{form.name}</div>
+              <div className="text-blue-200/90 text-xs">{form.email}</div>
+            </div>
+          </div>
+
+          {/* Fields */}
           <div>
-            <label className="block text-xs font-bold text-blue-200 mb-1">Full Name</label>
+            <label className="block text-xs font-bold text-blue-200 mb-1">
+              Full Name
+            </label>
             <input
               type="text"
               name="name"
@@ -52,7 +120,9 @@ const ProfileSettings: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-blue-200 mb-1">Email</label>
+            <label className="block text-xs font-bold text-blue-200 mb-1">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -64,7 +134,9 @@ const ProfileSettings: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-blue-200 mb-1">Department</label>
+            <label className="block text-xs font-bold text-blue-200 mb-1">
+              Department
+            </label>
             <input
               type="text"
               name="department"
@@ -78,11 +150,31 @@ const ProfileSettings: React.FC = () => {
           <div className="flex justify-end">
             {editing ? (
               <>
-                <Button type="submit" className="mr-2 bg-purple-700 text-white">Save</Button>
-                <Button type="button" variant="ghost" onClick={handleEditToggle}>Cancel</Button>
+                <Button
+                  type="submit"
+                  className="mr-2 bg-purple-700 text-white"
+                >
+                  Save
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => {
+                    setEditing(false);
+                    setPreview(null);
+                  }}
+                >
+                  Cancel
+                </Button>
               </>
             ) : (
-              <Button type="button" className="bg-purple-600 text-white" onClick={handleEditToggle}>Edit</Button>
+              <Button
+                type="button"
+                className="bg-purple-600 text-white"
+                onClick={handleEditToggle}
+              >
+                Edit
+              </Button>
             )}
           </div>
         </form>
@@ -92,3 +184,4 @@ const ProfileSettings: React.FC = () => {
 };
 
 export default ProfileSettings;
+
