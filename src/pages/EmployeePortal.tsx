@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import { Layout } from "@/components/Layout";
 import PayslipHistory from "@/components/employeePortal/PayslipHistory";
 import RequestTimeOff from "@/components/employeePortal/RequestTimeOff";
 import ProfileSettings from "@/components/employeePortal/ProfileSettings";
+import EmployeeStatsCards from "@/components/employeePortal/EmployeeStatsCards";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, FileText, User, LogOut, UserCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -64,6 +64,9 @@ const EmployeePortal: React.FC = () => {
               </button>
             </div>
           </div>
+
+          {/* Dashboard Cards */}
+          <EmployeeStatsCards />
 
           {/* Tab Actions */}
           <div className="flex gap-2 mb-7">
