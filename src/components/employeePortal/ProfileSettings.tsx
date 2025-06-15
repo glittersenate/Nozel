@@ -1,9 +1,9 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { User, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const DEFAULT_AVATAR =
   "https://ui-avatars.com/api/?background=4f46e5&color=fff&name=U";
@@ -20,6 +20,7 @@ type ProfilePersistData = {
 
 const ProfileSettings: React.FC = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [form, setForm] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -90,6 +91,29 @@ const ProfileSettings: React.FC = () => {
       // Fail silently
     }
     // In real app: also update user (API etc)
+  };
+
+  // New: Reset profile handler
+  const handleResetProfile = () => {
+    try {
+      window.localStorage.removeItem(STORAGE_KEY);
+      setForm({
+        name: user?.name || "",
+        email: user?.email || "",
+        department: user?.department || "",
+      });
+      setAvatar(user?.avatar || DEFAULT_AVATAR);
+      setPreview(null);
+      toast({
+        title: "Profile reset!",
+        description: "Your profile settings have been reset to default.",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Could not reset your profile.",
+      });
+    }
   };
 
   return (
@@ -186,7 +210,7 @@ const ProfileSettings: React.FC = () => {
               required
             />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
             {editing ? (
               <>
                 <Button
@@ -207,13 +231,24 @@ const ProfileSettings: React.FC = () => {
                 </Button>
               </>
             ) : (
-              <Button
-                type="button"
-                className="bg-purple-600 text-white"
-                onClick={handleEditToggle}
-              >
-                Edit
-              </Button>
+              <>
+                <Button
+                  type="button"
+                  className="bg-purple-600 text-white"
+                  onClick={handleEditToggle}
+                >
+                  Edit
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="ml-2 border border-red-500 text-red-300 hover:bg-red-500/10"
+                  onClick={handleResetProfile}
+                  title="Reset profile to default"
+                >
+                  Reset Profile
+                </Button>
+              </>
             )}
           </div>
         </form>
