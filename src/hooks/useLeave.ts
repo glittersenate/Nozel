@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { LeaveRequest, LeaveBalance } from '@/types/leave';
 
@@ -114,6 +115,5 @@ export const useLeave = () => {
     rejectLeave,
     bulkApprove,
     addManualLeave,
-    submitLeaveRequest,
   };
 };
