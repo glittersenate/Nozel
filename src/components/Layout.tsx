@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -38,14 +37,17 @@ export function Layout({ children }: LayoutProps) {
 
               <div className="h-6 w-px bg-blue-500/30" />
 
-              {/* Branding block: Logo placeholder, Company Name, Subtitle */}
+              {/* Branding block: Client Logo (Microsoft) and Name */}
               <div className="flex items-center gap-3 animate-slide-in-right">
-                {/* Placeholder for client logo */}
+                {/* Microsoft logo */}
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-200 to-blue-500/80 rounded-xl flex items-center justify-center shadow-glow">
-                    <span className="text-blue-900 font-extrabold font-heading text-base select-none">
-                      LOGO
-                    </span>
+                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-glow overflow-hidden">
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
+                      alt="Microsoft Logo"
+                      className="w-8 h-8 object-contain"
+                      draggable={false}
+                    />
                   </div>
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-300 rounded-xl opacity-10 blur" />
                 </div>
@@ -54,7 +56,7 @@ export function Layout({ children }: LayoutProps) {
                     className="text-lg sm:text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent leading-snug"
                     style={{ lineHeight: '1.2', marginBottom: '0.14em' }}
                   >
-                    Your Company
+                    Microsoft Corp
                   </h1>
                   <p
                     className="text-xs sm:text-sm text-blue-300/80 font-medium leading-tight"
@@ -127,4 +129,3 @@ export function Layout({ children }: LayoutProps) {
     </SidebarProvider>
   );
 }
-
