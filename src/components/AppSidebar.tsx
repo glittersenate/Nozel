@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, UserCheck, Briefcase } from 'lucide-react';
+import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, UserCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Sidebar,
@@ -13,7 +14,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { useAuth } from "@/contexts/AuthContext";
 
 const navigationItems = [
   { title: 'Dashboard', url: '/', icon: Home },
@@ -24,7 +24,6 @@ const navigationItems = [
   { title: 'Performance', url: '/performance', icon: Star },
   { title: 'Reports', url: '/reports', icon: FileText },
   { title: 'Analytics', url: '/analytics', icon: BarChart3 },
-  { title: 'Benefits', url: '/benefits', icon: Briefcase },
   { title: 'Executive', url: '/executive', icon: Shield },
   { title: 'AI Compliance', url: '/compliance', icon: Shield },
   { title: 'Integrations', url: '/integrations', icon: Settings },
@@ -33,17 +32,6 @@ const navigationItems = [
 
 export function AppSidebar() {
   const location = useLocation();
-  const { user } = useAuth();
-
-  // Add a Benefits nav item ONLY for HRs
-  const filteredItems = navigationItems.filter((item) => {
-    // Only show Benefits to HRs
-    if (item.title === "Benefits") {
-      return user && user.role === "hr";
-    }
-    // Show all other items
-    return true;
-  });
 
   return (
     <Sidebar className="glass-dark border-r border-blue-500/20 backdrop-blur-xl">
@@ -77,7 +65,7 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-2">
-              {filteredItems.map((item, index) => {
+              {navigationItems.map((item, index) => {
                 const isActive = location.pathname === item.url;
                 return (
                   <SidebarMenuItem key={item.title} className={`animate-fade-in-up animate-stagger-${Math.min(index + 1, 6)}`}>
