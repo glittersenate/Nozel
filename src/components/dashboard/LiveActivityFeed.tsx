@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Clock, UserPlus, TrendingUp, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,8 +38,8 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
     }
   };
 
-  // For main feed, show only latest 10
-  const displayActivities = activities.slice(0, 10);
+  // Show only the latest 6 activities in the main card
+  const displayActivities = activities.slice(0, 6);
 
   return (
     <>
@@ -87,11 +86,6 @@ const LiveActivityFeed: React.FC<LiveActivityFeedProps> = ({ activities }) => {
                 );
               })
             )}
-          </div>
-          <div className="flex justify-center mt-3">
-            <span className="text-xs text-blue-300/70">
-              Updates every 15 seconds
-            </span>
           </div>
         </CardContent>
       </Card>
