@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { LeaveRequest, LeaveBalance } from '@/types/leave';
 
@@ -79,12 +78,31 @@ export const useLeave = () => {
     };
   };
 
-  const submitLeaveRequest = (request: Omit<LeaveRequest, 'id' | 'requestedAt' | 'status'>) => {
+  // Placeholder for approve/reject functionality.
+  // In a real app, these would update the request status in DB.
+  // For now, they simply update UI state.
+  const approveLeave = (id: string) => {
+    setLeaveRequests((prev) =>
+      prev.map((r) => r.id === id ? { ...r, status: 'approved' } : r)
+    );
+  };
+  const rejectLeave = (id: string) => {
+    setLeaveRequests((prev) =>
+      prev.map((r) => r.id === id ? { ...r, status: 'rejected' } : r)
+    );
+  };
+  const bulkApprove = (ids: string[]) => {
+    setLeaveRequests((prev) =>
+      prev.map((r) => ids.includes(r.id) ? { ...r, status: 'approved' } : r)
+    );
+  };
+  // Optional: Add Manual Entry method
+  const addManualLeave = (request: Omit<LeaveRequest, 'id' | 'requestedAt' | 'status'>) => {
     const newRequest: LeaveRequest = {
       ...request,
       id: Date.now().toString(),
       requestedAt: new Date().toISOString(),
-      status: 'pending',
+      status: 'approved',
     };
     setLeaveRequests(prev => [newRequest, ...prev]);
   };
@@ -92,6 +110,10 @@ export const useLeave = () => {
   return {
     leaveRequests,
     getLeaveBalance,
+    approveLeave,
+    rejectLeave,
+    bulkApprove,
+    addManualLeave,
     submitLeaveRequest,
   };
 };

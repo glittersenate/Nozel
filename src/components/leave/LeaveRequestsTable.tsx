@@ -7,8 +7,39 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Check, X, Eye } from 'lucide-react';
 import { useLeave } from '@/hooks/useLeave';
 
-export const LeaveRequestsTable = () => {
-  const { leaveRequests } = useLeave();
+type LeaveRequestsTableProps = {
+  requests: ReturnType<typeof useLeave>['leaveRequests'];
+  title?: string;
+  sortBy?: 'startDate' | 'endDate' | 'status';
+  sortDir?: 'asc' | 'desc';
+  showActions?: boolean;
+};
+
+function sortRequests(requests: any[], sortBy: string, sortDir: string) {
+  if (!sortBy) return requests;
+  return [...requests].sort((a, b) => {
+    if (sortBy === 'status') {
+      if (a.status < b.status) return sortDir === 'asc' ? -1 : 1;
+      if (a.status > b.status) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    }
+    const aVal = new Date(a[sortBy]);
+    const bVal = new Date(b[sortBy]);
+    if (aVal < bVal) return sortDir === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+export const LeaveRequestsTable: React.FC<LeaveRequestsTableProps> = ({
+  requests,
+  title,
+  sortBy = 'startDate',
+  sortDir = 'desc',
+  showActions = false,
+}) => {
+  // HR actions prominently exposed!
+  const { /* approveLeave, rejectLeave */ } = useLeave();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -38,10 +69,13 @@ export const LeaveRequestsTable = () => {
     }
   };
 
+  // Sorting
+  const sorted = sortRequests(requests, sortBy, sortDir);
+
   return (
-    <Card className="bg-[#141a2e]/80 border border-blue-800/30">
+    <Card className="bg-[#141a2e]/80 border border-blue-800/30 my-5">
       <CardHeader>
-        <CardTitle className="text-xl text-white">Leave Requests</CardTitle>
+        <CardTitle className="text-lg text-blue-200">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -52,11 +86,17 @@ export const LeaveRequestsTable = () => {
                 <TableHead className="text-blue-300">Dates</TableHead>
                 <TableHead className="text-blue-300">Days</TableHead>
                 <TableHead className="text-blue-300">Status</TableHead>
-                <TableHead className="text-blue-300">Actions</TableHead>
+                {showActions && <TableHead className="text-blue-300">Actions</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {leaveRequests.slice(0, 5).map((request) => (
+              {sorted.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={showActions ? 5 : 4} className="text-blue-300/70 text-center">
+                    No leave requests found.
+                  </TableCell>
+                </TableRow>
+              ) : sorted.map((request) => (
                 <TableRow key={request.id} className="border-blue-800/30">
                   <TableCell className={getLeaveTypeColor(request.type)}>
                     {request.type.charAt(0).toUpperCase() + request.type.slice(1)}
@@ -70,23 +110,27 @@ export const LeaveRequestsTable = () => {
                   <TableCell>
                     {getStatusBadge(request.status)}
                   </TableCell>
-                  <TableCell>
-                    <div className="flex gap-1">
-                      <Button size="sm" variant="outline" className="border-blue-500/50">
-                        <Eye className="w-3 h-3" />
-                      </Button>
-                      {request.status === 'pending' && (
-                        <>
-                          <Button size="sm" variant="outline" className="border-green-500/50 text-green-300">
-                            <Check className="w-3 h-3" />
-                          </Button>
-                          <Button size="sm" variant="outline" className="border-red-500/50 text-red-300">
-                            <X className="w-3 h-3" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  </TableCell>
+                  {showActions && (
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="ghost" className="border-blue-500/50 ring-2 ring-blue-800 hover:bg-blue-800/30" title="View Details">
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                        {request.status === 'pending' && (
+                          <>
+                            <Button size="sm" className="bg-green-500 hover:bg-green-600 text-white font-bold px-3 shadow" /*onClick={() => approveLeave(request.id)}*/>
+                              <Check className="w-4 h-4" />
+                              <span className="ml-1">Approve</span>
+                            </Button>
+                            <Button size="sm" className="bg-red-500 hover:bg-red-600 text-white font-bold px-3 shadow" /*onClick={() => rejectLeave(request.id)}*/>
+                              <X className="w-4 h-4" />
+                              <span className="ml-1">Decline</span>
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
