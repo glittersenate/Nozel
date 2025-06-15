@@ -14,7 +14,7 @@ export const ReviewDetailDialog: React.FC<Props> = ({ review, open, onOpenChange
   if (!review) return null;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg bg-[#141a2e] border-blue-800/30 text-white">
+      <DialogContent className="max-w-lg bg-card border-border text-foreground">
         <DialogHeader>
           <DialogTitle>Performance Review Details</DialogTitle>
           <DialogDescription>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import SettingsSidebarNav from "@/components/settings/SettingsSidebarNav";
@@ -63,36 +64,36 @@ export default function Settings() {
           {/* APPEARANCE */}
           <div
             id="appearance"
-            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-6"
             tabIndex={-1}
             aria-labelledby="appearance-heading"
           >
             <h2
-              className="text-blue-100 text-xl font-bold mb-2"
+              className="text-foreground text-xl font-bold mb-2"
               id="appearance-heading"
               tabIndex={0}
             >
               Appearance
             </h2>
             <div className="flex items-center gap-4">
-              <Label htmlFor="theme" className="text-blue-200 font-medium">
+              <Label htmlFor="theme" className="text-muted-foreground font-medium">
                 Theme
               </Label>
               {/* Theme toggle already accessible */}
               <ThemeToggle />
-              <span className="ml-4 text-blue-400/70 text-xs">{`Switch light / dark`}</span>
+              <span className="ml-4 text-muted-foreground text-xs">{`Switch light / dark`}</span>
             </div>
           </div>
 
           {/* NOTIFICATIONS */}
           <div
             id="notifications"
-            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-6"
             tabIndex={-1}
             aria-labelledby="notifications-heading"
           >
             <h2
-              className="text-blue-100 text-xl font-bold mb-2"
+              className="text-foreground text-xl font-bold mb-2"
               id="notifications-heading"
               tabIndex={0}
             >
@@ -102,7 +103,7 @@ export default function Settings() {
               <div className="flex items-center justify-between gap-4">
                 <Label
                   htmlFor="emailNotify"
-                  className="text-blue-200"
+                  className="text-muted-foreground"
                   aria-label="Toggle email notifications"
                 >
                   Email Notifications
@@ -120,7 +121,7 @@ export default function Settings() {
               <div className="flex items-center justify-between gap-4">
                 <Label
                   htmlFor="pushNotify"
-                  className="text-blue-200"
+                  className="text-muted-foreground"
                   aria-label="Toggle push notifications"
                 >
                   Push Notifications
@@ -150,18 +151,18 @@ export default function Settings() {
           {/* PROFILE */}
           <div
             id="profile"
-            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-6"
             tabIndex={-1}
             aria-labelledby="profile-heading"
           >
             <h2
-              className="text-blue-100 text-xl font-bold mb-2"
+              className="text-foreground text-xl font-bold mb-2"
               id="profile-heading"
               tabIndex={0}
             >
               Profile
             </h2>
-            <p className="text-blue-300/80 text-sm mb-2">
+            <p className="text-muted-foreground text-sm mb-2">
               Manage your personal information and account details here. (More editing features coming soon!)
             </p>
             <Button
@@ -178,18 +179,18 @@ export default function Settings() {
           {/* INTEGRATIONS */}
           <div
             id="integrations"
-            className="bg-[#172040]/90 rounded-2xl p-7 shadow-lg flex flex-col gap-3"
+            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-3"
             tabIndex={-1}
             aria-labelledby="integrations-heading"
           >
             <h2
-              className="text-blue-100 text-xl font-bold mb-2"
+              className="text-foreground text-xl font-bold mb-2"
               id="integrations-heading"
               tabIndex={0}
             >
               Integrations
             </h2>
-            <div className="flex flex-col gap-2 text-blue-300/80">
+            <div className="flex flex-col gap-2 text-muted-foreground">
               <span>
                 Connect your HR data with third-party tools and automate workflows.
               </span>

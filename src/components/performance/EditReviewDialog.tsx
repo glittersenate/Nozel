@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { CreateReviewForm } from "./CreateReviewForm";
 import { PerformanceReview } from "@/types/performance";
@@ -14,7 +14,7 @@ export const EditReviewDialog: React.FC<Props> = ({ review, open, onOpenChange }
   if (!review) return null;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg bg-[#141a2e] border-blue-800/30 text-white">
+      <DialogContent className="max-w-lg bg-card border-border text-foreground">
         <DialogHeader>
           <DialogTitle>Edit Performance Review</DialogTitle>
           <DialogDescription>
