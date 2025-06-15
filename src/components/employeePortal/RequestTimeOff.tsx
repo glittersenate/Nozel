@@ -13,24 +13,27 @@ const leaveTypeOptions = [
 ];
 
 const RequestTimeOff: React.FC = () => {
-  const { leaveRequests, getLeaveBalance, submitLeaveRequest } = useLeave();
+  const { leaveRequests, getLeaveBalance, addManualLeave } = useLeave();
   const balance = getLeaveBalance();
   const [form, setForm] = useState({ type: "vacation", startDate: "", endDate: "", days: 1 });
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ 
+      ...form, 
+      [e.target.name]: e.target.type === "number" ? Number(e.target.value) : e.target.value 
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    submitLeaveRequest({
+    addManualLeave({
       employeeId: balance.employeeId,
       type: form.type as any,
       startDate: form.startDate,
       endDate: form.endDate,
-      days: form.days,
+      days: Number(form.days),
     });
     setTimeout(() => {
       setSubmitting(false);
@@ -179,3 +182,4 @@ const RequestTimeOff: React.FC = () => {
 };
 
 export default RequestTimeOff;
+
