@@ -27,7 +27,7 @@ const benefits = [
 ];
 
 const Benefits: React.FC = () => (
-  <div className="relative max-w-5xl mx-auto py-10 px-4">
+  <div className="py-10 px-4 lg:pl-16 lg:pr-0 w-full">
     {/* Header with icon and title */}
     <div className="flex items-center gap-3 mb-3 mt-3 sm:mt-0">
       <Gift className="text-blue-300 w-9 h-9" />
@@ -39,7 +39,7 @@ const Benefits: React.FC = () => (
       Here, HR managers can create, update, or remove benefit programs for the company, such as 401(k) retirement plans, health insurance, dental, life coverage, and more.
     </p>
     {/* Benefits cards */}
-    <div className="grid sm:grid-cols-2 gap-6 mb-10">
+    <div className="grid sm:grid-cols-2 gap-6 mb-10 max-w-4xl">
       {benefits.map((benefit) => (
         <div
           key={benefit.title}

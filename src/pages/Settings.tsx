@@ -79,7 +79,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="container mx-auto max-w-4xl py-10 px-2 sm:px-8 flex flex-col sm:flex-row gap-8 animate-fade-in">
+    <div className="w-full py-10 px-4 lg:pl-16 lg:pr-0 flex flex-col sm:flex-row gap-8 animate-fade-in">
       {/* Sidebar */}
       <aside
         className="w-full sm:w-52 shrink-0 flex-none mb-4 sm:mb-0 sidebar-flat rounded-xl"
