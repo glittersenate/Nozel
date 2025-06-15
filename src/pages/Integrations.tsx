@@ -4,12 +4,18 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 
+// Official colored SVGs
 const integrationOptions = [
   {
     name: "Slack",
     description: "Get real-time notifications, automate HR workflows, and improve team communication by connecting to Slack.",
     icon: (
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/slack.svg" alt="Slack" className="w-10 h-10" />
+      <img
+        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/slack.svg"
+        alt="Slack"
+        className="w-10 h-10"
+        style={{ filter: "none" }} // Ensures we don't get grayscale/monochrome in case of global CSS
+      />
     ),
     comingSoon: true,
   },
@@ -17,7 +23,12 @@ const integrationOptions = [
     name: "Microsoft Teams",
     description: "Enable seamless HR collaboration in MS Teams. Push important alerts and updates directly to your channels.",
     icon: (
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/microsoftteams.svg" alt="Teams" className="w-10 h-10" />
+      <img
+        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/microsoftteams.svg"
+        alt="Teams"
+        className="w-10 h-10"
+        style={{ filter: "none" }} // Ensures brand color use
+      />
     ),
     comingSoon: true,
   },
@@ -25,7 +36,12 @@ const integrationOptions = [
     name: "Zapier",
     description: "Automate complex HR tasks and connect with 5000+ other apps using Zapier integrations.",
     icon: (
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/zapier.svg" alt="Zapier" className="w-10 h-10" />
+      <img
+        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/zapier.svg"
+        alt="Zapier"
+        className="w-10 h-10"
+        style={{ filter: "none" }} // Ensures brand color use
+      />
     ),
     comingSoon: true,
   }
