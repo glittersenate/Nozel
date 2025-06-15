@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Users, DollarSign, TrendingUp, Clock, Award, UserPlus } from 'lucide-react';
 import { MetricCard } from '@/components/common/MetricCard';
@@ -94,7 +95,7 @@ const EnhancedStatsCards: React.FC<EnhancedStatsCardsProps> = ({ employees }) =>
       {metrics.map((metric, index) => (
         <div 
           key={metric.title}
-          className="flex flex-col h-full min-w-0"
+          className={`flex flex-col h-full min-w-0`}
         >
           <MetricCard {...metric} />
         </div>
