@@ -68,6 +68,11 @@ const SidebarProvider = React.forwardRef<
     const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = React.useState(false)
 
+    // Debug: log openMobile changes
+    React.useEffect(() => {
+      console.log("[SidebarProvider] openMobile changed:", openMobile)
+    }, [openMobile])
+
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
     const [_open, _setOpen] = React.useState(defaultOpen)
@@ -89,9 +94,14 @@ const SidebarProvider = React.forwardRef<
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      return isMobile
-        ? setOpenMobile((open) => !open)
-        : setOpen((open) => !open)
+      if (isMobile) {
+        setOpenMobile((open) => {
+          console.log("[SidebarProvider] toggleSidebar (mobile) open before:", open)
+          return !open;
+        });
+      } else {
+        setOpen((open) => !open)
+      }
     }, [isMobile, setOpen, setOpenMobile])
 
     // Adds a keyboard shortcut to toggle the sidebar.
@@ -173,7 +183,12 @@ const Sidebar = React.forwardRef<
     },
     ref
   ) => {
-    const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+    const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+
+    // Debug: log on Sidebar render
+    if (isMobile) {
+      console.log("[Sidebar] mobile render. openMobile:", openMobile);
+    }
 
     if (collapsible === "none") {
       return (
@@ -261,7 +276,7 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar, isMobile, openMobile } = useSidebar();
+  const { toggleSidebar, isMobile, openMobile, setOpenMobile } = useSidebar();
 
   return (
     <Button
@@ -272,9 +287,14 @@ const SidebarTrigger = React.forwardRef<
       className={cn("h-7 w-7", className)}
       onClick={(event) => {
         if (isMobile) {
-          console.log(
-            "[SidebarTrigger] Mobile hamburger clicked. openMobile before:", openMobile
-          );
+          console.log("[SidebarTrigger] Mobile hamburger clicked. openMobile before:", openMobile);
+          // Defensive: If after click, openMobile remains false, force open!
+          setTimeout(() => {
+            if (!openMobile) {
+              console.log("[SidebarTrigger] Fallback: forcing setOpenMobile(true)");
+              setOpenMobile(true);
+            }
+          }, 100);
         }
         onClick?.(event);
         toggleSidebar();
