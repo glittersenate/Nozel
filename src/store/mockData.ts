@@ -1,18 +1,16 @@
 
-/**
- * Centralized mock data for payroll and performance domains.
- * You can migrate this file to a real API source later.
- */
+import { PerformanceReview, PerformanceGoal } from "@/types/performance";
+import { PayrollEntry, PayrollDeduction } from "@/types/payroll";
 
 // Performance
-export const mockPerformanceReviews = [
+export const mockPerformanceReviews: PerformanceReview[] = [
   {
     id: '1',
     employeeId: 'current-user',
     reviewerId: 'manager1',
     period: 'Q1 2024',
-    type: 'quarterly', // literal type correct
-    status: 'completed', // literal type correct
+    type: 'quarterly',
+    status: 'completed',
     overallRating: 4.2,
     goals: [],
     competencies: [],
@@ -25,8 +23,8 @@ export const mockPerformanceReviews = [
     employeeId: 'current-user',
     reviewerId: 'manager1',
     period: '2023 Annual',
-    type: 'annual', // literal type correct
-    status: 'approved', // literal type correct
+    type: 'annual',
+    status: 'approved',
     overallRating: 4.5,
     goals: [],
     competencies: [],
@@ -36,14 +34,14 @@ export const mockPerformanceReviews = [
   },
 ];
 
-export const mockPerformanceGoals = [
+export const mockPerformanceGoals: PerformanceGoal[] = [
   {
     id: '1',
     title: 'Complete React Certification',
     description: 'Obtain React professional certification to enhance frontend skills',
     targetDate: '2024-06-30',
     progress: 75,
-    status: 'in-progress', // literal type correct
+    status: 'in-progress',
     rating: 4,
   },
   {
@@ -52,7 +50,7 @@ export const mockPerformanceGoals = [
     description: 'Successfully lead the Q2 product feature development',
     targetDate: '2024-06-15',
     progress: 60,
-    status: 'in-progress', // literal type correct
+    status: 'in-progress',
   },
   {
     id: '3',
@@ -60,13 +58,13 @@ export const mockPerformanceGoals = [
     description: 'Reduce bug reports by 30% through better testing practices',
     targetDate: '2024-12-31',
     progress: 100,
-    status: 'completed', // literal type correct
+    status: 'completed',
     rating: 5,
   },
 ];
 
 // Payroll
-export const mockPayrollEntries = [
+export const mockPayrollEntries: PayrollEntry[] = [
   {
     id: '1',
     employeeId: 'emp1',
@@ -83,7 +81,7 @@ export const mockPayrollEntries = [
       { id: 'd3', type: 'insurance', name: 'Health Insurance', amount: 200, isPercentage: false, isPreTax: true },
     ],
     netPay: 1512.5,
-    status: 'paid', // literal type correct
+    status: 'paid',
     generatedAt: '2024-03-15T10:00:00Z',
     paidAt: '2024-03-16T10:00:00Z',
   },
@@ -103,7 +101,7 @@ export const mockPayrollEntries = [
       { id: 'd6', type: 'insurance', name: 'Health Insurance', amount: 200, isPercentage: false, isPreTax: true },
     ],
     netPay: 1425,
-    status: 'paid', // literal type correct
+    status: 'paid',
     generatedAt: '2024-02-29T10:00:00Z',
     paidAt: '2024-03-01T10:00:00Z',
   },
