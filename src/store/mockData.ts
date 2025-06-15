@@ -11,8 +11,8 @@ export const mockPerformanceReviews = [
     employeeId: 'current-user',
     reviewerId: 'manager1',
     period: 'Q1 2024',
-    type: 'quarterly',
-    status: 'completed',
+    type: 'quarterly', // literal type correct
+    status: 'completed', // literal type correct
     overallRating: 4.2,
     goals: [],
     competencies: [],
@@ -25,8 +25,8 @@ export const mockPerformanceReviews = [
     employeeId: 'current-user',
     reviewerId: 'manager1',
     period: '2023 Annual',
-    type: 'annual',
-    status: 'approved',
+    type: 'annual', // literal type correct
+    status: 'approved', // literal type correct
     overallRating: 4.5,
     goals: [],
     competencies: [],
@@ -43,7 +43,7 @@ export const mockPerformanceGoals = [
     description: 'Obtain React professional certification to enhance frontend skills',
     targetDate: '2024-06-30',
     progress: 75,
-    status: 'in-progress',
+    status: 'in-progress', // literal type correct
     rating: 4,
   },
   {
@@ -52,7 +52,7 @@ export const mockPerformanceGoals = [
     description: 'Successfully lead the Q2 product feature development',
     targetDate: '2024-06-15',
     progress: 60,
-    status: 'in-progress',
+    status: 'in-progress', // literal type correct
   },
   {
     id: '3',
@@ -60,7 +60,7 @@ export const mockPerformanceGoals = [
     description: 'Reduce bug reports by 30% through better testing practices',
     targetDate: '2024-12-31',
     progress: 100,
-    status: 'completed',
+    status: 'completed', // literal type correct
     rating: 5,
   },
 ];
@@ -83,7 +83,7 @@ export const mockPayrollEntries = [
       { id: 'd3', type: 'insurance', name: 'Health Insurance', amount: 200, isPercentage: false, isPreTax: true },
     ],
     netPay: 1512.5,
-    status: 'paid',
+    status: 'paid', // literal type correct
     generatedAt: '2024-03-15T10:00:00Z',
     paidAt: '2024-03-16T10:00:00Z',
   },
@@ -103,7 +103,7 @@ export const mockPayrollEntries = [
       { id: 'd6', type: 'insurance', name: 'Health Insurance', amount: 200, isPercentage: false, isPreTax: true },
     ],
     netPay: 1425,
-    status: 'paid',
+    status: 'paid', // literal type correct
     generatedAt: '2024-02-29T10:00:00Z',
     paidAt: '2024-03-01T10:00:00Z',
   },
