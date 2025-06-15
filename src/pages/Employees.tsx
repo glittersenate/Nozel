@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Layout } from "@/components/Layout";
 import EmployeeTable from "@/components/employees/EmployeeTable";
@@ -54,21 +55,20 @@ const Employees = () => {
   return (
     <Layout>
       <div
-        className="min-h-screen"
-        style={{
-          background: "rgba(20,26,46,0.7)",
-        }}
+        className="min-h-screen bg-[rgba(20,26,46,0.7)]"
       >
-        <div className="container mx-auto py-10">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Employee Management</h1>
-            <p className="text-blue-300">Manage your workforce and employee information</p>
+        <div className="container mx-auto py-5 px-2 sm:px-4 md:px-8 max-w-full">
+          <div className="mb-6 mt-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-0">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Employee Management</h1>
+              <p className="text-blue-300 text-sm sm:text-base">Manage your workforce and employee information</p>
+            </div>
           </div>
           
-          <div className="flex gap-4 mb-6">
+          <div className="flex flex-col xs:flex-row gap-2 xs:gap-4 mb-4 w-full">
             <Button
               onClick={() => setShowAddDialog(true)}
-              className="bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
+              className="w-full xs:w-auto bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Employee
@@ -76,7 +76,7 @@ const Employees = () => {
             <Button
               onClick={() => setShowFilterDrawer(true)}
               variant="outline"
-              className="border-blue-600 text-blue-300 hover:bg-blue-600/10"
+              className="w-full xs:w-auto border-blue-600 text-blue-300 hover:bg-blue-600/10"
             >
               <Filter className="w-4 h-4 mr-2" />
               Filter
@@ -84,31 +84,36 @@ const Employees = () => {
           </div>
 
           {selectedIds.length > 0 && (
-            <BulkActions
-              selectedCount={selectedIds.length}
-              onBulkDelete={() => {
-                bulkDeleteEmployees(selectedIds);
-                setSelectedIds([]);
-              }}
-              onBulkStatusChange={(status) => {
-                bulkUpdateStatus(selectedIds, status);
-                setSelectedIds([]);
-              }}
-              onBulkExport={handleBulkExport}
-              onBulkEmail={handleBulkEmail}
-            />
+            <div className="mb-4">
+              <BulkActions
+                selectedCount={selectedIds.length}
+                onBulkDelete={() => {
+                  bulkDeleteEmployees(selectedIds);
+                  setSelectedIds([]);
+                }}
+                onBulkStatusChange={(status) => {
+                  bulkUpdateStatus(selectedIds, status);
+                  setSelectedIds([]);
+                }}
+                onBulkExport={handleBulkExport}
+                onBulkEmail={handleBulkEmail}
+              />
+            </div>
           )}
-          
-          <EmployeeTable
-            employees={employees}
-            onDeleteEmployee={deleteEmployee}
-            onEditEmployee={handleEditEmployee}
-            onViewEmployee={handleViewEmployee}
-            sortConfig={sortConfig}
-            onSort={sortEmployees}
-            selectedIds={selectedIds}
-            onSelectionChange={setSelectedIds}
-          />
+
+          {/* Responsive Table Wrapper */}
+          <div className="w-full overflow-x-auto rounded-xl">
+            <EmployeeTable
+              employees={employees}
+              onDeleteEmployee={deleteEmployee}
+              onEditEmployee={handleEditEmployee}
+              onViewEmployee={handleViewEmployee}
+              sortConfig={sortConfig}
+              onSort={sortEmployees}
+              selectedIds={selectedIds}
+              onSelectionChange={setSelectedIds}
+            />
+          </div>
 
           <AddEmployeeDialog
             open={showAddDialog}
