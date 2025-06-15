@@ -92,7 +92,7 @@ export const useRealTimeData = (employees: Employee[]) => {
     return () => clearInterval(metricsTimer);
   }, [updateMetrics]);
 
-  // Activity feed has its own interval — updates every 15s
+  // Activity feed has its own interval — updates every 45s (changed from 15s)
   useEffect(() => {
     setMetrics(prev => ({
       ...prev,
@@ -107,7 +107,7 @@ export const useRealTimeData = (employees: Employee[]) => {
         ...prev,
         activityFeed: [generateRandomActivity(), ...prev.activityFeed].slice(0, 100),
       }));
-    }, 15000);
+    }, 45000); // changed from 15000 to 45000
 
     return () => clearInterval(feedTimer);
   }, []);
