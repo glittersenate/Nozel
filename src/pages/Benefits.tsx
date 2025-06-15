@@ -1,43 +1,50 @@
 
 import React from "react";
+import { Gift, DollarSign, HeartPulse, Info } from "lucide-react";
 
-const companyBenefits = [
+const benefits = [
+  {
+    title: "401(k) Plan",
+    description: "Company-sponsored retirement plan. Add plan details and eligibility info.",
+    icon: DollarSign,
+    link: "#",
+  },
   {
     title: "Health Insurance",
-    description: "Comprehensive medical, dental, and vision coverage for you and your family.",
-    icon: "🩺"
+    description: "Add and manage company-provided health plans here.",
+    icon: HeartPulse,
+    link: "#",
   },
-  {
-    title: "Retirement Plan",
-    description: "Employer-matched 401(k) plan to help you save for the future.",
-    icon: "💸"
-  },
-  {
-    title: "Paid Time Off",
-    description: "Generous vacation, holiday, and sick leave policies.",
-    icon: "🌴"
-  },
-  {
-    title: "Professional Development",
-    description: "Training budgets and course reimbursements to support your growth.",
-    icon: "📚"
-  }
 ];
 
-const Benefits = () => (
-  <div className="max-w-4xl mx-auto py-10 px-4">
-    <h1 className="text-3xl font-bold text-white mb-4">Employee Benefits</h1>
-    <p className="mb-8 text-blue-200/90 max-w-2xl">Explore your total rewards and learn more about the benefits available to NozelPay employees.</p>
-    <div className="grid gap-6 md:grid-cols-2">
-      {companyBenefits.map((benefit) => (
-        <div key={benefit.title} className="bg-[#141a2e]/60 border border-blue-800/30 rounded-xl p-6 flex gap-5 items-start">
-          <div className="text-4xl">{benefit.icon}</div>
-          <div>
-            <h3 className="text-xl font-semibold text-blue-100 mb-1">{benefit.title}</h3>
-            <p className="text-blue-300">{benefit.description}</p>
-          </div>
+const Benefits: React.FC = () => (
+  <div className="max-w-5xl mx-auto py-10 px-4">
+    <div className="flex items-center gap-3 mb-3">
+      <Gift className="text-blue-300 w-8 h-8" />
+      <h1 className="text-3xl font-extrabold text-white font-heading tracking-tight">
+        Manage Employee Benefits
+      </h1>
+    </div>
+    <p className="text-blue-200/90 mb-10 max-w-2xl">
+      Here, HR managers can create, update, or remove benefit programs for the company, such as 401(k) retirement plans, health insurance, dental, life coverage, and more.
+    </p>
+    <div className="grid sm:grid-cols-2 gap-6 mb-10">
+      {benefits.map(benefit => (
+        <div key={benefit.title} className="bg-[#151c2e]/80 border border-blue-800/30 rounded-2xl p-6 shadow-md flex flex-col gap-3 transition-all hover:border-blue-500/70">
+          <benefit.icon className="w-9 h-9 text-blue-300 mb-3" />
+          <h2 className="font-bold text-2xl text-blue-100 flex items-center gap-2 mb-1">{benefit.title}</h2>
+          <p className="text-blue-300 mb-4">{benefit.description}</p>
+          <span className="text-blue-400 font-medium text-sm underline underline-offset-2 cursor-not-allowed opacity-75">
+            Edit (coming soon)
+          </span>
         </div>
       ))}
+    </div>
+    <div className="flex items-center gap-2 mt-8">
+      <span className="text-yellow-400 text-lg">✨</span>
+      <p className="text-blue-300 text-sm">
+        More benefit types and management features coming soon...
+      </p>
     </div>
   </div>
 );
