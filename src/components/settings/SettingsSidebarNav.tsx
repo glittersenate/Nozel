@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SIDEBAR_SECTIONS = [
   { id: "appearance", label: "Appearance" },
@@ -13,15 +14,25 @@ const SettingsSidebarNav: React.FC = () => {
     <div className="sticky top-28 pl-2 flex flex-col gap-2 animate-fade-in">
       <h3 className="text-blue-200/90 text-lg font-bold mb-3 tracking-tight">Settings</h3>
       <nav className="flex flex-col gap-2">
-        {SIDEBAR_SECTIONS.map((section) => (
-          <a
-            href={section.id === "integrations" ? "/integrations" : `#${section.id}`}
-            key={section.id}
-            className="px-3 py-2 rounded-lg hover:bg-blue-900/40 bg-transparent text-blue-100 font-medium transition-all duration-200 focus:bg-blue-800/40 focus:outline-none focus-visible:ring-2 ring-blue-300"
-          >
-            {section.label}
-          </a>
-        ))}
+        {SIDEBAR_SECTIONS.map((section) =>
+          section.id === "integrations" ? (
+            <Link
+              to="/integrations"
+              key={section.id}
+              className="px-3 py-2 rounded-lg hover:bg-blue-900/40 bg-transparent text-blue-100 font-medium transition-all duration-200 focus:bg-blue-800/40 focus:outline-none focus-visible:ring-2 ring-blue-300"
+            >
+              {section.label}
+            </Link>
+          ) : (
+            <a
+              href={`#${section.id}`}
+              key={section.id}
+              className="px-3 py-2 rounded-lg hover:bg-blue-900/40 bg-transparent text-blue-100 font-medium transition-all duration-200 focus:bg-blue-800/40 focus:outline-none focus-visible:ring-2 ring-blue-300"
+            >
+              {section.label}
+            </a>
+          )
+        )}
       </nav>
     </div>
   );

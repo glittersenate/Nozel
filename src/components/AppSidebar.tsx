@@ -1,6 +1,6 @@
 import React from 'react';
 import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, UserCheck } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -30,12 +30,7 @@ const navigationItems = [
 ];
 
 export function AppSidebar() {
-  const navigate = useNavigate();
   const location = useLocation();
-
-  const handleNavigation = (url: string) => {
-    navigate(url);
-  };
 
   return (
     <Sidebar className="glass-dark border-r border-blue-500/20 backdrop-blur-xl">
@@ -71,9 +66,8 @@ export function AppSidebar() {
                 const isActive = location.pathname === item.url;
                 return (
                   <SidebarMenuItem key={item.title} className={`animate-fade-in-up animate-stagger-${Math.min(index + 1, 6)}`}>
-                    <SidebarMenuButton 
-                      onClick={() => handleNavigation(item.url)}
-                      isActive={isActive}
+                    <SidebarMenuButton
+                      asChild
                       className={`
                         group relative rounded-xl transition-all duration-300 font-medium cursor-pointer
                         ${isActive 
@@ -82,21 +76,23 @@ export function AppSidebar() {
                         }
                       `}
                     >
-                      <div className="flex items-center gap-4 px-4 py-3 w-full">
-                        <div className={`
-                          p-2 rounded-lg transition-all duration-300
-                          ${isActive 
-                            ? 'bg-blue-500/20 text-blue-300' 
-                            : 'text-blue-400/70 group-hover:bg-blue-500/10 group-hover:text-blue-300'
-                          }
-                        `}>
-                          <item.icon className="w-5 h-5" />
+                      <Link to={item.url}>
+                        <div className="flex items-center gap-4 px-4 py-3 w-full">
+                          <div className={`
+                            p-2 rounded-lg transition-all duration-300
+                            ${isActive 
+                              ? 'bg-blue-500/20 text-blue-300' 
+                              : 'text-blue-400/70 group-hover:bg-blue-500/10 group-hover:text-blue-300'
+                            }
+                          `}>
+                            <item.icon className="w-5 h-5" />
+                          </div>
+                          <span className="font-heading">{item.title}</span>
+                          {isActive && (
+                            <div className="absolute right-2 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+                          )}
                         </div>
-                        <span className="font-heading">{item.title}</span>
-                        {isActive && (
-                          <div className="absolute right-2 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-                        )}
-                      </div>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
