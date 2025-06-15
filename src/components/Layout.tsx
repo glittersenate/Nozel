@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { Outlet } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -122,7 +123,7 @@ export function Layout({ children }: LayoutProps) {
           
           <main className="flex-1 relative">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
-            {children}
+            <Outlet />
           </main>
         </SidebarInset>
       </div>
