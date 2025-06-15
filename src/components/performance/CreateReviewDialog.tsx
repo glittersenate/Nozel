@@ -39,13 +39,11 @@ export const CreateReviewDialog = () => {
     setOpen(false);
   };
 
-  // Used for Input and Textarea
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Used for Select (reviewType)
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -68,146 +66,133 @@ export const CreateReviewDialog = () => {
         <DialogTrigger asChild>
           <Button variant="outline">Create Review</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[525px] bg-[#0f172a] text-white border border-blue-800/30">
+        <DialogContent className="sm:max-w-[540px] bg-[#0f172a] text-white border border-blue-800/30">
           <DialogHeader>
             <DialogTitle>Create New Performance Review</DialogTitle>
             <DialogDescription>
               Fill in the information below to create a new performance review.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="employeeName" className="text-right">
-                Employee Name
-              </Label>
-              <Input
-                type="text"
-                id="employeeName"
-                name="employeeName"
-                value={formData.employeeName}
-                onChange={handleChange}
-                className="col-span-3 bg-[#141a2e]/80 border-blue-800/50"
-              />
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="reviewType" className="text-right">
-                Review Type
-              </Label>
-              <select
-                id="reviewType"
-                name="reviewType"
-                value={formData.reviewType}
-                onChange={handleSelectChange}
-                className="col-span-3 bg-[#141a2e]/80 border-blue-800/50 rounded px-2 py-1 text-blue-100"
-              >
-                <option value="quarterly">Quarterly</option>
-                <option value="annual">Annual</option>
-                <option value="project">Project-Based</option>
-              </select>
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="overallRating" className="text-right">
-                Overall Rating
-              </Label>
-              <div className="col-span-3">
-                <Slider
-                  id="overallRating"
-                  name="overallRating"
-                  defaultValue={[formData.overallRating]}
-                  max={5}
-                  step={0.5}
-                  onValueChange={handleSliderChange}
-                  className="text-yellow-500"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                  <span>0</span>
-                  <span>1</span>
-                  <span>2</span>
-                  <span>3</span>
-                  <span>4</span>
-                  <span>5</span>
+          <form onSubmit={handleSubmit} className="grid gap-6 py-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Left col */}
+              <div className="flex flex-col gap-4">
+                <div>
+                  <Label htmlFor="employeeName" className="mb-1 block">Employee Name</Label>
+                  <Input
+                    type="text"
+                    id="employeeName"
+                    name="employeeName"
+                    value={formData.employeeName}
+                    onChange={handleChange}
+                    className="bg-[#141a2e]/80 border-blue-800/50"
+                  />
                 </div>
-                <Badge className="mt-2 bg-blue-500 text-white">
-                  {formData.overallRating.toFixed(1)} / 5.0
-                </Badge>
+                <div>
+                  <Label htmlFor="reviewType" className="mb-1 block">Review Type</Label>
+                  <select
+                    id="reviewType"
+                    name="reviewType"
+                    value={formData.reviewType}
+                    onChange={handleSelectChange}
+                    className="w-full bg-[#141a2e]/80 border-blue-800/50 rounded px-2 py-2 text-blue-100"
+                  >
+                    <option value="quarterly">Quarterly</option>
+                    <option value="annual">Annual</option>
+                    <option value="project">Project-Based</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="overallRating" className="mb-1 block">Overall Rating</Label>
+                  <div>
+                    <Slider
+                      id="overallRating"
+                      name="overallRating"
+                      defaultValue={[formData.overallRating]}
+                      max={5}
+                      step={0.5}
+                      onValueChange={handleSliderChange}
+                      className="text-yellow-500"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <span>0</span>
+                      <span>1</span>
+                      <span>2</span>
+                      <span>3</span>
+                      <span>4</span>
+                      <span>5</span>
+                    </div>
+                    <Badge className="mt-2 bg-blue-500 text-white">
+                      {formData.overallRating.toFixed(1)} / 5.0
+                    </Badge>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="strengths" className="mb-1 block">Key Strengths</Label>
+                  <Textarea
+                    id="strengths"
+                    name="strengths"
+                    value={formData.strengths}
+                    onChange={handleChange}
+                    className="bg-[#141a2e]/80 border-blue-800/50"
+                  />
+                </div>
+              </div>
+              {/* Right col */}
+              <div className="flex flex-col gap-4">
+                <div>
+                  <Label htmlFor="areasForImprovement" className="mb-1 block">Areas for Improvement</Label>
+                  <Textarea
+                    id="areasForImprovement"
+                    name="areasForImprovement"
+                    value={formData.areasForImprovement}
+                    onChange={handleChange}
+                    className="bg-[#141a2e]/80 border-blue-800/50"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="goals" className="mb-1 block">Goals and Objectives</Label>
+                  <Textarea
+                    id="goals"
+                    name="goals"
+                    value={formData.goals}
+                    onChange={handleChange}
+                    className="bg-[#141a2e]/80 border-blue-800/50"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="dueDate" className="mb-1 block">Due Date</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal bg-[#141a2e]/80 border-blue-800/50",
+                          !formData.dueDate && "text-muted-foreground"
+                        )}
+                      >
+                        {formData.dueDate ? format(formData.dueDate, "PPP") : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-[#141a2e] border-blue-800/30" align="center" side="bottom">
+                      <Calendar
+                        mode="single"
+                        selected={formData.dueDate}
+                        onSelect={handleDateChange}
+                        disabled={(date) =>
+                          date > new Date()
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
               </div>
             </div>
-
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="strengths" className="text-right mt-2">
-                Key Strengths
-              </Label>
-              <Textarea
-                id="strengths"
-                name="strengths"
-                value={formData.strengths}
-                onChange={handleChange}
-                className="col-span-3 bg-[#141a2e]/80 border-blue-800/50"
-              />
-            </div>
-
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="areasForImprovement" className="text-right mt-2">
-                Areas for Improvement
-              </Label>
-              <Textarea
-                id="areasForImprovement"
-                name="areasForImprovement"
-                value={formData.areasForImprovement}
-                onChange={handleChange}
-                className="col-span-3 bg-[#141a2e]/80 border-blue-800/50"
-              />
-            </div>
-
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="goals" className="text-right mt-2">
-                Goals and Objectives
-              </Label>
-              <Textarea
-                id="goals"
-                name="goals"
-                value={formData.goals}
-                onChange={handleChange}
-                className="col-span-3 bg-[#141a2e]/80 border-blue-800/50"
-              />
-            </div>
-
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="dueDate" className="text-right">
-                Due Date
-              </Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "col-span-3 justify-start text-left font-normal bg-[#141a2e]/80 border-blue-800/50",
-                      !formData.dueDate && "text-muted-foreground"
-                    )}
-                  >
-                    {formData.dueDate ? format(formData.dueDate, "PPP") : (
-                      <span>Pick a date</span>
-                    )}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-[#141a2e] border-blue-800/30" align="center" side="bottom">
-                  <Calendar
-                    mode="single"
-                    selected={formData.dueDate}
-                    onSelect={handleDateChange}
-                    disabled={(date) =>
-                      date > new Date()
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <Button type="submit" className="col-span-4 bg-blue-600 hover:bg-blue-500">
+            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-500">
               Create Review
             </Button>
           </form>
@@ -218,3 +203,4 @@ export const CreateReviewDialog = () => {
 };
 
 // ... end of file
+
