@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { User, Camera } from "lucide-react";
@@ -7,6 +7,16 @@ import { Button } from "@/components/ui/button";
 
 const DEFAULT_AVATAR =
   "https://ui-avatars.com/api/?background=4f46e5&color=fff&name=U";
+
+// Key for localStorage simulation
+const STORAGE_KEY = "employeePortal_profile_v1";
+
+type ProfilePersistData = {
+  name: string;
+  email: string;
+  department: string;
+  avatar: string;
+};
 
 const ProfileSettings: React.FC = () => {
   const { user } = useAuth();
@@ -16,13 +26,30 @@ const ProfileSettings: React.FC = () => {
     department: user?.department || "",
   });
   const [editing, setEditing] = useState(false);
-  // Avatar logic
   const [avatar, setAvatar] = useState<string>(
     user?.avatar || DEFAULT_AVATAR
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // For image preview before save
   const [preview, setPreview] = useState<string | null>(null);
+
+  // On mount: attempt to hydrate from localStorage first
+  useEffect(() => {
+    try {
+      const local = window.localStorage.getItem(STORAGE_KEY);
+      if (local) {
+        const parsed = JSON.parse(local) as ProfilePersistData;
+        setForm({
+          name: parsed.name,
+          email: parsed.email,
+          department: parsed.department,
+        });
+        setAvatar(parsed.avatar || DEFAULT_AVATAR);
+      }
+    } catch {
+      // fallback to original user/context state
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -46,11 +73,23 @@ const ProfileSettings: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setEditing(false);
-    if (preview) {
-      setAvatar(preview);
-      setPreview(null);
+    const updatedAvatar = preview || avatar;
+    setAvatar(updatedAvatar);
+    setPreview(null);
+
+    // Save profile + avatar to localStorage
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          ...form,
+          avatar: updatedAvatar,
+        })
+      );
+    } catch {
+      // Fail silently
     }
-    // In a real app: upload avatar, update user (API call etc)
+    // In real app: also update user (API etc)
   };
 
   return (
@@ -184,4 +223,3 @@ const ProfileSettings: React.FC = () => {
 };
 
 export default ProfileSettings;
-
