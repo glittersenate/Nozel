@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,42 +46,44 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  /* ADD LIGHT THEME OVERRIDES:
+     Professional, clean white surfaces, soft shadows, blue accents */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222.2 20% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 20% 13%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 20% 13%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --primary: 223 100% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 18% 96%;
+    --secondary-foreground: 223 20% 23%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --muted: 220 18% 96%;
+    --muted-foreground: 223 15% 42%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 210 100% 97%;
+    --accent-foreground: 223 45% 45%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --border: 222 16% 90%;
+    --input: 222 16% 92%;
+    --ring: 223 100% 60%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 223 25% 23%;
+    --sidebar-primary: 223 100% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 223 40% 97%;
+    --sidebar-accent-foreground: 223 42% 29%;
+    --sidebar-border: 222 16% 90%;
+    --sidebar-ring: 223 100% 60%;
   }
 }
 
@@ -97,6 +98,11 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0f1419 100%);
     background-attachment: fixed;
+  }
+
+  .light body {
+    background: linear-gradient(135deg, #eceffd 0%, #f7faff 35%, #e4ebfa 100%);
+    /* subtle light gradient */
   }
 
   /* Premium Typography Scale */
