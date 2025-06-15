@@ -1,15 +1,13 @@
 
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Activity, Users, DollarSign, TrendingUp } from "lucide-react";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useRealTimeData } from "@/hooks/useRealTimeData";
 
-// Executive-focused metrics card component
 const RealTimeBIHub: React.FC = () => {
   const { employees } = useEmployees();
-  const { metrics, isLive, toggleLiveMode } = useRealTimeData(employees);
+  const { metrics } = useRealTimeData(employees);
 
   const topGrowthDept = Object.entries(metrics.departmentGrowth)
     .sort(([, a], [, b]) => b - a)[0];
@@ -50,21 +48,9 @@ const RealTimeBIHub: React.FC = () => {
               <span className="ml-auto text-lg text-white font-bold">{metrics.newHires}</span>
             </div>
           </div>
-          <div className="flex justify-between items-center mt-4">
-            <Button
-              onClick={toggleLiveMode}
-              size="sm"
-              variant={isLive ? "default" : "outline"}
-              className={isLive ? "bg-green-600 hover:bg-green-700 text-white" : "border-blue-600 text-blue-300"}
-            >
-              {isLive ? "Stop Live" : "Go Live"}
-            </Button>
-            {isLive && (
-              <div className="flex items-center gap-2 text-xs text-green-300">
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                Live updating every 3 seconds
-              </div>
-            )}
+          <div className="flex items-center gap-2 text-xs text-green-300 mt-4">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            Auto-refreshing every 10 seconds
           </div>
         </div>
       </CardContent>
