@@ -25,12 +25,15 @@ const PayslipHistory: React.FC = () => {
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="bg-blue-950/70 cursor-default">
+            <TableRow
+              className="bg-blue-950/70 cursor-default select-none" // ensures no pointer and disables select
+              style={{ pointerEvents: "none" }} // disables all mouse events on header
+            >
               {/* Table headers - no hover effect */}
-              <TableHead className="text-blue-200 font-semibold select-none">Pay Period</TableHead>
-              <TableHead className="text-blue-200 font-semibold select-none">Status</TableHead>
-              <TableHead className="text-blue-200 font-semibold select-none text-right">Net Pay</TableHead>
-              <TableHead className="text-blue-200 font-semibold select-none text-right">Download</TableHead>
+              <TableHead className="text-blue-200 font-semibold">Pay Period</TableHead>
+              <TableHead className="text-blue-200 font-semibold">Status</TableHead>
+              <TableHead className="text-blue-200 font-semibold text-right">Net Pay</TableHead>
+              <TableHead className="text-blue-200 font-semibold text-right">Download</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
