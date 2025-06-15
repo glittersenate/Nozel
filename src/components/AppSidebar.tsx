@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, UserCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -47,17 +48,19 @@ export function AppSidebar() {
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 blur" />
           </div>
           <div>
-            <h2 className="text-xl font-bold font-heading bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+            <h2 className="text-xl font-bold font-heading bg-gradient-to-r from-black to-neutral-700 bg-clip-text text-transparent dark:bg-gradient-to-r dark:from-white dark:to-blue-200">
               NozelPay
             </h2>
-            <p className="text-xs text-blue-300/70 font-medium">HR Solutions</p>
+            <p className="text-xs text-black/70 dark:text-blue-300/70 font-medium">
+              HR Solutions
+            </p>
           </div>
         </div>
       </SidebarHeader>
 
       <SidebarContent className="px-4 py-6">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-blue-300/60 text-xs uppercase tracking-wider font-semibold mb-4 px-3">
+          <SidebarGroupLabel className="text-black/80 dark:text-blue-300/60 text-xs uppercase tracking-wider font-semibold mb-4 px-3 font-heading">
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -70,9 +73,10 @@ export function AppSidebar() {
                       asChild
                       className={`
                         group relative rounded-xl transition-all duration-300 font-medium cursor-pointer
-                        ${isActive 
-                          ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border-l-4 border-blue-400 shadow-glow' 
-                          : 'text-blue-200/70 hover:text-white hover:bg-blue-500/10 hover:shadow-lg'
+                        ${
+                          isActive 
+                            ? 'bg-gradient-to-r from-slate-200 to-white text-black border-l-4 border-blue-400 shadow-glow dark:bg-gradient-to-r dark:from-blue-500/20 dark:to-purple-500/20 dark:text-white'
+                            : 'text-black hover:text-black hover:bg-neutral-100 hover:shadow-lg dark:text-blue-200/70 dark:hover:text-white dark:hover:bg-blue-500/10'
                         }
                       `}
                     >
@@ -80,11 +84,13 @@ export function AppSidebar() {
                         <div className="flex items-center gap-4 px-4 py-3 w-full">
                           <div className={`
                             p-2 rounded-lg transition-all duration-300
-                            ${isActive 
-                              ? 'bg-blue-500/20 text-blue-300' 
-                              : 'text-blue-400/70 group-hover:bg-blue-500/10 group-hover:text-blue-300'
+                            ${
+                              isActive 
+                                ? 'bg-white text-black dark:bg-blue-500/20 dark:text-blue-300' 
+                                : 'text-black/50 group-hover:bg-neutral-100 group-hover:text-black dark:text-blue-400/70 dark:group-hover:bg-blue-500/10 dark:group-hover:text-blue-300'
                             }
                           `}>
+                            {/* Icon colored black in light, white in dark */}
                             <item.icon className="w-5 h-5" />
                           </div>
                           <span className="font-heading">{item.title}</span>
@@ -103,7 +109,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-blue-500/20 p-6">
-        <div className="text-xs text-blue-300/40 font-mono text-center">
+        <div className="text-xs text-black/30 dark:text-blue-300/40 font-mono text-center">
           © 2024 NozelPay System
         </div>
       </SidebarFooter>
