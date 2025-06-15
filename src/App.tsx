@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { PayrollProvider } from "./contexts/PayrollContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
+import GlobalLoader from "./components/ui/GlobalLoader";
+import { AppErrorBoundary } from "./components/ui/AppErrorBoundary";
 import Index from "./pages/Index";
 import Employees from "./pages/Employees";
 import TimeTracking from "./pages/TimeTracking";
@@ -28,28 +32,33 @@ const App = () => (
     <ThemeProvider>
       <AuthProvider>
         <PayrollProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/employees" element={<Employees />} />
-                <Route path="/time-tracking" element={<TimeTracking />} />
-                <Route path="/payroll" element={<Payroll />} />
-                <Route path="/leave" element={<Leave />} />
-                <Route path="/performance" element={<Performance />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/compliance" element={<Compliance />} />
-                <Route path="/employee-portal" element={<EmployeePortal />} />
-                <Route path="/executive" element={<ExecutiveCommandCenter />} />
-                <Route path="/integrations" element={<Integrations />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
+          <LoadingProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <GlobalLoader />
+              <AppErrorBoundary>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/employees" element={<Employees />} />
+                    <Route path="/time-tracking" element={<TimeTracking />} />
+                    <Route path="/payroll" element={<Payroll />} />
+                    <Route path="/leave" element={<Leave />} />
+                    <Route path="/performance" element={<Performance />} />
+                    <Route path="/reports" element={<Reports />} />
+                    <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/compliance" element={<Compliance />} />
+                    <Route path="/employee-portal" element={<EmployeePortal />} />
+                    <Route path="/executive" element={<ExecutiveCommandCenter />} />
+                    <Route path="/integrations" element={<Integrations />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </AppErrorBoundary>
+            </TooltipProvider>
+          </LoadingProvider>
         </PayrollProvider>
       </AuthProvider>
     </ThemeProvider>
