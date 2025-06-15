@@ -1,6 +1,6 @@
+
 import React from "react";
 import { Gift, DollarSign, HeartPulse } from "lucide-react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 
 // Define the benefits for the cards
 const benefits = [
@@ -28,15 +28,6 @@ const benefits = [
 
 const Benefits: React.FC = () => (
   <div className="relative max-w-5xl mx-auto py-10 px-4">
-    {/* Sidebar Hamburger using SidebarTrigger */}
-    <div className="absolute left-2 top-2 md:left-0 md:top-0 md:mt-2 md:ml-2 z-10">
-      <SidebarTrigger
-        className="rounded-md bg-transparent p-2 hover:bg-blue-800/30 transition-colors focus:outline-none text-blue-200"
-        aria-label="Open menu"
-        style={{ width: 44, height: 44 }}
-      />
-    </div>
-
     {/* Header with icon and title */}
     <div className="flex items-center gap-3 mb-3 mt-3 sm:mt-0">
       <Gift className="text-blue-300 w-9 h-9" />
