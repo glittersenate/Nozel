@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -14,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import ConfettiExplosion from "@/components/ui/ConfettiExplosion";
 import { toast } from "@/hooks/use-toast";
+import { usePerformanceContext } from "@/contexts/PerformanceContext";
 
 export const CreateReviewDialog = () => {
   const [open, setOpen] = useState(false);
@@ -26,17 +26,59 @@ export const CreateReviewDialog = () => {
     goals: '',
     dueDate: new Date(),
   });
-
+  const [errors, setErrors] = useState<{employeeName?: string, strengths?: string}>({});
   const [success, setSuccess] = useState(false);
+
+  const { addReview } = usePerformanceContext();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Basic validation
+    let localErrors: typeof errors = {};
+    if (!formData.employeeName.trim()) {
+      localErrors.employeeName = "Employee name is required";
+    }
+    if (!formData.strengths.trim()) {
+      localErrors.strengths = "Please specify at least one strength";
+    }
+    setErrors(localErrors);
+
+    if (Object.keys(localErrors).length > 0) {
+      toast({
+        title: "Please fix the errors before submitting.",
+        description: Object.values(localErrors).join(" "),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Add review to context
+    addReview({
+      type: formData.reviewType as any,
+      overallRating: formData.overallRating,
+      feedback: formData.strengths,
+      employeeFeedback: formData.areasForImprovement,
+      developmentPlan: formData.goals,
+      scheduledDate: formData.dueDate.toISOString().slice(0,10),
+    });
+
     setSuccess(true);
     toast({
       title: "Review Submitted!",
       description: "Your performance review was submitted successfully.",
     });
+    setFormData({
+      employeeName: '',
+      reviewType: 'quarterly',
+      overallRating: 3,
+      strengths: '',
+      areasForImprovement: '',
+      goals: '',
+      dueDate: new Date(),
+    });
+    setErrors({});
     setOpen(false);
+    setTimeout(() => setSuccess(false), 1200); // Reset confetti
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -85,8 +127,9 @@ export const CreateReviewDialog = () => {
                     name="employeeName"
                     value={formData.employeeName}
                     onChange={handleChange}
-                    className="bg-[#141a2e]/80 border-blue-800/50"
+                    className={`bg-[#141a2e]/80 border-blue-800/50 ${errors.employeeName ? 'border-red-400' : ''}`}
                   />
+                  {errors.employeeName && <span className="text-red-400 text-xs">{errors.employeeName}</span>}
                 </div>
                 <div>
                   <Label htmlFor="reviewType" className="mb-1 block">Review Type</Label>
@@ -134,8 +177,9 @@ export const CreateReviewDialog = () => {
                     name="strengths"
                     value={formData.strengths}
                     onChange={handleChange}
-                    className="bg-[#141a2e]/80 border-blue-800/50"
+                    className={`bg-[#141a2e]/80 border-blue-800/50 ${errors.strengths ? 'border-red-400' : ''}`}
                   />
+                  {errors.strengths && <span className="text-red-400 text-xs">{errors.strengths}</span>}
                 </div>
               </div>
               {/* Right col */}
@@ -201,6 +245,3 @@ export const CreateReviewDialog = () => {
     </>
   );
 };
-
-// ... end of file
-

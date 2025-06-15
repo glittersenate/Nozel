@@ -1,14 +1,13 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Eye, Edit, Star } from 'lucide-react';
-import { usePerformance } from '@/hooks/usePerformance';
+import { usePerformanceContext } from "@/contexts/PerformanceContext";
 
 export const PerformanceReviewsTable = () => {
-  const { performanceReviews } = usePerformance();
+  const { reviews } = usePerformanceContext();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -59,7 +58,7 @@ export const PerformanceReviewsTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {performanceReviews.slice(0, 5).map((review) => (
+              {reviews.slice(0, 5).map((review) => (
                 <TableRow key={review.id} className="border-blue-800/30">
                   <TableCell className="text-white">
                     {review.period}
