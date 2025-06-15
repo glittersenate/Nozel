@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -15,11 +16,9 @@ import {
 import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { Outlet } from "react-router-dom";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
+// Removed LayoutProps interface
 
-export function Layout({ children }: LayoutProps) {
+export function Layout() {
   const { user, logout } = useAuth();
 
   return (
