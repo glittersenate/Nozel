@@ -55,24 +55,20 @@ const Employees = () => {
   return (
     <Layout>
       <div
-        className="min-h-screen bg-[rgba(20,26,46,0.7)] dark:bg-[rgba(20,26,46,0.7)] light:bg-[rgba(236,239,253,1)]"
+        className="min-h-screen bg-[rgba(20,26,46,0.7)]"
       >
         <div className="container mx-auto py-5 px-2 sm:px-4 md:px-8 max-w-full">
           <div className="mb-6 mt-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-0">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-white dark:text-white light:text-blue-900 mb-1">
-                Employee Management
-              </h1>
-              <p className="text-blue-300 text-sm sm:text-base dark:text-blue-300 light:text-blue-700/80">
-                Manage your workforce and employee information
-              </p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Employee Management</h1>
+              <p className="text-blue-300 text-sm sm:text-base">Manage your workforce and employee information</p>
             </div>
           </div>
           
           <div className="flex flex-col xs:flex-row gap-2 xs:gap-4 mb-4 w-full">
             <Button
               onClick={() => setShowAddDialog(true)}
-              className="w-full xs:w-auto bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 dark:from-blue-600 dark:to-blue-400 light:from-blue-500 light:to-blue-300"
+              className="w-full xs:w-auto bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Employee
@@ -80,7 +76,7 @@ const Employees = () => {
             <Button
               onClick={() => setShowFilterDrawer(true)}
               variant="outline"
-              className="w-full xs:w-auto border-blue-600 text-blue-300 hover:bg-blue-600/10 dark:border-blue-600 dark:text-blue-300 light:border-blue-400 light:text-blue-700 hover:light:bg-blue-100/80"
+              className="w-full xs:w-auto border-blue-600 text-blue-300 hover:bg-blue-600/10"
             >
               <Filter className="w-4 h-4 mr-2" />
               Filter
@@ -106,7 +102,7 @@ const Employees = () => {
           )}
 
           {/* Responsive Table Wrapper */}
-          <div className="w-full overflow-x-auto rounded-xl bg-white/90 dark:bg-[#181C2A]/90 light:bg-white/95 shadow-lg light:shadow-md">
+          <div className="w-full overflow-x-auto rounded-xl">
             <EmployeeTable
               employees={employees}
               onDeleteEmployee={deleteEmployee}
