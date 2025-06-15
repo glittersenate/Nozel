@@ -1,6 +1,4 @@
-
 import React, { useState } from 'react';
-import { LeaveBalanceCards } from './LeaveBalanceCards';
 import { LeaveRequestsTable } from './LeaveRequestsTable';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,7 +71,6 @@ export const LeaveDashboard = () => {
         </div>
       </div>
       
-      <LeaveBalanceCards />
 
       {/* Sorting controls */}
       <Card className="bg-[#141a2e]/80 border border-blue-800/30 mt-8">
@@ -147,4 +144,3 @@ export const LeaveDashboard = () => {
     </div>
   );
 };
-
