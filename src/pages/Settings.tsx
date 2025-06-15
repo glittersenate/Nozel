@@ -55,7 +55,6 @@ export default function Settings() {
   };
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Validation and saving logic should go here
     if (!passwordInputs.current || !passwordInputs.new || !passwordInputs.confirm) {
       toast({ title: "Please fill all fields", variant: "destructive" });
       return;
@@ -83,20 +82,20 @@ export default function Settings() {
 
   return (
     <Layout>
-      <div className="container mx-auto max-w-4xl py-10 px-3 sm:px-10 flex flex-col sm:flex-row gap-8 animate-fade-in">
-        {/* Custom Sidebar */}
+      <div className="container mx-auto max-w-4xl py-10 px-2 sm:px-8 flex flex-col sm:flex-row gap-8 animate-fade-in">
+        {/* Sidebar */}
         <aside
-          className="w-full sm:w-48 shrink-0 flex-none mb-4 sm:mb-0 sidebar-flat"
+          className="w-full sm:w-52 shrink-0 flex-none mb-4 sm:mb-0 sidebar-flat rounded-xl"
           aria-label="Settings Navigation"
         >
-          <nav className="flex flex-row sm:flex-col gap-3 sm:gap-2 pt-2">
+          <nav className="flex flex-row sm:flex-col gap-2 pt-2">
             {SIDEBAR_SECTIONS.map((section) => (
               <button
                 key={section.id}
-                className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors
+                className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-colors
                   ${sidebarSection === section.id
-                    ? "bg-blue-900/40 text-blue-100"
-                    : "hover:bg-blue-900/20 text-blue-300"
+                    ? "bg-blue-900/75 text-blue-50 shadow-glow"
+                    : "hover:bg-blue-900/40 text-blue-300"
                   }
                   focus-visible:ring-2 ring-blue-400 focus-visible:outline-none`}
                 onClick={() => handleSidebarNav(section.id)}
@@ -108,130 +107,147 @@ export default function Settings() {
             ))}
           </nav>
         </aside>
-        <section className="flex-1 min-w-0 space-y-8">
+        <section className="flex-1 min-w-0 space-y-10">
           {/* --- GENERAL --- */}
           {sidebarSection === "general" && (
             <div
               id="general"
-              className="card-flat flex flex-col gap-6"
+              className="
+                card-flat
+                flex flex-col gap-8
+                py-8 px-4 sm:px-10 rounded-2xl
+                bg-[rgba(18,24,41,0.98)]
+                shadow-glow
+                border border-blue-900/50
+                animate-fade-in-up
+                "
               tabIndex={-1}
               aria-labelledby="general-heading"
             >
-              <h2 className="text-foreground text-xl font-bold mb-2" id="general-heading" tabIndex={0}>
-                Profile Information
-              </h2>
-              {!editing ? (
-                <>
-                  <div className="flex flex-col gap-2">
-                    <div>
-                      <Label className="text-blue-300 text-xs">Name</Label>
-                      <div className="font-medium text-white">{profile.name}</div>
+              <div>
+                <h2 
+                  className="text-2xl font-bold text-white mb-4 tracking-tight"
+                  id="general-heading"
+                  tabIndex={0}
+                >
+                  Profile Information
+                </h2>
+                {!editing ? (
+                  <>
+                    <div className="flex flex-col gap-2 mb-6">
+                      <div>
+                        <Label className="text-blue-300 text-xs">Name</Label>
+                        <div className="font-medium text-white text-base">{profile.name}</div>
+                      </div>
+                      <div>
+                        <Label className="text-blue-300 text-xs">Email</Label>
+                        <div className="font-medium text-white text-base">{profile.email}</div>
+                      </div>
                     </div>
-                    <div>
-                      <Label className="text-blue-300 text-xs">Email</Label>
-                      <div className="font-medium text-white">{profile.email}</div>
-                    </div>
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="w-max mt-2"
-                    onClick={() => setEditing(true)}
-                    aria-label="Edit profile"
-                  >
-                    Edit Profile
-                  </Button>
-                </>
-              ) : (
-                <form className="flex flex-col gap-4" onSubmit={handleSaveProfile}>
-                  <div>
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={profile.name}
-                      onChange={handleProfileChange}
-                      className="mt-1"
-                      maxLength={32}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={profile.email}
-                      autoComplete="email"
-                      onChange={handleProfileChange}
-                      className="mt-1"
-                      required
-                    />
-                  </div>
-                  <div className="flex gap-3">
                     <Button
-                      type="submit"
-                      disabled={isSaving}
-                      variant="default"
-                      className="min-w-[100px]"
-                    >
-                      {isSaving ? <span>Saving...</span> : "Save Changes"}
-                    </Button>
-                    <Button
-                      type="button"
                       variant="outline"
-                      className="min-w-[100px]"
-                      disabled={isSaving}
-                      onClick={() => {
-                        setProfile({ ...fakeUser });
-                        setEditing(false);
-                      }}
+                      className="w-max mt-2 rounded-lg border-blue-900/60 hover:border-blue-500"
+                      onClick={() => setEditing(true)}
+                      aria-label="Edit profile"
                     >
-                      Cancel
+                      Edit Profile
                     </Button>
+                  </>
+                ) : (
+                  <form className="flex flex-col gap-5" onSubmit={handleSaveProfile}>
+                    <div>
+                      <Label htmlFor="name" className="text-blue-200 font-semibold">Name</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={profile.name}
+                        onChange={handleProfileChange}
+                        className="mt-2 px-4 py-2 bg-[#151c2d] border-blue-900/70 rounded-lg focus-visible:ring-2 focus-visible:ring-blue-500 text-blue-100"
+                        maxLength={32}
+                        required
+                        autoFocus
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email" className="text-blue-200 font-semibold">Email</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={profile.email}
+                        autoComplete="email"
+                        onChange={handleProfileChange}
+                        className="mt-2 px-4 py-2 bg-[#151c2d] border-blue-900/70 rounded-lg focus-visible:ring-2 focus-visible:ring-blue-500 text-blue-100"
+                        required
+                      />
+                    </div>
+                    <div className="flex gap-4 mt-2">
+                      <Button
+                        type="submit"
+                        disabled={isSaving}
+                        variant="default"
+                        className="min-w-[120px] rounded-lg"
+                      >
+                        {isSaving ? <span>Saving...</span> : "Save Changes"}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="min-w-[100px] rounded-lg"
+                        disabled={isSaving}
+                        onClick={() => {
+                          setProfile({ ...fakeUser });
+                          setEditing(false);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </div>
+
+              <div className="my-2 border-t border-blue-900/40" />
+
+              <div>
+                <h2 className="text-lg font-semibold text-white mb-4">Notification Preferences</h2>
+                <form className="flex flex-col gap-4 max-w-sm">
+                  <div className="flex items-center justify-between gap-6">
+                    <Label
+                      htmlFor="emailNotify"
+                      className="text-blue-300 font-medium"
+                    >
+                      Email Notifications
+                    </Label>
+                    <Switch
+                      checked={emailNotify}
+                      onCheckedChange={setEmailNotify}
+                      id="emailNotify"
+                      aria-checked={emailNotify}
+                      aria-label={emailNotify ? "Disable Email Notifications" : "Enable Email Notifications"}
+                      tabIndex={0}
+                      className="focus-visible:ring-2 ring-blue-400 focus-visible:outline-none"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between gap-6">
+                    <Label
+                      htmlFor="pushNotify"
+                      className="text-blue-300 font-medium"
+                    >
+                      Push Notifications
+                    </Label>
+                    <Switch
+                      checked={pushNotify}
+                      onCheckedChange={setPushNotify}
+                      id="pushNotify"
+                      aria-checked={pushNotify}
+                      aria-label={pushNotify ? "Disable Push Notifications" : "Enable Push Notifications"}
+                      tabIndex={0}
+                      className="focus-visible:ring-2 ring-blue-400 focus-visible:outline-none"
+                    />
                   </div>
                 </form>
-              )}
-
-              <div className="border-t border-blue-900/30 my-2" />
-
-              <h2 className="text-foreground text-lg font-bold">Notification Preferences</h2>
-              <form className="flex flex-col gap-3 max-w-xs">
-                <div className="flex items-center justify-between gap-4">
-                  <Label
-                    htmlFor="emailNotify"
-                    className="text-muted-foreground"
-                  >
-                    Email Notifications
-                  </Label>
-                  <Switch
-                    checked={emailNotify}
-                    onCheckedChange={setEmailNotify}
-                    id="emailNotify"
-                    aria-checked={emailNotify}
-                    aria-label={emailNotify ? "Disable Email Notifications" : "Enable Email Notifications"}
-                    tabIndex={0}
-                    className="focus-visible:ring-2 ring-blue-400 focus-visible:outline-none"
-                  />
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <Label
-                    htmlFor="pushNotify"
-                    className="text-muted-foreground"
-                  >
-                    Push Notifications
-                  </Label>
-                  <Switch
-                    checked={pushNotify}
-                    onCheckedChange={setPushNotify}
-                    id="pushNotify"
-                    aria-checked={pushNotify}
-                    aria-label={pushNotify ? "Disable Push Notifications" : "Enable Push Notifications"}
-                    tabIndex={0}
-                    className="focus-visible:ring-2 ring-blue-400 focus-visible:outline-none"
-                  />
-                </div>
-              </form>
+              </div>
             </div>
           )}
 
@@ -239,17 +255,23 @@ export default function Settings() {
           {sidebarSection === "security" && (
             <div
               id="security"
-              className="card-flat flex flex-col gap-6"
+              className="
+                card-flat flex flex-col gap-10
+                py-8 px-4 sm:px-10 rounded-2xl
+                bg-[rgba(18,24,41,0.98)]
+                shadow-glow border border-blue-900/50 animate-fade-in-up
+                "
               tabIndex={-1}
               aria-labelledby="security-heading"
             >
-              <h2 className="text-foreground text-xl font-bold mb-2" id="security-heading" tabIndex={0}>
+              <h2 className="text-2xl font-bold text-white mb-6 tracking-tight" id="security-heading" tabIndex={0}>
                 Account Security
               </h2>
 
-              <form className="flex flex-col gap-4 max-w-md" onSubmit={handlePasswordSubmit}>
+              {/* Password change section */}
+              <form className="flex flex-col gap-6 max-w-md mx-auto" onSubmit={handlePasswordSubmit}>
                 <div>
-                  <Label htmlFor="current" className="mb-1">Current Password</Label>
+                  <Label htmlFor="current" className="mb-2 text-blue-200 font-semibold">Current Password</Label>
                   <Input
                     id="current"
                     name="current"
@@ -257,11 +279,12 @@ export default function Settings() {
                     value={passwordInputs.current}
                     autoComplete="current-password"
                     onChange={handlePasswordChange}
+                    className="mt-2 px-4 py-2 bg-[#151c2d] border-blue-900/80 rounded-lg text-blue-50"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="new" className="mb-1">New Password</Label>
+                  <Label htmlFor="new" className="mb-2 text-blue-200 font-semibold">New Password</Label>
                   <Input
                     id="new"
                     name="new"
@@ -269,11 +292,12 @@ export default function Settings() {
                     value={passwordInputs.new}
                     autoComplete="new-password"
                     onChange={handlePasswordChange}
+                    className="mt-2 px-4 py-2 bg-[#151c2d] border-blue-900/80 rounded-lg text-blue-50"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="confirm" className="mb-1">Confirm New Password</Label>
+                  <Label htmlFor="confirm" className="mb-2 text-blue-200 font-semibold">Confirm New Password</Label>
                   <Input
                     id="confirm"
                     name="confirm"
@@ -281,25 +305,28 @@ export default function Settings() {
                     value={passwordInputs.confirm}
                     autoComplete="new-password"
                     onChange={handlePasswordChange}
+                    className="mt-2 px-4 py-2 bg-[#151c2d] border-blue-900/80 rounded-lg text-blue-50"
                     required
                   />
                 </div>
                 <Button
                   type="submit"
                   variant="default"
-                  className="mt-2 min-w-[110px]"
+                  className="mt-3 min-w-[140px] rounded-lg font-bold py-2 text-base"
                   disabled={isSaving}
                 >
                   {isSaving ? <span>Saving...</span> : "Change Password"}
                 </Button>
               </form>
               
+              <div className="border-t border-blue-900/40 my-2" />
+
               {/* Session management (logout all devices) */}
-              <div className="mt-7 pt-4 border-t border-blue-900/30">
-                <h3 className="text-blue-100 font-medium mb-2">Session Management</h3>
+              <div className="pt-2">
+                <h3 className="text-lg text-blue-100 font-semibold mb-3">Session Management</h3>
                 <Button
                   variant="outline"
-                  className="w-max"
+                  className="w-max font-medium bg-[#151c2d] border-blue-900/60 hover:border-blue-500 text-blue-100 rounded-lg"
                   onClick={() =>
                     toast({
                       title: "Logged out everywhere",
@@ -311,21 +338,22 @@ export default function Settings() {
                 </Button>
               </div>
 
+              <div className="border-t border-blue-900/40 my-2" />
+
               {/* 2FA toggle (placeholder) */}
-              <div className="mt-4">
-                <h3 className="text-blue-100 font-medium mb-2">Two-Factor Authentication</h3>
-                <div className="flex items-center gap-4">
-                  <Switch disabled checked={false} id="2fa-switch" />
-                  <span className="text-blue-300">Coming soon</span>
-                </div>
+              <div className="pt-2 flex items-center gap-4">
+                <Switch disabled checked={false} id="2fa-switch" />
+                <span className="text-blue-300 text-base font-medium">Two-Factor Authentication <span className="pl-1 text-blue-400">Coming soon</span></span>
               </div>
 
+              <div className="border-t border-blue-900/40 my-4" />
+
               {/* Delete account (placeholder) */}
-              <div className="mt-8">
-                <h3 className="text-red-400 font-medium mb-3">Danger Zone</h3>
+              <div>
+                <h3 className="text-lg text-red-500 font-semibold mb-2">Danger Zone</h3>
                 <Button
                   variant="destructive"
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-red-600 hover:bg-red-700 rounded-lg shadow-sm font-semibold"
                   disabled
                 >
                   Delete Account (Coming Soon)
@@ -347,3 +375,5 @@ export default function Settings() {
     </Layout>
   );
 }
+
+// end
