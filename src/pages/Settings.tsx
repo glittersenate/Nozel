@@ -55,7 +55,7 @@ export default function Settings() {
       <div className="container mx-auto max-w-5xl py-10 px-3 sm:px-10 flex flex-col sm:flex-row gap-8 animate-fade-in">
         {/* Sidebar (responsive + a11y) */}
         <aside
-          className="w-full sm:w-64 shrink-0 flex-none mb-4 sm:mb-0"
+          className="w-full sm:w-64 shrink-0 flex-none mb-4 sm:mb-0 sidebar-flat"
           aria-label="Settings Navigation"
         >
           <SettingsSidebarNav />
@@ -64,7 +64,7 @@ export default function Settings() {
           {/* APPEARANCE */}
           <div
             id="appearance"
-            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            className="card-flat flex flex-col gap-6"
             tabIndex={-1}
             aria-labelledby="appearance-heading"
           >
@@ -88,7 +88,7 @@ export default function Settings() {
           {/* NOTIFICATIONS */}
           <div
             id="notifications"
-            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            className="card-flat flex flex-col gap-6"
             tabIndex={-1}
             aria-labelledby="notifications-heading"
           >
@@ -151,7 +151,7 @@ export default function Settings() {
           {/* PROFILE */}
           <div
             id="profile"
-            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-6"
+            className="card-flat flex flex-col gap-6"
             tabIndex={-1}
             aria-labelledby="profile-heading"
           >
@@ -179,7 +179,7 @@ export default function Settings() {
           {/* INTEGRATIONS */}
           <div
             id="integrations"
-            className="bg-card rounded-2xl p-7 shadow-lg flex flex-col gap-3"
+            className="card-flat flex flex-col gap-3"
             tabIndex={-1}
             aria-labelledby="integrations-heading"
           >

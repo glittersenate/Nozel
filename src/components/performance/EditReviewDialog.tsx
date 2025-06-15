@@ -14,7 +14,7 @@ export const EditReviewDialog: React.FC<Props> = ({ review, open, onOpenChange }
   if (!review) return null;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg bg-card border-border text-foreground">
+      <DialogContent className="max-w-lg card-flat">
         <DialogHeader>
           <DialogTitle>Edit Performance Review</DialogTitle>
           <DialogDescription>

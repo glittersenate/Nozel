@@ -6,81 +6,69 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%; /* black text in light mode */
-
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%; /* black text in light mode */
-
+    /* Base light mode colors: FLAT UI, NO BLUE! */
+    --background: 0 0% 100%;                /* #fff */
+    --foreground: 0 0% 0%;                  /* #000 */
+    --card: 0 0% 100%;                      /* white cards */
+    --card-foreground: 0 0% 0%;             /* black text on cards */
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
-
     --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
+    --primary-foreground: 0 0% 100%;        /* blue text/buttons on white or contrast */
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 0 0% 0%; /* black text */
-
+    --secondary-foreground: 0 0% 0%;        /* black text for secondary */
     --muted: 210 40% 96.1%;
-    --muted-foreground: 0 0% 33%;   /* dark gray, readable on light */
-
-    --accent: 210 40% 96.1%;
+    --muted-foreground: 0 0% 46%;           /* softer gray for muted */
+    --accent: 210 40% 95%;
     --accent-foreground: 0 0% 0%;
-
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 0%; /* error text black for clarity */
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 18% 90%;                  /* subtle gray borders */
+    --input: 215 18% 90%;
+    --ring: 215 35% 53%;
+    --radius: 0.75rem;                      /* rounder cards/buttons */
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
+    /* Sidebar in light mode: white and flat */
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 0%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-primary: 0 0% 0%;      /* brand blue if needed */
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 210 40% 97%;
     --sidebar-accent-foreground: 0 0% 0%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 215 18% 90%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
+    /* Base dark blue/indigo, as before, but all text pure white */
     --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
+    --foreground: 0 0% 100%;                /* white text everywhere */
+    --card: 225 48% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 225 48% 10%;
+    --popover-foreground: 0 0% 100%;
     --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
+    --primary-foreground: 225 48% 10%;
     --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
+    --secondary-foreground: 0 0% 100%;
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
+    --muted-foreground: 0 0% 80%;
     --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217 20% 23%;     /* deep blue border */
+    --input: 217 20% 23%;
+    --ring: 217.2 91.2% 59.8%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
+    /* Sidebar in dark mode: dark blue, white text */
+    --sidebar-background: 225 48% 10%;
+    --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 217 20% 23%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -94,36 +82,63 @@
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-    background: linear-gradient(135deg, #e6ecfc 0%, #f6f9fd 50%, #c9dbfa 100%);
+    /* Light mode: pure flat white bg, dark mode: deep navy */
+    background: hsl(var(--background));
     background-attachment: fixed;
-
-    color: #000; /* fallback to black text in light mode */
+    color: hsl(var(--foreground));
   }
 
   .dark body {
-    /* Restores the original dark background */
-    background: linear-gradient(135deg, #10131e 0%, #1a1f35 50%, #0f1419 100%);
+    background: hsl(var(--background));
     background-attachment: fixed;
+    color: hsl(var(--foreground));
   }
 
-  /* Premium Typography Scale */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', 'Inter', sans-serif;
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.025em;
+    color: hsl(var(--foreground));
   }
 
   .font-heading {
     font-family: 'Outfit', 'Inter', sans-serif;
   }
-
   .font-body {
     font-family: 'Inter', sans-serif;
   }
-
   .font-mono {
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+}
+
+/* Remove glassmorphism and set flatter shadow/card look */
+@layer components {
+  .glass, .glass-dark {
+    background: none !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: 0 2px 16px rgba(24, 32, 64, 0.09), 0 1.5px 4px rgba(60,60,60,.07);
+  }
+  .shadow-glow, .shadow-glow-lg {
+    box-shadow: 0 2px 16px rgba(24, 32, 64, 0.09), 0 1.5px 4px rgba(60,60,60,.07);
+  }
+  .shadow-premium {
+    box-shadow: 0 1.5px 6px rgba(40,56,68,.07);
+  }
+  .card-flat {
+    background: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border-radius: var(--radius);
+    box-shadow: 0 2px 16px rgba(24, 32, 64, 0.09), 0 1.5px 4px rgba(60,60,60,.07);
+    border: 1.5px solid hsl(var(--border));
+  }
+  .sidebar-flat {
+    background: hsl(var(--sidebar-background));
+    color: hsl(var(--sidebar-foreground));
+    border-right: 1.5px solid hsl(var(--sidebar-border));
+    box-shadow: 0 2px 16px rgba(24, 32, 64, 0.06);
   }
 }
 

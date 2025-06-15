@@ -22,7 +22,7 @@ export const CreateReviewDialog = () => {
         <DialogTrigger asChild>
           <Button variant="outline">Create Review</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[540px] bg-card text-foreground border border-border">
+        <DialogContent className="sm:max-w-[540px] card-flat">
           <DialogHeader>
             <DialogTitle>Create New Performance Review</DialogTitle>
             <DialogDescription>
