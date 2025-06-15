@@ -18,6 +18,7 @@ import Compliance from "./pages/Compliance";
 import EmployeePortal from "./pages/EmployeePortal";
 import NotFound from "./pages/NotFound";
 import ExecutiveCommandCenter from "./components/executive/ExecutiveCommandCenter";
+import Integrations from "./pages/Integrations";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
                 <Route path="/compliance" element={<Compliance />} />
                 <Route path="/employee-portal" element={<EmployeePortal />} />
                 <Route path="/executive" element={<ExecutiveCommandCenter />} />
+                <Route path="/integrations" element={<Integrations />} />
                 <Route path="/settings" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

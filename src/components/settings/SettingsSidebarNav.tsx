@@ -5,6 +5,7 @@ const SIDEBAR_SECTIONS = [
   { id: "appearance", label: "Appearance" },
   { id: "notifications", label: "Notifications" },
   { id: "profile", label: "Profile" },
+  { id: "integrations", label: "Integrations" }, // Added
 ];
 
 const SettingsSidebarNav: React.FC = () => {
@@ -14,7 +15,7 @@ const SettingsSidebarNav: React.FC = () => {
       <nav className="flex flex-col gap-2">
         {SIDEBAR_SECTIONS.map((section) => (
           <a
-            href={`#${section.id}`}
+            href={section.id === "integrations" ? "/integrations" : `#${section.id}`}
             key={section.id}
             className="px-3 py-2 rounded-lg hover:bg-blue-900/40 bg-transparent text-blue-100 font-medium transition-all duration-200 focus:bg-blue-800/40 focus:outline-none focus-visible:ring-2 ring-blue-300"
           >
