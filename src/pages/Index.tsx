@@ -38,10 +38,6 @@ const Index = () => {
     <Layout>
       <div
         className="min-h-screen w-full flex"
-        style={{
-          // Experiment: Set the background to match the top badge/header (`.glass-dark`: rgba(20,26,46,0.7))
-          background: "rgba(20,26,46,0.7)",
-        }}
       >
         <div className="container mx-auto py-5">
           {/* Header Section */}

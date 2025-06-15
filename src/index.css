@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -95,7 +94,8 @@
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0f1419 100%);
+    /* RESTORE THE ORIGINAL DARK BACKGROUND */
+    background: linear-gradient(135deg, #10131e 0%, #1a1f35 50%, #0f1419 100%);
     background-attachment: fixed;
   }
 
