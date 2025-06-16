@@ -1,3 +1,4 @@
+
 import { create } from "zustand";
 import { mockPerformanceReviews, mockPerformanceGoals, mockPayrollEntries } from "./mockData";
 import { PerformanceReview, PerformanceGoal, PerformanceMetrics } from "@/types/performance";
@@ -48,7 +49,6 @@ export const useHRStore = create<HRStore>((set, get) => ({
   payrollEntries: mockPayrollEntries,
   getCurrentPeriodSummary: getPayrollSummary,
   runPayroll: (payPeriodStart: string, payPeriodEnd: string) => {
-    // Optionally mutate state: for now, just log (keep API compatible)
     console.log('Running payroll for period:', payPeriodStart, 'to', payPeriodEnd);
   },
 }));
