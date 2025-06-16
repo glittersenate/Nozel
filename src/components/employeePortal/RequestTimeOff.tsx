@@ -1,44 +1,24 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { useLeave } from "@/hooks/useLeave";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar } from "lucide-react";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-
-const leaveTypeOptions = [
-  { value: "vacation", label: "Vacation" },
-  { value: "sick", label: "Sick" },
-  { value: "personal", label: "Personal" },
-];
+import { TimeOffRequestForm } from "./TimeOffRequestForm";
+import { LeaveBalanceCards } from "./LeaveBalanceCards";
 
 const RequestTimeOff: React.FC = () => {
   const { leaveRequests, getLeaveBalance, addManualLeave } = useLeave();
   const balance = getLeaveBalance();
-  const [form, setForm] = useState({ type: "vacation", startDate: "", endDate: "", days: 1 });
-  const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ 
-      ...form, 
-      [e.target.name]: e.target.type === "number" ? Number(e.target.value) : e.target.value 
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
+  const handleSubmitRequest = (request: any) => {
     addManualLeave({
       employeeId: balance.employeeId,
-      type: form.type as any,
-      startDate: form.startDate,
-      endDate: form.endDate,
-      days: Number(form.days),
+      type: request.type as any,
+      startDate: request.startDate,
+      endDate: request.endDate,
+      days: Number(request.days),
     });
-    setTimeout(() => {
-      setSubmitting(false);
-      setForm({ ...form, startDate: "", endDate: "", days: 1 });
-    }, 700);
   };
 
   return (
@@ -49,80 +29,8 @@ const RequestTimeOff: React.FC = () => {
             <Calendar className="w-5 h-5 text-green-400" />
             Request Time Off
           </h3>
-          <form className="grid sm:grid-cols-4 gap-3 mb-1" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-xs font-bold text-blue-200 mb-1">Type</label>
-              <select
-                name="type"
-                className="w-full rounded border px-2 py-2 bg-blue-900/90 text-white"
-                value={form.type}
-                onChange={handleChange}
-                required
-              >
-                {leaveTypeOptions.map(opt => (
-                  <option value={opt.value} key={opt.value}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-blue-200 mb-1">Start Date</label>
-              <input
-                type="date"
-                name="startDate"
-                className="w-full rounded border px-2 py-2 bg-blue-900/90 text-white"
-                value={form.startDate}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-blue-200 mb-1">End Date</label>
-              <input
-                type="date"
-                name="endDate"
-                className="w-full rounded border px-2 py-2 bg-blue-900/90 text-white"
-                value={form.endDate}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-blue-200 mb-1">Days</label>
-              <input
-                type="number"
-                name="days"
-                min={1}
-                max={31}
-                className="w-full rounded border px-2 py-2 bg-blue-900/90 text-white"
-                value={form.days}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="sm:col-span-4 text-right pt-2">
-              <Button
-                type="submit"
-                className="bg-gradient-to-tr from-green-600 to-blue-500 text-white font-bold px-4 py-2 rounded"
-                disabled={submitting}
-              >
-                {submitting ? "Submitting..." : "Submit Request"}
-              </Button>
-            </div>
-          </form>
-          <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="glass-dark rounded-lg p-3 flex flex-col items-center">
-              <span className="uppercase text-xs text-blue-200 font-bold">Vacation Left</span>
-              <span className="text-green-400 text-lg font-bold">{balance.vacation.remaining} days</span>
-            </div>
-            <div className="glass-dark rounded-lg p-3 flex flex-col items-center">
-              <span className="uppercase text-xs text-blue-200 font-bold">Sick Left</span>
-              <span className="text-green-400 text-lg font-bold">{balance.sick.remaining} days</span>
-            </div>
-            <div className="glass-dark rounded-lg p-3 flex flex-col items-center">
-              <span className="uppercase text-xs text-blue-200 font-bold">Personal Left</span>
-              <span className="text-green-400 text-lg font-bold">{balance.personal.remaining} days</span>
-            </div>
-          </div>
+          <TimeOffRequestForm onSubmit={handleSubmitRequest} />
+          <LeaveBalanceCards balance={balance} />
         </CardContent>
       </Card>
 
@@ -182,4 +90,3 @@ const RequestTimeOff: React.FC = () => {
 };
 
 export default RequestTimeOff;
-
