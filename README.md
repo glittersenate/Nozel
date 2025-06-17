@@ -1,8 +1,17 @@
+
 # Welcome to your Lovable project
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/2c37bdcb-154e-4b22-b0d2-99351f25a038
+
+## Important: Dependencies & Compatibility
+
+📋 **Before starting development**, please read [`DEPENDENCIES.md`](./DEPENDENCIES.md) for:
+- Key package versions and compatibility notes
+- Known issues and fixes (especially Lucide React icons)
+- Fresh installation guidelines
+- Maintenance best practices
 
 ## How can I edit this code?
 
@@ -54,11 +63,16 @@ npm run dev
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **React** 18.3.1 - Modern React with concurrent features
+- **Vite** - Fast build tool and dev server
+- **TypeScript** - Full type safety
+- **Tailwind CSS** - Utility-first styling
+- **shadcn/ui** - Beautiful, accessible components
+- **Zustand** - Lightweight state management
+- **React Query** - Server state management
+- **Lucide React** - Modern icon library
+
+See [`DEPENDENCIES.md`](./DEPENDENCIES.md) for complete version details and compatibility info.
 
 ## How can I deploy this project?
 
@@ -71,3 +85,23 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Icon import errors**: Check [`DEPENDENCIES.md`](./DEPENDENCIES.md) for correct Lucide React icon names
+2. **Build failures**: Try deleting `node_modules` and running `npm install` fresh
+3. **TypeScript errors**: Ensure all components follow the type definitions
+
+### Fresh Installation
+
+For the cleanest setup without lockfile dependencies:
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+npm run dev
+```
+
+This ensures you get the latest compatible versions of all dependencies.

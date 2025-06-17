@@ -2,14 +2,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-// SVG icon based on user's reference image
-const BackIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-    <rect x="5" y="7" width="5" height="14" rx="1.5" stroke="white" strokeWidth="2"/>
-    <rect x="12" y="7" width="11" height="14" rx="1.5" stroke="white" strokeWidth="2"/>
-  </svg>
-);
+import { Menu } from "lucide-react";
 
 export const BackToDashboardButton: React.FC = () => {
   const navigate = useNavigate();
@@ -35,7 +28,7 @@ export const BackToDashboardButton: React.FC = () => {
       aria-label="Back to Dashboard"
       style={{ backdropFilter: "blur(2px)" }}
     >
-      <BackIcon />
+      <Menu className="w-7 h-7 text-white" />
     </button>
   );
 };
