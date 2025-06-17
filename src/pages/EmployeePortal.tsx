@@ -41,10 +41,7 @@ const EmployeePortal: React.FC = () => {
   const { logout, user } = useAuth();
 
   return (
-    <div
-      className="min-h-screen w-full flex"
-      style={{ background: "rgba(20,26,46,0.7)" }}
-    >
+    <div className="min-h-screen w-full flex bg-background">
       <div className="container mx-auto py-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6 pl-1">
@@ -52,10 +49,10 @@ const EmployeePortal: React.FC = () => {
             <UserCheck className="w-8 h-8 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent leading-tight tracking-tight">
+            <h1 className="text-3xl font-bold text-foreground bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent leading-tight tracking-tight">
               Employee Portal
             </h1>
-            <p className="text-blue-200 text-base opacity-80">
+            <p className="text-muted-foreground text-base opacity-80">
               Hi {user?.name?.split(" ")[0] || "Employee"}, this is your self-service hub.
             </p>
           </div>

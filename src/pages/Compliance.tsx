@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Shield, Zap, AlertTriangle, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,10 +26,7 @@ const stateCoverage = [
 
 const Compliance: React.FC = () => {
   return (
-    <div
-      className="min-h-screen w-full flex"
-      style={{ background: "rgba(20,26,46,0.7)" }}
-    >
+    <div className="min-h-screen w-full flex bg-background">
       <div className="container mx-auto py-5">
         {/* Header Section */}
         <div className="mb-4 flex flex-col gap-4">
@@ -38,10 +36,10 @@ const Compliance: React.FC = () => {
                 <Shield className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-[2rem] sm:text-4xl font-extrabold text-white mb-1 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent leading-tight tracking-tight">
+                <h1 className="text-[2rem] sm:text-4xl font-extrabold text-foreground mb-1 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent leading-tight tracking-tight">
                   AI Compliance HQ
                 </h1>
-                <p className="text-blue-200 text-base sm:text-lg opacity-80">
+                <p className="text-muted-foreground text-base sm:text-lg opacity-80">
                   Live payroll compliance monitoring across all 50 states.
                 </p>
               </div>
@@ -60,8 +58,8 @@ const Compliance: React.FC = () => {
                     {stat.icon}
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-white">{stat.value}</div>
-                    <div className="text-xs text-blue-200">{stat.label}</div>
+                    <div className="text-lg font-bold text-foreground">{stat.value}</div>
+                    <div className="text-xs text-muted-foreground">{stat.label}</div>
                   </div>
                 </CardContent>
               </Card>
@@ -75,7 +73,7 @@ const Compliance: React.FC = () => {
             {/* Compliance Alert Feed */}
             <Card className="glass-dark rounded-3xl border-0">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
                   <AlertTriangle className="w-6 h-6 text-yellow-400" />
                   Real-Time Compliance Alerts
                 </h2>
@@ -104,7 +102,7 @@ const Compliance: React.FC = () => {
             {/* US State Coverage */}
             <Card className="glass-dark rounded-3xl border-0">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                <h2 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
                   <Globe className="w-6 h-6 text-blue-400" />
                   States Monitored
                 </h2>

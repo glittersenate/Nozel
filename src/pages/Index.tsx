@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Layout } from "@/components/Layout";
 import EnhancedStatsCards from "@/components/dashboard/EnhancedStatsCards";
@@ -35,16 +36,16 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex">
+    <div className="min-h-screen w-full flex bg-background">
       <div className="container mx-auto py-5">
         {/* Header Section */}
         <div className="mb-4 flex flex-col gap-4">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between">
             <div>
-              <h1 className="text-[2rem] sm:text-4xl font-extrabold text-white mb-1 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent leading-tight tracking-tight">
+              <h1 className="text-[2rem] sm:text-4xl font-extrabold text-foreground mb-1 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent leading-tight tracking-tight">
                 HR Dashboard
               </h1>
-              <p className="text-blue-200 text-base sm:text-lg opacity-80">
+              <p className="text-muted-foreground text-base sm:text-lg opacity-80">
                 Welcome back! Here's what's happening with your organization today.
               </p>
             </div>

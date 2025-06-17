@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import EmployeeTable from "@/components/employees/EmployeeTable";
 import AddEmployeeDialog from "@/components/employees/AddEmployeeDialog";
@@ -58,12 +59,12 @@ const Employees = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[rgba(20,26,46,0.7)]">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto py-5 px-2 sm:px-4 md:px-8 max-w-full">
         <div className="mb-6 mt-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-0">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Employee Management</h1>
-            <p className="text-blue-300 text-sm sm:text-base">Manage your workforce and employee information</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-1">Employee Management</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">Manage your workforce and employee information</p>
           </div>
         </div>
         
