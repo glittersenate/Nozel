@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -81,12 +82,7 @@ const Analytics = () => {
   ];
 
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background: "rgba(20,26,46,0.7)",
-      }}
-    >
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto py-10">
         <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -52,12 +53,7 @@ const Reports = () => {
   ];
 
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background: "rgba(20,26,46,0.7)",
-      }}
-    >
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto py-10">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
