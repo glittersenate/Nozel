@@ -1,28 +1,11 @@
 
 import React from "react";
-import { Shield, Zap, AlertTriangle, Globe } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Shield } from "lucide-react";
 import ComplianceIssueChart from "@/components/compliance/ComplianceIssueChart";
 import RecentComplianceChecks from "@/components/compliance/RecentComplianceChecks";
-
-// Mock compliance data
-const complianceStats = [
-  { label: "States Monitored", value: "50", icon: <Globe className="w-5 h-5 text-blue-400" /> },
-  { label: "Issues Detected", value: "2", icon: <AlertTriangle className="w-5 h-5 text-yellow-400" /> },
-  { label: "Critical Alerts", value: "1", icon: <Zap className="w-5 h-5 text-red-400" /> },
-  { label: "Last Audit", value: "3h ago", icon: <Shield className="w-5 h-5 text-green-400" /> },
-];
-
-const complianceFeed = [
-  { time: "10:18 AM", type: "critical", description: "Minimum wage law change flagged in California. Manual review needed." },
-  { time: "09:44 AM", type: "info", description: "New overtime rules synced for New York." },
-  { time: "08:05 AM", type: "warning", description: "Missing payroll tax update in Texas." },
-  { time: "Yesterday", type: "info", description: "All state compliance checks passed." },
-];
-
-const stateCoverage = [
-  "California", "Texas", "New York", "Florida", "Illinois", "Pennsylvania", "Ohio", "Georgia", "North Carolina", "Michigan"
-];
+import { ComplianceStatsCards } from "@/components/compliance/ComplianceStatsCards";
+import { RealTimeComplianceAlerts } from "@/components/compliance/RealTimeComplianceAlerts";
+import { StatesMonitoredCard } from "@/components/compliance/StatesMonitoredCard";
 
 const Compliance: React.FC = () => {
   return (
@@ -47,82 +30,17 @@ const Compliance: React.FC = () => {
           </div>
 
           {/* Compliance Stats Cards */}
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {complianceStats.map((stat, i) => (
-              <Card
-                key={stat.label}
-                className="border-0 shadow-lg rounded-2xl glass-dark px-0 py-0"
-              >
-                <CardContent className="flex flex-row items-center gap-4 px-5 py-4">
-                  <div className="p-2 bg-gradient-to-br from-blue-600 to-purple-500 rounded-xl">
-                    {stat.icon}
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-foreground">{stat.value}</div>
-                    <div className="text-xs text-muted-foreground">{stat.label}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <ComplianceStatsCards />
         </div>
 
         <div className="space-y-7">
-          {/* Real-Time Compliance Alerts and Feed */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Compliance Alert Feed */}
-            <Card className="glass-dark rounded-3xl border-0">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
-                  <AlertTriangle className="w-6 h-6 text-yellow-400" />
-                  Real-Time Compliance Alerts
-                </h2>
-                <ul className="divide-y divide-blue-800/30">
-                  {complianceFeed.map((item, idx) => (
-                    <li key={idx} className="py-3 flex items-start gap-3">
-                      <span className={`rounded-full h-3 w-3 mt-1
-                        ${
-                          item.type === "critical"
-                            ? "bg-red-500 animate-pulse"
-                            : item.type === "warning"
-                            ? "bg-yellow-400"
-                            : "bg-blue-400"
-                        }
-                      `}/>
-                      <div className="flex-1">
-                        <p className="text-blue-100 font-medium">{item.description}</p>
-                        <span className="text-xs text-blue-300/70">{item.time}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-            
-            {/* US State Coverage */}
-            <Card className="glass-dark rounded-3xl border-0">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
-                  <Globe className="w-6 h-6 text-blue-400" />
-                  States Monitored
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {stateCoverage.map(state => (
-                    <span
-                      key={state}
-                      className="bg-gradient-to-br from-blue-700 via-blue-400/70 to-purple-500/70 text-white text-xs font-bold px-3 py-1 rounded-2xl shadow-premium"
-                    >
-                      {state}
-                    </span>
-                  ))}
-                  <span className="text-sm text-blue-300 font-semibold opacity-40 ml-2 select-none">
-                    ...and more
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          {/* ADDED: Compliance Chart and Recent Checks */}
+          {/* Real-Time Compliance Alerts */}
+          <RealTimeComplianceAlerts />
+          
+          {/* States Monitored Cards */}
+          <StatesMonitoredCard />
+          
+          {/* Compliance Chart and Recent Checks */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <ComplianceIssueChart />
             <RecentComplianceChecks />
