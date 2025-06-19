@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -15,8 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { Outlet } from "react-router-dom";
-
-// Removed LayoutProps interface
+import { MariaAI } from './ai/MariaAI';
 
 export function Layout() {
   const { user, logout } = useAuth();
@@ -125,6 +123,9 @@ export function Layout() {
             <Outlet />
           </main>
         </SidebarInset>
+        
+        {/* Maria AI Assistant - Available everywhere */}
+        <MariaAI />
       </div>
     </SidebarProvider>
   );
