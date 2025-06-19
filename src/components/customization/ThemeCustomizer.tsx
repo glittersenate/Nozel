@@ -118,7 +118,10 @@ export const ThemeCustomizer: React.FC = () => {
         colors: {
           primary: '#3b82f6',
           secondary: '#64748b',
-          accent: '#8b5cf6'
+          accent: '#8b5cf6',
+          background: '#0f172a',
+          surface: '#1e293b',
+          text: '#f8fafc'
         }
       }
     },
@@ -131,7 +134,10 @@ export const ThemeCustomizer: React.FC = () => {
         colors: {
           primary: '#10b981',
           secondary: '#6b7280',
-          accent: '#f59e0b'
+          accent: '#f59e0b',
+          background: '#0f172a',
+          surface: '#1e293b',
+          text: '#f8fafc'
         }
       }
     },
@@ -144,7 +150,10 @@ export const ThemeCustomizer: React.FC = () => {
         colors: {
           primary: '#8b5cf6',
           secondary: '#64748b',
-          accent: '#f97316'
+          accent: '#f97316',
+          background: '#0f172a',
+          surface: '#1e293b',
+          text: '#f8fafc'
         }
       }
     },
@@ -157,7 +166,10 @@ export const ThemeCustomizer: React.FC = () => {
         colors: {
           primary: '#f43f5e',
           secondary: '#64748b',
-          accent: '#06b6d4'
+          accent: '#06b6d4',
+          background: '#0f172a',
+          surface: '#1e293b',
+          text: '#f8fafc'
         }
       }
     }
