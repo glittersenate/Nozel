@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, Gift } from 'lucide-react';
+import { Home, Users, Clock, DollarSign, Calendar, Star, FileText, BarChart3, Settings, Shield, Gift, Palette } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Sidebar,
@@ -28,6 +28,7 @@ const navigationItems = [
   { title: 'AI Compliance', url: '/compliance', icon: Shield },
   { title: 'Integrations', url: '/integrations', icon: Settings },
   { title: 'Settings', url: '/settings', icon: Settings },
+  { title: 'UI Showcase', url: '/ui-showcase', icon: Palette },
 ];
 
 export function AppSidebar() {

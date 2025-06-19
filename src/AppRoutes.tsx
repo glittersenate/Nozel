@@ -15,6 +15,7 @@ import ExecutiveCommandCenter from "./components/executive/ExecutiveCommandCente
 import Integrations from "./pages/Integrations";
 import Settings from "./pages/Settings";
 import Benefits from "./pages/Benefits";
+import UIShowcase from "./pages/UIShowcase";
 import { Layout } from "./components/Layout";
 
 const AppRoutes = () => (
@@ -34,6 +35,7 @@ const AppRoutes = () => (
       <Route path="/integrations" element={<Integrations />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/benefits" element={<Benefits />} />
+      <Route path="/ui-showcase" element={<UIShowcase />} />
     </Route>
     <Route path="*" element={<NotFound />} />
   </Routes>
