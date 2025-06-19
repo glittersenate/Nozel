@@ -4,27 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Bell, 
-  Settings, 
-  Filter, 
-  MarkAsRead,
-  Trash2,
-  Star,
-  Clock,
-  User,
-  Calendar,
-  DollarSign,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-  Zap,
-  Mail,
-  Smartphone,
-  Monitor,
-  Volume2,
-  VolumeX
-} from 'lucide-react';
+import { Bell, Settings, Filter, BookMarked as MarkAsRead, Trash2, Star, Clock, User, Calendar, DollarSign, AlertTriangle, CheckCircle, Info, Zap, Mail, Smartphone, Monitor, Volume2, VolumeX } from 'lucide-react';
 
 interface Notification {
   id: string;
