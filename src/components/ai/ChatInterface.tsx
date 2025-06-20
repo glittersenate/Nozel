@@ -1,9 +1,11 @@
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, MicOff } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { EnhancedChatInterface } from './EnhancedChatInterface';
+import { MariaService } from '@/services/mariaService';
 
 interface Message {
   id: string;
@@ -11,6 +13,11 @@ interface Message {
   sender: 'user' | 'maria';
   timestamp: Date;
   isTyping?: boolean;
+  actions?: Array<{
+    label: string;
+    action: string;
+    variant?: 'default' | 'outline' | 'secondary';
+  }>;
 }
 
 interface ChatInterfaceProps {
@@ -24,82 +31,187 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
       id: '1',
       text: "Hi! I'm Maria, your AI HR assistant. I can help you with employee management, payroll, leave requests, and more. Try saying something like 'Add Joey to payroll at 20K monthly' or 'Show me performance reviews'.",
       sender: 'maria',
-      timestamp: new Date()
+      timestamp: new Date(),
+      actions: [
+        { label: 'Add Employee', action: 'add_employee', variant: 'outline' },
+        { label: 'Run Payroll', action: 'run_payroll', variant: 'outline' },
+        { label: 'View Reports', action: 'view_reports', variant: 'outline' },
+      ]
     }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto scroll to bottom
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
   // Handle sending message
   const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() && uploadedFiles.length === 0) return;
+
+    let messageText = inputValue;
+    if (uploadedFiles.length > 0) {
+      messageText += `\n\nAttached files: ${uploadedFiles.map(f => f.name).join(', ')}`;
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: inputValue,
+      text: messageText,
       sender: 'user',
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
+    setUploadedFiles([]);
     setIsTyping(true);
 
-    // Simulate Maria's response
-    setTimeout(() => {
-      const mariaResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        text: generateMariaResponse(inputValue),
-        sender: 'maria',
+    // Process command with Maria service
+    try {
+      const command = MariaService.parseCommand(inputValue);
+      let response = "I understand you're looking for help with HR tasks. Could you be more specific?";
+      
+      if (command) {
+        response = await MariaService.executeCommand(command);
+      }
+
+      setTimeout(() => {
+        const mariaResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          text: response,
+          sender: 'maria',
+          timestamp: new Date(),
+          actions: generateContextualActions(inputValue)
+        };
+        setMessages(prev => [...prev, mariaResponse]);
+        setIsTyping(false);
+      }, 1000 + Math.random() * 1000);
+    } catch (error) {
+      console.error('Error processing message:', error);
+      setIsTyping(false);
+    }
+  };
+
+  // Generate contextual action buttons
+  const generateContextualActions = (input: string): Array<{label: string; action: string; variant?: 'default' | 'outline' | 'secondary'}> => {
+    const lowerInput = input.toLowerCase();
+    
+    if (lowerInput.includes('payroll')) {
+      return [
+        { label: 'View Payroll', action: 'view_payroll' },
+        { label: 'Add Employee', action: 'add_employee', variant: 'outline' }
+      ];
+    }
+    
+    if (lowerInput.includes('performance')) {
+      return [
+        { label: 'Performance Dashboard', action: 'performance_dashboard' },
+        { label: 'Schedule Review', action: 'schedule_review', variant: 'outline' }
+      ];
+    }
+    
+    return [
+      { label: 'Quick Actions', action: 'quick_actions', variant: 'outline' },
+      { label: 'Help', action: 'help', variant: 'secondary' }
+    ];
+  };
+
+  // Handle file upload
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    setUploadedFiles(prev => [...prev, ...files]);
+  };
+
+  // Handle action button clicks
+  const handleActionClick = (action: string) => {
+    const actionMessages: Record<string, string> = {
+      add_employee: "I'll help you add a new employee. Please provide their details.",
+      run_payroll: "Let me guide you through running payroll for this period.",
+      view_reports: "Here are the available reports you can generate.",
+      view_payroll: "Redirecting to payroll dashboard...",
+      performance_dashboard: "Opening performance analytics...",
+      schedule_review: "Let's schedule a performance review.",
+      quick_actions: "Here are some quick actions you can perform:",
+      help: "I'm here to help! What would you like assistance with?"
+    };
+
+    if (actionMessages[action]) {
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        text: actionMessages[action],
+        sender: 'user',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, mariaResponse]);
-      setIsTyping(false);
-    }, 1500);
+      setMessages(prev => [...prev, userMessage]);
+    }
   };
 
-  // Generate Maria's response based on user input
-  const generateMariaResponse = (input: string): string => {
-    const lowerInput = input.toLowerCase();
-
-    if (lowerInput.includes('add') && lowerInput.includes('payroll')) {
-      return "I'd be happy to help you add someone to payroll! However, I need to confirm this action with you first. Please provide the employee's full details including their employee ID, department, and start date. Should I proceed with adding them to the system?";
-    }
-
-    if (lowerInput.includes('performance') || lowerInput.includes('review')) {
-      return "I can help you with performance reviews! Would you like me to show recent reviews, schedule a new review, or help you analyze performance metrics for a specific employee or department?";
-    }
-
-    if (lowerInput.includes('leave') || lowerInput.includes('time off')) {
-      return "I can assist with leave management. Would you like to approve pending requests, check leave balances, or schedule time off for an employee? Please let me know which employee and the details.";
-    }
-
-    if (lowerInput.includes('employee') || lowerInput.includes('staff')) {
-      return "I can help with employee management tasks like adding new employees, updating information, or retrieving employee details. What specific action would you like me to perform?";
-    }
-
-    return "I understand you're looking for help with HR tasks. I can assist with payroll, employee management, performance reviews, leave requests, and more. Could you be more specific about what you'd like me to help you with?";
-  };
-
-  // Handle voice input
+  // Toggle voice input
   const toggleVoiceInput = () => {
     setIsListening(!isListening);
-    // Voice recognition would be implemented here
   };
+
+  // Toggle fullscreen
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+
+  // Close with escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isFullscreen) {
+          setIsFullscreen(false);
+        } else {
+          onClose();
+        }
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, isFullscreen, onClose]);
 
   if (!isOpen) return null;
 
+  // Render fullscreen version
+  if (isFullscreen) {
+    return (
+      <EnhancedChatInterface
+        messages={messages}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        isTyping={isTyping}
+        isListening={isListening}
+        uploadedFiles={uploadedFiles}
+        setUploadedFiles={setUploadedFiles}
+        onSendMessage={handleSendMessage}
+        onFileUpload={handleFileUpload}
+        onToggleVoice={toggleVoiceInput}
+        onActionClick={handleActionClick}
+        onClose={() => setIsFullscreen(false)}
+        onMinimize={() => setIsFullscreen(false)}
+      />
+    );
+  }
+
+  // Render minimized version
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-end p-4 pointer-events-none">
       <div className="bg-slate-900/95 backdrop-blur-xl border border-blue-500/20 rounded-2xl shadow-2xl w-96 h-[500px] pointer-events-auto animate-scale-in">
@@ -114,38 +226,64 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
               <p className="text-blue-300/70 text-xs">AI HR Assistant</p>
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="text-blue-300 hover:text-white hover:bg-blue-600/20"
-          >
-            ×
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleFullscreen}
+              className="text-blue-300 hover:text-white hover:bg-blue-600/20"
+            >
+              <Maximize2 className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="text-blue-300 hover:text-white hover:bg-blue-600/20"
+            >
+              ×
+            </Button>
+          </div>
         </div>
 
         {/* Messages */}
         <ScrollArea className="flex-1 h-[360px] p-4">
           <div className="space-y-4">
             {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] p-3 rounded-2xl ${
+              <div key={message.id} className="space-y-2">
+                <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[80%] p-3 rounded-2xl ${
                     message.sender === 'user'
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-800 text-blue-100 border border-blue-500/20'
-                  }`}
-                >
-                  <p className="text-sm">{message.text}</p>
-                  <p className="text-xs opacity-70 mt-1">
-                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </p>
+                  }`}>
+                    <p className="text-sm">{message.text}</p>
+                    <p className="text-xs opacity-70 mt-1">
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
                 </div>
+                
+                {/* Action buttons */}
+                {message.actions && message.actions.length > 0 && (
+                  <div className="flex flex-wrap gap-2 justify-start">
+                    {message.actions.map((action, index) => (
+                      <Button
+                        key={index}
+                        variant={action.variant || 'outline'}
+                        size="sm"
+                        onClick={() => handleActionClick(action.action)}
+                        className="text-xs h-7 bg-slate-800/50 border-blue-500/30 text-blue-200 hover:bg-blue-600/20"
+                      >
+                        <Zap className="w-3 h-3 mr-1" />
+                        {action.label}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
+            
             {isTyping && (
               <div className="flex justify-start">
                 <div className="bg-slate-800 border border-blue-500/20 p-3 rounded-2xl">
@@ -161,6 +299,26 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
           </div>
         </ScrollArea>
 
+        {/* File Upload Area */}
+        {uploadedFiles.length > 0 && (
+          <div className="px-4 py-2 border-t border-blue-500/20">
+            <div className="flex flex-wrap gap-2">
+              {uploadedFiles.map((file, index) => (
+                <div key={index} className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1">
+                  <FileText className="w-3 h-3 text-blue-400" />
+                  <span className="text-xs text-blue-200 truncate max-w-20">{file.name}</span>
+                  <button
+                    onClick={() => setUploadedFiles(prev => prev.filter((_, i) => i !== index))}
+                    className="text-blue-400 hover:text-red-400"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Input */}
         <div className="p-4 border-t border-blue-500/20">
           <div className="flex items-center gap-2">
@@ -171,6 +329,22 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
               className="bg-slate-800 border-blue-500/30 text-white placeholder:text-blue-300/50"
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             />
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              onChange={handleFileUpload}
+              className="hidden"
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg"
+            />
+            <Button
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              variant="outline"
+              className="border-blue-500/30 hover:bg-blue-600/20"
+            >
+              <Upload className="w-4 h-4" />
+            </Button>
             <Button
               size="sm"
               onClick={toggleVoiceInput}
@@ -179,7 +353,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
             >
               {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </Button>
-            <Button size="sm" onClick={handleSendMessage} disabled={!inputValue.trim()}>
+            <Button size="sm" onClick={handleSendMessage} disabled={!inputValue.trim() && uploadedFiles.length === 0}>
               <Send className="w-4 h-4" />
             </Button>
           </div>
