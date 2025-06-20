@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { EnhancedChatInterface } from './EnhancedChatInterface';
 import { MariaService } from '@/services/mariaService';
+import { ChatMessage } from './components/ChatMessage';
+import { TypingIndicator } from './components/TypingIndicator';
 
 interface Message {
   id: string;
@@ -250,51 +251,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
         <ScrollArea className="flex-1 h-[360px] p-4">
           <div className="space-y-4">
             {messages.map((message) => (
-              <div key={message.id} className="space-y-2">
-                <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] p-3 rounded-2xl ${
-                    message.sender === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-800 text-blue-100 border border-blue-500/20'
-                  }`}>
-                    <p className="text-sm">{message.text}</p>
-                    <p className="text-xs opacity-70 mt-1">
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Action buttons */}
-                {message.actions && message.actions.length > 0 && (
-                  <div className="flex flex-wrap gap-2 justify-start">
-                    {message.actions.map((action, index) => (
-                      <Button
-                        key={index}
-                        variant={action.variant || 'outline'}
-                        size="sm"
-                        onClick={() => handleActionClick(action.action)}
-                        className="text-xs h-7 bg-slate-800/50 border-blue-500/30 text-blue-200 hover:bg-blue-600/20"
-                      >
-                        <Zap className="w-3 h-3 mr-1" />
-                        {action.label}
-                      </Button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <ChatMessage 
+                key={message.id} 
+                message={message} 
+                onActionClick={handleActionClick} 
+              />
             ))}
             
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-slate-800 border border-blue-500/20 p-3 rounded-2xl">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-100" />
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-200" />
-                  </div>
-                </div>
-              </div>
-            )}
+            {isTyping && <TypingIndicator />}
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
