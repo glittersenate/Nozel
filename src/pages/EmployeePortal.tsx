@@ -6,7 +6,7 @@ import ProfileSettings from "@/components/employeePortal/ProfileSettings";
 import EmployeeStatsCards from "@/components/employeePortal/EmployeeStatsCards";
 import CompanyDirectory from "@/components/employeePortal/CompanyDirectory";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, FileText, User, LogOut, UserCheck } from "lucide-react";
+import { Calendar, FileText, User, UserCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const actions = [
@@ -38,7 +38,7 @@ const actions = [
 
 const EmployeePortal: React.FC = () => {
   const [active, setActive] = useState<"payslips" | "leave" | "profile" | "directory">("payslips");
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen w-full flex bg-background">
@@ -55,16 +55,6 @@ const EmployeePortal: React.FC = () => {
             <p className="text-muted-foreground text-base opacity-80">
               Hi {user?.name?.split(" ")[0] || "Employee"}, this is your self-service hub.
             </p>
-          </div>
-          <div className="sm:ml-auto flex gap-2 mt-3 sm:mt-0">
-            <button
-              type="button"
-              onClick={logout}
-              className="bg-red-600/90 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl shadow transition"
-            >
-              <LogOut className="w-5 h-5 inline mb-0.5 mr-1" />
-              Log Out
-            </button>
           </div>
         </div>
 

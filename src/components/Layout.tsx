@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
@@ -15,29 +16,35 @@ import {
 import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { Outlet } from "react-router-dom";
 import { MariaAI } from './ai/MariaAI';
+import { useEmployeePortal } from '@/hooks/useEmployeePortal';
 
 export function Layout() {
   const { user, logout } = useAuth();
+  const isEmployeePortal = useEmployeePortal();
 
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-950 via-blue-950/50 to-slate-950">
-        <AppSidebar />
+        {/* Only show sidebar if not on employee portal */}
+        {!isEmployeePortal && <AppSidebar />}
+        
         <SidebarInset className="flex-1">
-          {/* Responsive top bar - brand block always visible, consistent padding */}
+          {/* Responsive top bar */}
           <div className="flex h-16 items-center justify-between px-2 md:px-6 glass-dark border-b border-blue-500/20 backdrop-blur-xl">
             <div className="flex items-center gap-3 xs:gap-4">
-              {/* Hamburger - always visible */}
-              <SidebarTrigger 
-                className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                style={{ fontSize: 24 }}
-              />
+              {/* Only show hamburger if not on employee portal */}
+              {!isEmployeePortal && (
+                <>
+                  <SidebarTrigger 
+                    className="text-white bg-transparent hover:bg-blue-500/20 hover:text-blue-300 rounded-xl p-2 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                    style={{ fontSize: 24 }}
+                  />
+                  <div className="h-6 w-px bg-blue-500/30" />
+                </>
+              )}
 
-              <div className="h-6 w-px bg-blue-500/30" />
-
-              {/* Branding block: Client Logo (Microsoft) and Name */}
+              {/* Branding block */}
               <div className="flex items-center gap-3 animate-slide-in-right">
-                {/* Microsoft logo */}
                 <div className="relative">
                   <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-glow overflow-hidden">
                     <img
@@ -60,14 +67,15 @@ export function Layout() {
                     className="text-xs sm:text-sm text-blue-300/80 font-medium leading-tight"
                     style={{ lineHeight: '1.1' }}
                   >
-                    HR Management System
+                    {isEmployeePortal ? 'Employee Portal' : 'HR Management System'}
                   </p>
                 </div>
               </div>
             </div>
             
             <div className="flex items-center gap-2 md:gap-6">
-              <RoleSelector />
+              {/* Only show role selector if not on employee portal */}
+              {!isEmployeePortal && <RoleSelector />}
 
               {user && (
                 <DropdownMenu>

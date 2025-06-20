@@ -15,113 +15,142 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
   const [position, setPosition] = useState({ x: window.innerWidth - 80, y: window.innerHeight - 120 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
-  const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
   const [lastTime, setLastTime] = useState(0);
+  
   const buttonRef = useRef<HTMLButtonElement>(null);
   const animationRef = useRef<number>();
   const isDraggingRef = useRef(false);
+  const rafPositionRef = useRef({ x: 0, y: 0 });
 
-  // Ultra-smooth RAF-based position updates
+  // Ultra-smooth position updates using RAF and transforms
   const updatePosition = useCallback((newPosition: { x: number; y: number }) => {
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
+    const boundedX = Math.max(10, Math.min(window.innerWidth - 70, newPosition.x));
+    const boundedY = Math.max(10, Math.min(window.innerHeight - 70, newPosition.y));
+    
+    rafPositionRef.current = { x: boundedX, y: boundedY };
+    
+    if (buttonRef.current) {
+      // Use transform for 60fps smooth movement
+      buttonRef.current.style.transform = `translate3d(${boundedX}px, ${boundedY}px, 0)`;
     }
-
-    animationRef.current = requestAnimationFrame(() => {
-      const boundedX = Math.max(10, Math.min(window.innerWidth - 70, newPosition.x));
-      const boundedY = Math.max(10, Math.min(window.innerHeight - 70, newPosition.y));
-      
-      setPosition({ x: boundedX, y: boundedY });
-    });
+    
+    setPosition({ x: boundedX, y: boundedY });
   }, []);
 
-  // Smooth drag handling with momentum
+  // Smooth drag start with momentum tracking
   const handleDragStart = useCallback((clientX: number, clientY: number) => {
     setIsDragging(true);
     isDraggingRef.current = true;
-    const now = Date.now();
-    setLastTime(now);
-    setLastPosition({ x: clientX, y: clientY });
+    
+    const currentPos = rafPositionRef.current;
+    const now = performance.now();
+    
     setDragStart({
-      x: clientX - position.x,
-      y: clientY - position.y
+      x: clientX - currentPos.x,
+      y: clientY - currentPos.y
     });
+    
+    setLastMousePos({ x: clientX, y: clientY });
+    setLastTime(now);
     setVelocity({ x: 0, y: 0 });
-  }, [position]);
+    
+    if (buttonRef.current) {
+      buttonRef.current.style.willChange = 'transform';
+      buttonRef.current.style.transition = 'none';
+    }
+  }, []);
 
+  // Ultra-smooth drag movement with velocity tracking
   const handleDragMove = useCallback((clientX: number, clientY: number) => {
     if (!isDraggingRef.current) return;
-
-    const now = Date.now();
+    
+    const now = performance.now();
     const dt = now - lastTime;
     
+    // Calculate velocity for momentum
     if (dt > 0) {
       const newVelocity = {
-        x: (clientX - lastPosition.x) / dt,
-        y: (clientY - lastPosition.y) / dt
+        x: (clientX - lastMousePos.x) / dt * 16.67, // Normalize to 60fps
+        y: (clientY - lastMousePos.y) / dt * 16.67
       };
       setVelocity(newVelocity);
     }
-
-    setLastPosition({ x: clientX, y: clientY });
-    setLastTime(now);
-
-    const newX = clientX - dragStart.x;
-    const newY = clientY - dragStart.y;
     
-    updatePosition({ x: newX, y: newY });
-  }, [dragStart, lastPosition, lastTime, updatePosition]);
+    setLastMousePos({ x: clientX, y: clientY });
+    setLastTime(now);
+    
+    // Immediate position update with RAF
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+    
+    animationRef.current = requestAnimationFrame(() => {
+      const newX = clientX - dragStart.x;
+      const newY = clientY - dragStart.y;
+      updatePosition({ x: newX, y: newY });
+    });
+  }, [dragStart, lastMousePos, lastTime, updatePosition]);
 
+  // Smooth drag end with momentum and magnetic snapping
   const handleDragEnd = useCallback(() => {
     setIsDragging(false);
     isDraggingRef.current = false;
     
-    // Magnetic edge snapping with momentum
-    const snapThreshold = 100;
-    const { x, y } = position;
+    if (buttonRef.current) {
+      buttonRef.current.style.willChange = 'auto';
+      buttonRef.current.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    }
+    
+    // Enhanced magnetic snapping with momentum
+    const snapThreshold = 120;
+    const currentPos = rafPositionRef.current;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     
-    let finalX = x;
-    let finalY = y;
+    let finalX = currentPos.x;
+    let finalY = currentPos.y;
     
-    // Apply momentum
-    if (Math.abs(velocity.x) > 0.1) {
-      finalX += velocity.x * 100;
+    // Apply momentum with decay
+    const momentumFactor = 0.3;
+    if (Math.abs(velocity.x) > 0.5) {
+      finalX += velocity.x * momentumFactor;
     }
-    if (Math.abs(velocity.y) > 0.1) {
-      finalY += velocity.y * 100;
+    if (Math.abs(velocity.y) > 0.5) {
+      finalY += velocity.y * momentumFactor;
     }
     
-    // Snap to edges
+    // Smart edge snapping
     if (finalX < snapThreshold) {
-      finalX = 10;
+      finalX = 15;
     } else if (finalX > windowWidth - snapThreshold) {
-      finalX = windowWidth - 70;
+      finalX = windowWidth - 75;
     }
     
     if (finalY < snapThreshold) {
-      finalY = 10;
+      finalY = 15;
     } else if (finalY > windowHeight - snapThreshold) {
-      finalY = windowHeight - 70;
+      finalY = windowHeight - 75;
     }
     
-    // Smooth animation to final position
-    const startPos = position;
+    // Smooth animated transition to final position
+    const startPos = currentPos;
     const endPos = { x: finalX, y: finalY };
-    const startTime = Date.now();
-    const duration = 300;
+    const startTime = performance.now();
+    const duration = 400;
     
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
+      
+      // Cubic bezier easing for smooth animation
       const easeOut = 1 - Math.pow(1 - progress, 3);
       
       const currentX = startPos.x + (endPos.x - startPos.x) * easeOut;
       const currentY = startPos.y + (endPos.y - startPos.y) * easeOut;
       
-      setPosition({ x: currentX, y: currentY });
+      updatePosition({ x: currentX, y: currentY });
       
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -129,9 +158,9 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
     };
     
     requestAnimationFrame(animate);
-  }, [position, velocity]);
+  }, [velocity, updatePosition]);
 
-  // Mouse events
+  // Mouse event handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -139,14 +168,16 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
   }, [handleDragStart]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
+    e.preventDefault();
     handleDragMove(e.clientX, e.clientY);
   }, [handleDragMove]);
 
-  const handleMouseUp = useCallback(() => {
+  const handleMouseUp = useCallback((e: MouseEvent) => {
+    e.preventDefault();
     handleDragEnd();
   }, [handleDragEnd]);
 
-  // Touch events
+  // Touch event handlers for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -160,17 +191,23 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
     handleDragMove(touch.clientX, touch.clientY);
   }, [handleDragMove]);
 
-  const handleTouchEnd = useCallback(() => {
+  const handleTouchEnd = useCallback((e: TouchEvent) => {
+    e.preventDefault();
     handleDragEnd();
   }, [handleDragEnd]);
 
-  // Event listeners
+  // Enhanced event listeners with passive optimization
   useEffect(() => {
     if (isDragging) {
+      // Use passive: false for preventDefault support
       document.addEventListener('mousemove', handleMouseMove, { passive: false });
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mouseup', handleMouseUp, { passive: false });
       document.addEventListener('touchmove', handleTouchMove, { passive: false });
-      document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener('touchend', handleTouchEnd, { passive: false });
+      
+      // Prevent text selection during drag
+      document.body.style.userSelect = 'none';
+      document.body.style.webkitUserSelect = 'none';
     }
 
     return () => {
@@ -178,6 +215,11 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
+      
+      // Restore text selection
+      document.body.style.userSelect = '';
+      document.body.style.webkitUserSelect = '';
+      
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -187,10 +229,20 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
   // Handle click (only if not dragging)
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!isDragging) {
+    if (!isDragging && Math.abs(velocity.x) < 0.1 && Math.abs(velocity.y) < 0.1) {
       onToggleChat();
     }
-  }, [isDragging, onToggleChat]);
+  }, [isDragging, velocity, onToggleChat]);
+
+  // Initialize position with proper transform
+  useEffect(() => {
+    if (buttonRef.current) {
+      const initialX = window.innerWidth - 80;
+      const initialY = window.innerHeight - 120;
+      buttonRef.current.style.transform = `translate3d(${initialX}px, ${initialY}px, 0)`;
+      rafPositionRef.current = { x: initialX, y: initialY };
+    }
+  }, []);
 
   return (
     <Button
@@ -203,11 +255,11 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
         ${isChatOpen ? 'rotate-180' : ''}
       `}
       style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
+        left: 0,
+        top: 0,
         touchAction: 'none',
-        willChange: 'transform',
-        transform: isDragging ? 'scale(1.1)' : 'scale(1)'
+        willChange: isDragging ? 'transform' : 'auto',
+        transition: isDragging ? 'none' : 'transform 0.2s ease-out, scale 0.2s ease-out'
       }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
