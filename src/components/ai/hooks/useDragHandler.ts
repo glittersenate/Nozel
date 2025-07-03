@@ -85,16 +85,16 @@ export const useDragHandler = () => {
     setIsDragging(false);
     isDraggingRef.current = false;
     
-    // Apply momentum and snapping
-    const snapThreshold = 120;
     const currentPos = rafPositionRef.current;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
+    const windowCenterX = windowWidth / 2;
     
     let finalX = currentPos.x;
     let finalY = currentPos.y;
     
-    const momentumFactor = 0.3;
+    // Enhanced momentum calculation
+    const momentumFactor = 0.4;
     if (Math.abs(velocity.x) > 0.5) {
       finalX += velocity.x * momentumFactor;
     }
@@ -102,25 +102,44 @@ export const useDragHandler = () => {
       finalY += velocity.y * momentumFactor;
     }
     
-    if (finalX < snapThreshold) finalX = 15;
-    else if (finalX > windowWidth - snapThreshold) finalX = windowWidth - 75;
+    // Smart edge snapping - if button is in middle area, snap to nearest edge
+    const middleZoneWidth = windowWidth * 0.3; // 30% of screen width as middle zone
+    const isInMiddleZone = finalX > (windowCenterX - middleZoneWidth/2) && 
+                          finalX < (windowCenterX + middleZoneWidth/2);
     
-    if (finalY < snapThreshold) finalY = 15;
-    else if (finalY > windowHeight - snapThreshold) finalY = windowHeight - 75;
+    if (isInMiddleZone) {
+      // Snap to nearest horizontal edge with smooth animation
+      if (finalX < windowCenterX) {
+        finalX = 15; // Left edge
+      } else {
+        finalX = windowWidth - 75; // Right edge
+      }
+    } else {
+      // Normal edge snapping for corners
+      const snapThreshold = 120;
+      if (finalX < snapThreshold) finalX = 15;
+      else if (finalX > windowWidth - snapThreshold) finalX = windowWidth - 75;
+    }
     
-    // Smooth animated transition
+    // Vertical bounds
+    if (finalY < 15) finalY = 15;
+    else if (finalY > windowHeight - 75) finalY = windowHeight - 75;
+    
+    // Ultra-smooth 60fps animation with easing
     const startPos = currentPos;
     const endPos = { x: finalX, y: finalY };
     const startTime = performance.now();
-    const duration = 400;
+    const duration = 500; // Slightly longer for more elegant feel
     
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const easeOut = 1 - Math.pow(1 - progress, 3);
       
-      const currentX = startPos.x + (endPos.x - startPos.x) * easeOut;
-      const currentY = startPos.y + (endPos.y - startPos.y) * easeOut;
+      // Custom cubic-bezier easing for more natural feel
+      const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+      
+      const currentX = startPos.x + (endPos.x - startPos.x) * easeOutCubic;
+      const currentY = startPos.y + (endPos.y - startPos.y) * easeOutCubic;
       
       updatePosition({ x: currentX, y: currentY });
       

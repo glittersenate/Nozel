@@ -47,6 +47,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const chatInterfaceRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll to bottom
   const scrollToBottom = useCallback(() => {
@@ -168,6 +169,23 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
     setIsFullscreen(!isFullscreen);
   };
 
+  // Click outside to close functionality for minimized chat
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (chatInterfaceRef.current && !chatInterfaceRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen && !isFullscreen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, isFullscreen, onClose]);
+
   // Close with escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -212,19 +230,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
     );
   }
 
-  // Render minimized version
+  // Render minimized version with enhanced styling
   return (
-    <div className="fixed inset-0 z-40 flex items-end justify-end p-4 pointer-events-none">
-      <div className="bg-slate-900/95 backdrop-blur-xl border border-blue-500/20 rounded-2xl shadow-2xl w-96 h-[500px] pointer-events-auto animate-scale-in">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-blue-500/20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+    <div className="fixed inset-0 z-40 flex items-end justify-end p-6 pointer-events-none">
+      <div 
+        ref={chatInterfaceRef}
+        className="bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl w-[420px] h-[600px] pointer-events-auto animate-scale-in overflow-hidden"
+      >
+        {/* Enhanced Header */}
+        <div className="flex items-center justify-between p-6 bg-gradient-to-r from-slate-800/90 to-slate-700/90 border-b border-slate-600/30">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-lg">M</span>
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+              </div>
             </div>
             <div>
-              <h3 className="text-white font-semibold">Maria</h3>
-              <p className="text-blue-300/70 text-xs">AI HR Assistant</p>
+              <h3 className="text-white font-bold text-lg">Maria</h3>
+              <p className="text-slate-400 text-sm font-medium">AI HR Assistant</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -232,7 +258,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
               variant="ghost"
               size="sm"
               onClick={toggleFullscreen}
-              className="text-blue-300 hover:text-white hover:bg-blue-600/20"
+              className="text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200"
             >
               <Maximize2 className="w-4 h-4" />
             </Button>
@@ -240,16 +266,16 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="text-blue-300 hover:text-white hover:bg-blue-600/20"
+              className="text-slate-400 hover:text-white hover:bg-red-600/20 rounded-lg transition-all duration-200"
             >
-              ×
+              ✕
             </Button>
           </div>
         </div>
 
-        {/* Messages */}
-        <ScrollArea className="flex-1 h-[360px] p-4">
-          <div className="space-y-4">
+        {/* Messages with enhanced styling */}
+        <ScrollArea className="flex-1 h-[420px] p-6 bg-gradient-to-b from-slate-900/30 to-slate-800/50">
+          <div className="space-y-6">
             {messages.map((message) => (
               <ChatMessage 
                 key={message.id} 
@@ -263,19 +289,19 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
           </div>
         </ScrollArea>
 
-        {/* File Upload Area */}
+        {/* Enhanced File Upload Area */}
         {uploadedFiles.length > 0 && (
-          <div className="px-4 py-2 border-t border-blue-500/20">
+          <div className="px-6 py-3 border-t border-slate-700/30 bg-slate-800/30">
             <div className="flex flex-wrap gap-2">
               {uploadedFiles.map((file, index) => (
-                <div key={index} className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1">
-                  <FileText className="w-3 h-3 text-blue-400" />
-                  <span className="text-xs text-blue-200 truncate max-w-20">{file.name}</span>
+                <div key={index} className="flex items-center gap-2 bg-slate-700/60 rounded-lg px-3 py-2 border border-slate-600/50">
+                  <FileText className="w-4 h-4 text-blue-400" />
+                  <span className="text-sm text-slate-200 truncate max-w-24 font-medium">{file.name}</span>
                   <button
                     onClick={() => setUploadedFiles(prev => prev.filter((_, i) => i !== index))}
-                    className="text-blue-400 hover:text-red-400"
+                    className="text-slate-400 hover:text-red-400 transition-colors"
                   >
-                    ×
+                    ✕
                   </button>
                 </div>
               ))}
@@ -283,14 +309,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
           </div>
         )}
 
-        {/* Input */}
-        <div className="p-4 border-t border-blue-500/20">
-          <div className="flex items-center gap-2">
+        {/* Enhanced Input Area */}
+        <div className="p-6 border-t border-slate-700/30 bg-slate-800/40">
+          <div className="flex items-center gap-3">
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Ask Maria anything..."
-              className="bg-slate-800 border-blue-500/30 text-white placeholder:text-blue-300/50"
+              className="bg-slate-700/60 border-slate-600/50 text-white placeholder:text-slate-400 rounded-xl font-medium focus:border-blue-500/50 transition-all duration-200"
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             />
             <input
@@ -304,20 +330,23 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
             <Button
               size="sm"
               onClick={() => fileInputRef.current?.click()}
-              variant="outline"
-              className="border-blue-500/30 hover:bg-blue-600/20"
+              className="bg-slate-700/80 hover:bg-slate-600/80 border border-slate-600/50 rounded-xl transition-all duration-200"
             >
               <Upload className="w-4 h-4" />
             </Button>
             <Button
               size="sm"
               onClick={toggleVoiceInput}
-              variant={isListening ? "default" : "outline"}
-              className={`${isListening ? 'bg-red-600 hover:bg-red-700' : 'border-blue-500/30 hover:bg-blue-600/20'}`}
+              className={`${isListening ? 'bg-red-600 hover:bg-red-700' : 'bg-slate-700/80 hover:bg-slate-600/80 border border-slate-600/50'} rounded-xl transition-all duration-200`}
             >
               {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </Button>
-            <Button size="sm" onClick={handleSendMessage} disabled={!inputValue.trim() && uploadedFiles.length === 0}>
+            <Button 
+              size="sm" 
+              onClick={handleSendMessage} 
+              disabled={!inputValue.trim() && uploadedFiles.length === 0}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl transition-all duration-200 shadow-lg"
+            >
               <Send className="w-4 h-4" />
             </Button>
           </div>
