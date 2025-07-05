@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Zap } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -23,16 +22,16 @@ interface ChatMessageProps {
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onActionClick }) => {
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-        <div className={`max-w-[80%] p-3 rounded-2xl ${
+        <div className={`max-w-[85%] p-3 rounded-lg ${
           message.sender === 'user'
             ? 'bg-blue-600 text-white'
-            : 'bg-slate-800 text-blue-100 border border-blue-500/20'
+            : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700'
         }`}>
-          <p className="text-sm">{message.text}</p>
-          <p className="text-xs opacity-70 mt-1">
-            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          <p className="text-sm leading-relaxed">{message.text}</p>
+          <p className="text-xs opacity-70 mt-2">
+            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
           </p>
         </div>
       </div>
@@ -42,12 +41,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onActionClick
           {message.actions.map((action, index) => (
             <Button
               key={index}
-              variant={action.variant || 'outline'}
+              variant="outline"
               size="sm"
               onClick={() => onActionClick(action.action)}
-              className="text-xs h-7 bg-slate-800/50 border-blue-500/30 text-blue-200 hover:bg-blue-600/20"
+              className="text-xs h-8 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
-              <Zap className="w-3 h-3 mr-1" />
               {action.label}
             </Button>
           ))}
