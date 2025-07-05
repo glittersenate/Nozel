@@ -1,14 +1,13 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap, Settings, BookOpen, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { EnhancedChatInterface } from './EnhancedChatInterface';
 import { MariaService } from '@/services/mariaService';
 import { ChatMessage } from './components/ChatMessage';
 import { TypingIndicator } from './components/TypingIndicator';
+import { ChatHeader } from './components/ChatHeader';
+import { ChatInput } from './components/ChatInput';
+import { QuickSuggestions } from './components/QuickSuggestions';
 
 interface Message {
   id: string;
@@ -39,18 +38,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Maria, your HR assistant. I can help you manage employees, process payroll, handle leave requests, and generate reports. What would you like to do today?",
+      text: "Hi! I'm Maria, your HR assistant. ✨ I can help you manage employees, process payroll, handle leave requests, and generate reports. What would you like to do today?",
       sender: 'maria',
       timestamp: new Date(),
       actions: [
-        { label: 'Add Employee', action: 'add_employee' },
-        { label: 'View Reports', action: 'view_reports' },
-        { label: 'Help', action: 'help', variant: 'outline' },
+        { label: '👥 Add Employee', action: 'add_employee' },
+        { label: '📊 View Reports', action: 'view_reports' },
+        { label: '❓ Help', action: 'help', variant: 'outline' },
       ]
     }
   ]);
   const [inputValue, setInputValue] = useState('');
-  const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -72,7 +70,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
     setShowSuggestions(false);
     let messageText = inputValue;
     if (uploadedFiles.length > 0) {
-      messageText += `\n\nAttached files: ${uploadedFiles.map(f => f.name).join(', ')}`;
+      messageText += `\n\n📎 Attached files: ${uploadedFiles.map(f => f.name).join(', ')}`;
     }
 
     const userMessage: Message = {
@@ -89,7 +87,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
 
     try {
       const command = MariaService.parseCommand(inputValue);
-      let response = "I understand you're looking for help with HR tasks. Could you be more specific about what you'd like to accomplish?";
+      let response = "I understand you're looking for help with HR tasks. Could you be more specific about what you'd like to accomplish? 🤔";
       
       if (command) {
         response = await MariaService.executeCommand(command);
@@ -117,27 +115,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
     
     if (lowerInput.includes('payroll') || lowerInput.includes('salary')) {
       return [
-        { label: 'View Payroll', action: 'view_payroll' },
-        { label: 'Run Payroll', action: 'run_payroll' }
+        { label: '💰 View Payroll', action: 'view_payroll' },
+        { label: '▶️ Run Payroll', action: 'run_payroll' }
       ];
     }
     
     if (lowerInput.includes('employee') || lowerInput.includes('staff')) {
       return [
-        { label: 'Add Employee', action: 'add_employee' },
-        { label: 'View Employees', action: 'view_employees' }
+        { label: '➕ Add Employee', action: 'add_employee' },
+        { label: '👥 View Employees', action: 'view_employees' }
       ];
     }
 
     if (lowerInput.includes('leave') || lowerInput.includes('vacation')) {
       return [
-        { label: 'Leave Requests', action: 'leave_requests' },
-        { label: 'Leave Calendar', action: 'leave_calendar' }
+        { label: '📅 Leave Requests', action: 'leave_requests' },
+        { label: '📋 Leave Calendar', action: 'leave_calendar' }
       ];
     }
     
     return [
-      { label: 'Quick Help', action: 'help', variant: 'outline' }
+      { label: '💡 Quick Help', action: 'help', variant: 'outline' }
     ];
   };
 
@@ -148,14 +146,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
 
   const handleActionClick = (action: string) => {
     const actionMessages: Record<string, string> = {
-      add_employee: "I'll help you add a new employee. Please provide their name, email, department, and salary.",
-      run_payroll: "Let me guide you through running payroll for this period.",
-      view_reports: "Here are the available reports you can generate.",
-      view_payroll: "Opening payroll dashboard...",
-      view_employees: "Showing employee directory...",
-      leave_requests: "Displaying pending leave requests...",
-      leave_calendar: "Opening leave calendar...",
-      help: "I can help you with: Managing employees, Processing payroll, Handling leave requests, Generating reports, and much more. What specific task do you need help with?"
+      add_employee: "I'll help you add a new employee! 👥 Please provide their name, email, department, and salary.",
+      run_payroll: "Let me guide you through running payroll for this period. 💰",
+      view_reports: "Here are the available reports you can generate! 📊",
+      view_payroll: "Opening payroll dashboard... 💼",
+      view_employees: "Showing employee directory... 👥",
+      leave_requests: "Displaying pending leave requests... 📅",
+      leave_calendar: "Opening leave calendar... 📋",
+      help: "I can help you with: 🌟 Managing employees, 💰 Processing payroll, 📅 Handling leave requests, 📊 Generating reports, and much more! What specific task do you need help with?"
     };
 
     if (actionMessages[action]) {
@@ -172,10 +170,6 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   const handleSuggestionClick = (suggestion: string) => {
     setInputValue(suggestion);
     setShowSuggestions(false);
-  };
-
-  const toggleVoiceInput = () => {
-    setIsListening(!isListening);
   };
 
   const toggleFullscreen = () => {
@@ -211,12 +205,12 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
         inputValue={inputValue}
         setInputValue={setInputValue}
         isTyping={isTyping}
-        isListening={isListening}
+        isListening={false}
         uploadedFiles={uploadedFiles}
         setUploadedFiles={setUploadedFiles}
         onSendMessage={handleSendMessage}
         onFileUpload={handleFileUpload}
-        onToggleVoice={toggleVoiceInput}
+        onToggleVoice={() => {}}
         onActionClick={handleActionClick}
         onClose={() => setIsFullscreen(false)}
         onMinimize={() => setIsFullscreen(false)}
@@ -226,39 +220,12 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
 
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-end p-4 pointer-events-none">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl w-96 h-[500px] pointer-events-auto flex flex-col">
-        {/* Simplified Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">M</span>
-            </div>
-            <div>
-              <h3 className="font-semibold text-slate-900 dark:text-white">Maria</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">HR Assistant</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleFullscreen}
-              className="h-8 w-8 p-0 hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              <Maximize2 className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="h-8 w-8 p-0 hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              <Minimize2 className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
+      <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/80 dark:to-pink-950/80 border border-purple-200/50 dark:border-purple-700/50 rounded-xl shadow-2xl w-96 h-[500px] pointer-events-auto flex flex-col backdrop-blur-sm">
+        <ChatHeader 
+          onToggleFullscreen={toggleFullscreen}
+          onClose={onClose}
+        />
 
-        {/* Messages Area */}
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-4">
             {messages.map((message) => (
@@ -271,86 +238,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
             
             {isTyping && <TypingIndicator />}
             
-            {/* Quick Suggestions */}
             {showSuggestions && messages.length <= 1 && (
-              <div className="space-y-2">
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Quick suggestions:</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {quickSuggestions.map((suggestion, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleSuggestionClick(suggestion)}
-                      className="h-8 text-xs justify-start hover:bg-blue-50 dark:hover:bg-blue-950"
-                    >
-                      {suggestion}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+              <QuickSuggestions
+                suggestions={quickSuggestions}
+                onSuggestionClick={handleSuggestionClick}
+                showSuggestions={showSuggestions}
+              />
             )}
             
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
 
-        {/* File Upload Area */}
-        {uploadedFiles.length > 0 && (
-          <div className="px-4 py-2 border-t border-slate-200 dark:border-slate-700">
-            <div className="flex flex-wrap gap-2">
-              {uploadedFiles.map((file, index) => (
-                <div key={index} className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-md px-2 py-1">
-                  <FileText className="w-3 h-3 text-slate-500" />
-                  <span className="text-xs text-slate-600 dark:text-slate-300 truncate max-w-20">{file.name}</span>
-                  <button
-                    onClick={() => setUploadedFiles(prev => prev.filter((_, i) => i !== index))}
-                    className="text-slate-400 hover:text-red-500 text-sm"
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Simplified Input */}
-        <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-          <div className="flex items-center gap-2">
-            <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask Maria for help..."
-              className="flex-1"
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-            />
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              onChange={handleFileUpload}
-              className="hidden"
-              accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg"
-            />
-            <Button
-              size="sm"
-              onClick={() => fileInputRef.current?.click()}
-              variant="outline"
-              className="h-9 w-9 p-0"
-            >
-              <Upload className="w-4 h-4" />
-            </Button>
-            <Button 
-              size="sm" 
-              onClick={handleSendMessage} 
-              disabled={!inputValue.trim() && uploadedFiles.length === 0}
-              className="h-9 w-9 p-0"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
+        <ChatInput
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          uploadedFiles={uploadedFiles}
+          setUploadedFiles={setUploadedFiles}
+          onSendMessage={handleSendMessage}
+          onFileUpload={handleFileUpload}
+          fileInputRef={fileInputRef}
+        />
       </div>
     </div>
   );
