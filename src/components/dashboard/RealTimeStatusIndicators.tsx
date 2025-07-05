@@ -22,7 +22,13 @@ interface StatusIndicator {
   icon: React.ElementType;
 }
 
-export const RealTimeStatusIndicators: React.FC = () => {
+interface RealTimeStatusIndicatorsProps {
+  isDemoMode: boolean;
+}
+
+export const RealTimeStatusIndicators: React.FC<RealTimeStatusIndicatorsProps> = ({ 
+  isDemoMode 
+}) => {
   const [indicators, setIndicators] = useState<StatusIndicator[]>([
     {
       id: 'payroll-engine',
@@ -56,6 +62,35 @@ export const RealTimeStatusIndicators: React.FC = () => {
     }
   ]);
 
+  useEffect(() => {
+    if (!isDemoMode) return;
+
+    const interval = setInterval(() => {
+      setIndicators(prev => prev.map(indicator => {
+        // Simulate status changes in demo mode
+        const random = Math.random();
+        let newStatus = indicator.status;
+        
+        if (random < 0.05) {
+          newStatus = 'error';
+        } else if (random < 0.15) {
+          newStatus = 'warning';
+        } else {
+          newStatus = 'online';
+        }
+
+        return {
+          ...indicator,
+          status: newStatus,
+          latency: indicator.latency ? Math.floor(Math.random() * 50) + 10 : undefined,
+          lastUpdated: new Date()
+        };
+      }));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isDemoMode]);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'online': return 'bg-green-500';
@@ -82,6 +117,11 @@ export const RealTimeStatusIndicators: React.FC = () => {
             <Activity className="w-4 h-4 text-green-400" />
             System Status
           </h3>
+          {isDemoMode && (
+            <Badge className="bg-blue-500/20 text-blue-300 text-xs">
+              Live Updates
+            </Badge>
+          )}
         </div>
         
         <div className="space-y-3">

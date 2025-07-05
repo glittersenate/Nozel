@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Zap } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -22,16 +23,16 @@ interface ChatMessageProps {
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onActionClick }) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-        <div className={`max-w-[85%] p-3 rounded-lg shadow-sm ${
+        <div className={`max-w-[80%] p-3 rounded-2xl ${
           message.sender === 'user'
-            ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-            : 'bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/50 dark:to-pink-900/50 text-purple-900 dark:text-purple-100 border border-purple-200/50 dark:border-purple-700/50'
+            ? 'bg-blue-600 text-white'
+            : 'bg-slate-800 text-blue-100 border border-blue-500/20'
         }`}>
-          <p className="text-sm leading-relaxed">{message.text}</p>
-          <p className="text-xs opacity-70 mt-2">
-            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+          <p className="text-sm">{message.text}</p>
+          <p className="text-xs opacity-70 mt-1">
+            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </p>
         </div>
       </div>
@@ -41,11 +42,12 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onActionClick
           {message.actions.map((action, index) => (
             <Button
               key={index}
-              variant="outline"
+              variant={action.variant || 'outline'}
               size="sm"
               onClick={() => onActionClick(action.action)}
-              className="text-xs h-8 hover:bg-purple-100 dark:hover:bg-purple-800 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-200"
+              className="text-xs h-7 bg-slate-800/50 border-blue-500/30 text-blue-200 hover:bg-blue-600/20"
             >
+              <Zap className="w-3 h-3 mr-1" />
               {action.label}
             </Button>
           ))}

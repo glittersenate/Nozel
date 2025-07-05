@@ -7,6 +7,7 @@ import LiveActivityFeed from "@/components/dashboard/LiveActivityFeed";
 import DepartmentChart from "@/components/dashboard/DepartmentChart";
 import SalaryChart from "@/components/dashboard/SalaryChart";
 import { AIInsightsModule } from "@/components/dashboard/AIInsightsModule";
+import { DemoModeToggle } from "@/components/dashboard/DemoModeToggle";
 import { RealTimeStatusIndicators } from "@/components/dashboard/RealTimeStatusIndicators";
 import { InteractivePayrollChart } from "@/components/dashboard/InteractivePayrollChart";
 import { useEmployees } from "@/hooks/useEmployees";
@@ -23,6 +24,7 @@ const Index = () => {
   const { metrics } = useRealTimeData(employees);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   // If the current user is an employee, show Employee Portal
   if (user && user.role === "employee") {
@@ -40,7 +42,7 @@ const Index = () => {
   return (
     <div className="min-h-screen w-full flex bg-background">
       <div className="container mx-auto py-5">
-        {/* Header Section */}
+        {/* Header Section with Demo Mode */}
         <div className="mb-4 flex flex-col gap-4">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between">
             <div>
@@ -51,6 +53,7 @@ const Index = () => {
                 Welcome back! Here's what's happening with your organization today.
               </p>
             </div>
+            <DemoModeToggle onToggle={setIsDemoMode} />
           </div>
 
           {/* Premium Payroll Summary Card */}
@@ -116,12 +119,12 @@ const Index = () => {
             <div className="lg:col-span-2">
               <LiveActivityFeed activities={metrics.activityFeed} />
             </div>
-            <RealTimeStatusIndicators />
+            <RealTimeStatusIndicators isDemoMode={isDemoMode} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <InteractivePayrollChart />
-            <AIInsightsModule employees={employees} />
+            <InteractivePayrollChart isDemoMode={isDemoMode} />
+            <AIInsightsModule employees={employees} isLive={isDemoMode} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
