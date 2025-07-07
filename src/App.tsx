@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import { PayrollProvider } from "./contexts/PayrollContext";
 import { LoadingProvider } from "./contexts/LoadingContext";
 import GlobalLoader from "./components/ui/GlobalLoader";
 import { AppErrorBoundary } from "./components/ui/AppErrorBoundary";
+import { SmartMaria } from "./components/ai/SmartMaria";
 import AppRoutes from "./AppRoutes";
 
 const queryClient = new QueryClient();
@@ -23,6 +25,7 @@ const App = () => (
             <GlobalLoader />
             <AppErrorBoundary>
               <BrowserRouter>
+                <SmartMaria />
                 <AppRoutes />
               </BrowserRouter>
             </AppErrorBoundary>
