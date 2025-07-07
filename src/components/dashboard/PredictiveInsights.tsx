@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Crystal, TrendingUp, AlertTriangle, Lightbulb, Eye } from 'lucide-react';
+import { Sparkles, TrendingUp, AlertTriangle, Lightbulb, Eye } from 'lucide-react';
 import { Employee } from '@/types/employee';
 
 interface PredictiveInsightsProps {
@@ -86,7 +86,7 @@ export const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ employee
       case 'opportunity': return <Lightbulb className="w-4 h-4 text-green-400" />;
       case 'risk': return <AlertTriangle className="w-4 h-4 text-red-400" />;
       case 'optimization': return <TrendingUp className="w-4 h-4 text-blue-400" />;
-      case 'forecast': return <Crystal className="w-4 h-4 text-purple-400" />;
+      case 'forecast': return <Sparkles className="w-4 h-4 text-purple-400" />;
       default: return <Eye className="w-4 h-4 text-gray-400" />;
     }
   };
@@ -114,7 +114,7 @@ export const PredictiveInsights: React.FC<PredictiveInsightsProps> = ({ employee
     <Card className="bg-[#0F1629]/90 border border-purple-800/30">
       <CardHeader>
         <CardTitle className="text-white text-lg flex items-center gap-2">
-          <Crystal className="w-5 h-5 text-purple-400" />
+          <Sparkles className="w-5 h-5 text-purple-400" />
           Oracle View - Predictive Insights
           <Badge className="bg-purple-500/20 text-purple-300 ml-auto">
             AI Powered
