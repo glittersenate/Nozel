@@ -10,9 +10,6 @@ import { AIInsightsModule } from "@/components/dashboard/AIInsightsModule";
 import { RealTimeStatusIndicators } from "@/components/dashboard/RealTimeStatusIndicators";
 import { InteractivePayrollChart } from "@/components/dashboard/InteractivePayrollChart";
 import { PredictiveInsights } from "@/components/dashboard/PredictiveInsights";
-import { ScenarioPlanner } from "@/components/dashboard/ScenarioPlanner";
-import { SmartWorkflows } from "@/components/dashboard/SmartWorkflows";
-import { TemporalInterface } from "@/components/dashboard/TemporalInterface";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useRealTimeData } from "@/hooks/useRealTimeData";
 import { Button } from "@/components/ui/button";
@@ -128,16 +125,8 @@ const Index = () => {
         <div className="space-y-7">
           <RealTimeMetrics metrics={metrics} />
 
-          {/* Phase 1: Oracle View - Predictive Insights */}
+          {/* Oracle View - Predictive Insights */}
           <PredictiveInsights employees={employees} />
-
-          {/* Phase 2: Advanced AI Features */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <ScenarioPlanner employees={employees} />
-            <TemporalInterface employees={employees} />
-          </div>
-
-          <SmartWorkflows employees={employees} />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
