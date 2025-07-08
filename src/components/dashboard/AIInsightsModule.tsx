@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Sparkles, TrendingUp, AlertTriangle, Brain, BarChart3 } from 'lucide-react';
+
+import React, { useState } from 'react';
+import { TrendingUp, AlertTriangle, Brain, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Employee } from '@/types/employee';
@@ -13,8 +14,6 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
   employees = [], 
   isLive = false 
 }) => {
-  const [currentInsight, setCurrentInsight] = useState(0);
-  
   const activeEmployees = employees.filter(emp => emp.status === 'active');
   const totalPayroll = activeEmployees.reduce((sum, emp) => sum + emp.salary, 0);
   const avgSalary = activeEmployees.length > 0 ? totalPayroll / activeEmployees.length : 0;
@@ -66,16 +65,6 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
     }
   ];
 
-  // Auto-rotate insights when live
-  useEffect(() => {
-    if (isLive) {
-      const interval = setInterval(() => {
-        setCurrentInsight((prev) => (prev + 1) % insights.length);
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [isLive, insights.length]);
-
   const getBadgeVariant = (severity: string) => {
     switch (severity) {
       case 'warning': return 'destructive';
@@ -93,16 +82,11 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
       }}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-3 text-blue-100 dark:text-blue-100 light:text-gray-900">
-          <div className="relative">
-            <Sparkles className="text-yellow-300 w-6 h-6" />
-            {isLive && (
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse" />
-            )}
-          </div>
+        <CardTitle className="flex items-center gap-3 text-blue-100">
+          <Brain className="text-blue-300 w-6 h-6" />
           AI Insights
-          <Badge variant={isLive ? 'default' : 'secondary'} className="ml-auto">
-            {isLive ? 'Live' : 'Static'}
+          <Badge variant="secondary" className="ml-auto">
+            Static
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -111,14 +95,7 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
           {insights.map((insight, index) => (
             <div
               key={index}
-              className={`
-                p-4 rounded-lg border transition-all duration-500
-                ${currentInsight === index || !isLive 
-                  ? `${insight.bgColor} border-current opacity-100 scale-100` 
-                  : 'opacity-50 scale-95 border-transparent'
-                }
-                ${isLive && currentInsight === index ? 'ring-2 ring-blue-400/50' : ''}
-              `}
+              className={`p-4 rounded-lg border ${insight.bgColor} border-current opacity-100 scale-100`}
             >
               <div className="flex items-start gap-3">
                 <div className={`${insight.bgColor} p-2 rounded-lg`}>
@@ -126,14 +103,14 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <h4 className="font-semibold text-blue-100 dark:text-blue-100 light:text-gray-900">
+                    <h4 className="font-semibold text-blue-100">
                       {insight.title}
                     </h4>
                     <Badge variant={getBadgeVariant(insight.severity)} className="text-xs">
                       {insight.severity}
                     </Badge>
                   </div>
-                  <p className="text-sm text-blue-200/80 dark:text-blue-200/80 light:text-gray-700 leading-relaxed">
+                  <p className="text-sm text-blue-200/80 leading-relaxed">
                     {insight.content}
                   </p>
                 </div>
@@ -141,15 +118,6 @@ export const AIInsightsModule: React.FC<AIInsightsModuleProps> = ({
             </div>
           ))}
         </div>
-        
-        {isLive && (
-          <div className="mt-4 pt-4 border-t border-blue-800/30 dark:border-blue-800/30 light:border-gray-300">
-            <div className="flex items-center justify-center gap-2 text-xs text-blue-300/70 dark:text-blue-300/70 light:text-gray-500">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              Auto-refreshing insights every 4 seconds
-            </div>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

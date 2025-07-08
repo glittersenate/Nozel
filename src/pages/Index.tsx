@@ -13,11 +13,10 @@ import { PredictiveInsights } from "@/components/dashboard/PredictiveInsights";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useRealTimeData } from "@/hooks/useRealTimeData";
 import { Button } from "@/components/ui/button";
-import { Play, DollarSign, Users, Calendar, Command } from "lucide-react";
+import { Play, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCommandPalette } from "@/hooks/useCommandPalette";
 import EmployeePortal from "./EmployeePortal";
 
 const Index = () => {
@@ -25,7 +24,6 @@ const Index = () => {
   const { metrics } = useRealTimeData(employees);
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { open: openCommandPalette } = useCommandPalette();
 
   // If the current user is an employee, show Employee Portal
   if (user && user.role === "employee") {
@@ -54,16 +52,6 @@ const Index = () => {
                 Welcome back! Here's what's happening with your organization today.
               </p>
             </div>
-            
-            {/* AI Command Palette Trigger */}
-            <Button
-              onClick={openCommandPalette}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-4 py-2 rounded-xl shadow-lg flex items-center gap-2"
-            >
-              <Command className="w-4 h-4" />
-              Ask Maria
-              <span className="text-xs opacity-75">⌘K</span>
-            </Button>
           </div>
 
           {/* Premium Payroll Summary Card */}
@@ -137,7 +125,7 @@ const Index = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <InteractivePayrollChart />
-            <AIInsightsModule employees={employees} isLive={true} />
+            <AIInsightsModule employees={employees} isLive={false} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
