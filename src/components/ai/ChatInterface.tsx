@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap, Sparkles } from 'lucide-react';
+import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
