@@ -68,14 +68,14 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
   return (
     <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-700">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarFallback className="bg-blue-600 text-white">M</AvatarFallback>
+      <div className="flex items-center justify-between p-6 border-b border-slate-700">
+        <div className="flex items-center gap-4">
+          <Avatar className="h-12 w-12">
+            <AvatarFallback className="bg-blue-600 text-white text-lg">M</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-white font-semibold">Maria AI</h1>
-            <div className="flex items-center gap-2 text-sm text-slate-400">
+            <h1 className="text-white font-semibold text-xl">Maria AI</h1>
+            <div className="flex items-center gap-2 text-slate-400">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <span>HR Assistant</span>
               <span className="text-green-500">Online</span>
@@ -83,9 +83,6 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <select className="bg-slate-800 text-white border border-slate-600 rounded px-3 py-1 text-sm">
-            <option>Black</option>
-          </select>
           <Button
             variant="ghost"
             size="sm"
@@ -106,23 +103,23 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
       </div>
 
       {/* Messages Area */}
-      <ScrollArea className="flex-1 px-4 py-6">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <ScrollArea className="flex-1 px-6 py-8">
+        <div className="max-w-5xl mx-auto space-y-8">
           {messages.map((message) => (
             <div key={message.id} className="space-y-4">
-              <div className={`flex items-start gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`flex items-start gap-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {message.sender === 'maria' && (
-                  <Avatar className="h-8 w-8 mt-1">
-                    <AvatarFallback className="bg-blue-600 text-white text-sm">M</AvatarFallback>
+                  <Avatar className="h-10 w-10 mt-1">
+                    <AvatarFallback className="bg-blue-600 text-white">M</AvatarFallback>
                   </Avatar>
                 )}
-                <div className={`max-w-3xl rounded-2xl px-4 py-3 ${
+                <div className={`max-w-4xl rounded-2xl px-6 py-4 ${
                   message.sender === 'user'
-                    ? 'bg-blue-600 text-white ml-12'
-                    : 'bg-slate-800 text-slate-100 mr-12'
+                    ? 'bg-blue-600 text-white ml-14'
+                    : 'bg-slate-800 text-slate-100 mr-14'
                 }`}>
-                  <p className="text-sm leading-relaxed">{message.text}</p>
-                  <p className="text-xs opacity-70 mt-2">
+                  <p className="text-base leading-relaxed">{message.text}</p>
+                  <p className="text-sm opacity-70 mt-3">
                     {message.timestamp.toLocaleTimeString([], { 
                       hour: '2-digit', 
                       minute: '2-digit' 
@@ -132,14 +129,14 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
               </div>
               
               {message.actions && message.actions.length > 0 && (
-                <div className="flex flex-wrap gap-2 ml-11">
+                <div className="flex flex-wrap gap-3 ml-14">
                   {message.actions.map((action, index) => (
                     <Button
                       key={index}
                       variant="outline"
                       size="sm"
                       onClick={() => onActionClick(action.action)}
-                      className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 text-xs"
+                      className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
                     >
                       ⚡ {action.label}
                     </Button>
@@ -150,9 +147,9 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
           ))}
           
           {isTyping && (
-            <div className="flex items-start gap-3">
-              <Avatar className="h-8 w-8 mt-1">
-                <AvatarFallback className="bg-blue-600 text-white text-sm">M</AvatarFallback>
+            <div className="flex items-start gap-4">
+              <Avatar className="h-10 w-10 mt-1">
+                <AvatarFallback className="bg-blue-600 text-white">M</AvatarFallback>
               </Avatar>
               <TypingIndicator />
             </div>
@@ -163,14 +160,14 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
       </ScrollArea>
 
       {/* Input Area */}
-      <div className="border-t border-slate-700 p-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-3 bg-slate-800 rounded-full px-4 py-3">
+      <div className="border-t border-slate-700 p-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center gap-4 bg-slate-800 rounded-full px-6 py-4">
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Ask Maria anything about HR, payroll, employees..."
-              className="bg-transparent border-0 text-white placeholder:text-slate-400 focus:ring-0 text-sm"
+              className="bg-transparent border-0 text-white placeholder:text-slate-400 focus:ring-0 text-base"
               onKeyPress={(e) => e.key === 'Enter' && onSendMessage()}
             />
             <input
@@ -187,7 +184,7 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
               variant="ghost"
               className="text-slate-400 hover:text-white p-2"
             >
-              <Upload className="w-4 h-4" />
+              <Upload className="w-5 h-5" />
             </Button>
             <Button
               size="sm"
@@ -195,29 +192,29 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
               variant="ghost"
               className="text-slate-400 hover:text-white p-2"
             >
-              <Mic className="w-4 h-4" />
+              <Mic className="w-5 h-5" />
             </Button>
             <Button 
               size="sm" 
               onClick={onSendMessage} 
               disabled={!inputValue.trim() && uploadedFiles.length === 0}
-              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
+              className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-5 h-5" />
             </Button>
           </div>
           
           {/* Quick Actions */}
-          <div className="mt-4">
-            <p className="text-slate-400 text-sm mb-2">Quick actions:</p>
-            <div className="flex flex-wrap gap-2">
+          <div className="mt-6">
+            <p className="text-slate-400 mb-3">Quick actions:</p>
+            <div className="flex flex-wrap gap-3">
               {quickActions.map((action) => (
                 <Button
                   key={action.action}
                   variant="outline"
                   size="sm"
                   onClick={() => onActionClick(action.action)}
-                  className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 text-xs"
+                  className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
                 >
                   ⚡ {action.label}
                 </Button>
