@@ -1,6 +1,6 @@
 
 import React, { useRef, useEffect } from 'react';
-import { MessageCircle, X, Sparkles } from 'lucide-react';
+import { MessageCircle, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDragHandler } from './hooks/useDragHandler';
 import { useFloatingButtonEvents } from './hooks/useFloatingButtonEvents';
@@ -49,10 +49,10 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
     <Button
       ref={buttonRef}
       className={`
-        fixed z-50 w-16 h-16 rounded-full shadow-lg transition-all duration-200
-        bg-blue-600 hover:bg-blue-700
-        border border-white/20
-        ${dragHandler.isDragging ? 'scale-110 cursor-grabbing' : 'hover:scale-105 cursor-grab'}
+        fixed z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-200
+        bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700
+        border-2 border-white/20 backdrop-blur-sm
+        ${dragHandler.isDragging ? 'scale-110 shadow-2xl cursor-grabbing' : 'hover:scale-105 cursor-grab'}
         ${isChatOpen ? 'rotate-180' : ''}
       `}
       style={{
@@ -66,14 +66,13 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
       onTouchStart={eventHandlers.handleTouchStart}
       onClick={eventHandlers.handleClick}
     >
-      <div className="relative flex items-center justify-center">
+      <div className="relative">
         {isChatOpen ? (
           <X className="w-6 h-6 text-white" />
         ) : (
-          <Sparkles className="w-6 h-6 text-white" />
+          <MessageCircle className="w-6 h-6 text-white" />
         )}
-        
-        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
+        <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-30 animate-pulse" />
       </div>
     </Button>
   );
