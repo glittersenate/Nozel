@@ -1,9 +1,10 @@
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap } from 'lucide-react';
+import { Send, Mic, MicOff, Maximize2, Upload, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { EnhancedChatInterface } from './EnhancedChatInterface';
+import { FullscreenChatInterface } from './FullscreenChatInterface';
 import { MariaService } from '@/services/mariaService';
 import { ChatMessage } from './components/ChatMessage';
 import { TypingIndicator } from './components/TypingIndicator';
@@ -30,7 +31,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Maria, your AI HR assistant. I can help you with employee management, payroll, leave requests, and more. Try saying something like 'Add Joey to payroll at 20K monthly' or 'Show me performance reviews'.",
+      text: "Hello! I'm Maria, your AI HR assistant. I can help you with employee management, payroll, leave requests, and more. What would you like to do today?",
       sender: 'maria',
       timestamp: new Date(),
       actions: [
@@ -194,7 +195,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   // Render fullscreen version
   if (isFullscreen) {
     return (
-      <EnhancedChatInterface
+      <FullscreenChatInterface
         messages={messages}
         inputValue={inputValue}
         setInputValue={setInputValue}
