@@ -1,5 +1,6 @@
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap } from 'lucide-react';
+import { Send, Mic, MicOff, Maximize2, Minimize2, Upload, FileText, Zap, Sparkles, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -30,13 +31,13 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Maria, your AI HR assistant. I can help you with employee management, payroll, leave requests, and more. Try saying something like 'Add Joey to payroll at 20K monthly' or 'Show me performance reviews'.",
+      text: "Hello! I'm Maria, your AI assistant. I can help you with HR tasks, employee management, payroll processing, and much more. How can I assist you today?",
       sender: 'maria',
       timestamp: new Date(),
       actions: [
         { label: 'Add Employee', action: 'add_employee', variant: 'outline' },
         { label: 'Run Payroll', action: 'run_payroll', variant: 'outline' },
-        { label: 'View Reports', action: 'view_reports', variant: 'outline' },
+        { label: 'View Analytics', action: 'view_reports', variant: 'outline' },
       ]
     }
   ]);
@@ -81,7 +82,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
     // Process command with Maria service
     try {
       const command = MariaService.parseCommand(inputValue);
-      let response = "I understand you're looking for help with HR tasks. Could you be more specific?";
+      let response = "I understand you're looking for help with HR tasks. Could you be more specific about what you'd like me to help you with?";
       
       if (command) {
         response = await MariaService.executeCommand(command);
@@ -212,19 +213,25 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
     );
   }
 
-  // Render minimized version
+  // Render minimized version with premium styling
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-end p-4 pointer-events-none">
-      <div className="bg-slate-900/95 backdrop-blur-xl border border-blue-500/20 rounded-2xl shadow-2xl w-96 h-[500px] pointer-events-auto animate-scale-in">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-blue-500/20">
+      <div className="bg-slate-950/95 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl w-96 h-[520px] pointer-events-auto animate-scale-in overflow-hidden">
+        {/* Premium Header */}
+        <div className="flex items-center justify-between p-5 border-b border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+            <div className="relative">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-950"></div>
             </div>
             <div>
-              <h3 className="text-white font-semibold">Maria</h3>
-              <p className="text-blue-300/70 text-xs">AI HR Assistant</p>
+              <h3 className="text-white font-semibold text-base">Maria</h3>
+              <p className="text-slate-400 text-xs flex items-center gap-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                Online • AI Assistant
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -232,7 +239,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
               variant="ghost"
               size="sm"
               onClick={toggleFullscreen}
-              className="text-blue-300 hover:text-white hover:bg-blue-600/20"
+              className="text-slate-400 hover:text-white hover:bg-slate-700/50 w-8 h-8 p-0"
             >
               <Maximize2 className="w-4 h-4" />
             </Button>
@@ -240,40 +247,79 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="text-blue-300 hover:text-white hover:bg-blue-600/20"
+              className="text-slate-400 hover:text-white hover:bg-red-500/20 w-8 h-8 p-0"
             >
               ×
             </Button>
           </div>
         </div>
 
-        {/* Messages */}
-        <ScrollArea className="flex-1 h-[360px] p-4">
+        {/* Messages with premium styling */}
+        <ScrollArea className="flex-1 h-[360px] p-5">
           <div className="space-y-4">
             {messages.map((message) => (
-              <ChatMessage 
-                key={message.id} 
-                message={message} 
-                onActionClick={handleActionClick} 
-              />
+              <div key={message.id} className="space-y-3">
+                <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[80%] ${
+                    message.sender === 'user'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl rounded-br-md'
+                      : 'bg-slate-800/80 text-slate-100 border border-slate-700/50 rounded-2xl rounded-bl-md'
+                  } p-4 shadow-lg`}>
+                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    <p className="text-xs opacity-70 mt-2">
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                </div>
+                
+                {message.actions && message.actions.length > 0 && (
+                  <div className="flex flex-wrap gap-2 justify-start">
+                    {message.actions.map((action, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleActionClick(action.action)}
+                        className="text-xs h-8 bg-slate-800/50 border-slate-600/50 text-slate-300 hover:bg-slate-700/50 hover:border-blue-500/50 hover:text-blue-300 transition-all duration-200"
+                      >
+                        <Zap className="w-3 h-3 mr-1" />
+                        {action.label}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             
-            {isTyping && <TypingIndicator />}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-slate-800/80 border border-slate-700/50 p-4 rounded-2xl rounded-bl-md shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" />
+                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-100" />
+                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-200" />
+                    </div>
+                    <span className="text-slate-400 text-sm">Maria is thinking...</span>
+                  </div>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
 
         {/* File Upload Area */}
         {uploadedFiles.length > 0 && (
-          <div className="px-4 py-2 border-t border-blue-500/20">
+          <div className="px-5 py-3 border-t border-slate-700/50 bg-slate-900/50">
             <div className="flex flex-wrap gap-2">
               {uploadedFiles.map((file, index) => (
-                <div key={index} className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1">
+                <div key={index} className="flex items-center gap-2 bg-slate-800/60 rounded-lg px-3 py-2 border border-slate-700/50">
                   <FileText className="w-3 h-3 text-blue-400" />
-                  <span className="text-xs text-blue-200 truncate max-w-20">{file.name}</span>
+                  <span className="text-xs text-slate-300 truncate max-w-20">{file.name}</span>
                   <button
                     onClick={() => setUploadedFiles(prev => prev.filter((_, i) => i !== index))}
-                    className="text-blue-400 hover:text-red-400"
+                    className="text-slate-400 hover:text-red-400 transition-colors"
                   >
                     ×
                   </button>
@@ -283,14 +329,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
           </div>
         )}
 
-        {/* Input */}
-        <div className="p-4 border-t border-blue-500/20">
-          <div className="flex items-center gap-2">
+        {/* Premium Input */}
+        <div className="p-5 border-t border-slate-700/50 bg-slate-900/50">
+          <div className="flex items-center gap-3 bg-slate-800/60 rounded-2xl p-3 border border-slate-700/50 focus-within:border-blue-500/50 transition-colors">
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask Maria anything..."
-              className="bg-slate-800 border-blue-500/30 text-white placeholder:text-blue-300/50"
+              placeholder="Message Maria..."
+              className="bg-transparent border-0 text-white placeholder:text-slate-400 focus:ring-0 focus-visible:ring-0 text-sm"
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             />
             <input
@@ -304,20 +350,25 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
             <Button
               size="sm"
               onClick={() => fileInputRef.current?.click()}
-              variant="outline"
-              className="border-blue-500/30 hover:bg-blue-600/20"
+              variant="ghost"
+              className="text-slate-400 hover:text-white hover:bg-slate-700/50 w-8 h-8 p-0"
             >
               <Upload className="w-4 h-4" />
             </Button>
             <Button
               size="sm"
               onClick={toggleVoiceInput}
-              variant={isListening ? "default" : "outline"}
-              className={`${isListening ? 'bg-red-600 hover:bg-red-700' : 'border-blue-500/30 hover:bg-blue-600/20'}`}
+              variant="ghost"
+              className={`w-8 h-8 p-0 ${isListening ? 'text-red-400 hover:text-red-300' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}
             >
               {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </Button>
-            <Button size="sm" onClick={handleSendMessage} disabled={!inputValue.trim() && uploadedFiles.length === 0}>
+            <Button 
+              size="sm" 
+              onClick={handleSendMessage} 
+              disabled={!inputValue.trim() && uploadedFiles.length === 0}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white w-8 h-8 p-0 disabled:opacity-50"
+            >
               <Send className="w-4 h-4" />
             </Button>
           </div>
