@@ -4,6 +4,7 @@ import { useCallback, useEffect } from 'react';
 interface UseFloatingButtonEventsProps {
   isDragging: boolean;
   velocity: { x: number; y: number };
+  hasMoved: boolean;
   onToggleChat: () => void;
   handleDragStart: (x: number, y: number) => void;
   handleDragMove: (x: number, y: number) => void;
@@ -14,6 +15,7 @@ interface UseFloatingButtonEventsProps {
 export const useFloatingButtonEvents = ({
   isDragging,
   velocity,
+  hasMoved,
   onToggleChat,
   handleDragStart,
   handleDragMove,
@@ -57,10 +59,11 @@ export const useFloatingButtonEvents = ({
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!isDragging && Math.abs(velocity.x) < 0.1 && Math.abs(velocity.y) < 0.1) {
+    // Only trigger chat if it wasn't a drag (user didn't move the button)
+    if (!hasMoved && Math.abs(velocity.x) < 0.1 && Math.abs(velocity.y) < 0.1) {
       onToggleChat();
     }
-  }, [isDragging, velocity, onToggleChat]);
+  }, [hasMoved, velocity, onToggleChat]);
 
   useEffect(() => {
     if (isDragging) {
@@ -71,6 +74,9 @@ export const useFloatingButtonEvents = ({
       
       document.body.style.userSelect = 'none';
       document.body.style.webkitUserSelect = 'none';
+      document.body.style.pointerEvents = 'none'; // Prevent multiple instances
+    } else {
+      document.body.style.pointerEvents = '';
     }
 
     return () => {
@@ -81,6 +87,7 @@ export const useFloatingButtonEvents = ({
       
       document.body.style.userSelect = '';
       document.body.style.webkitUserSelect = '';
+      document.body.style.pointerEvents = '';
       
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);

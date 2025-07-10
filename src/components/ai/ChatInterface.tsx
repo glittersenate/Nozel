@@ -25,9 +25,16 @@ interface Message {
 interface ChatInterfaceProps {
   isOpen: boolean;
   onClose: () => void;
+  onMaximizedClose?: () => void;
+  startMinimized?: boolean;
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
+  isOpen, 
+  onClose,
+  onMaximizedClose,
+  startMinimized = false
+}) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -44,10 +51,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   const [inputValue, setInputValue] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(!startMinimized);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll to bottom
   const scrollToBottom = useCallback(() => {
@@ -57,6 +65,24 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
+
+  // Handle clicking outside to close minimized chat
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!isFullscreen && isOpen && chatContainerRef.current && 
+          !chatContainerRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen && !isFullscreen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, isFullscreen, onClose]);
 
   // Handle sending message
   const handleSendMessage = async () => {
@@ -169,6 +195,15 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
     setIsFullscreen(!isFullscreen);
   };
 
+  // Handle fullscreen close
+  const handleFullscreenClose = () => {
+    if (onMaximizedClose) {
+      onMaximizedClose();
+    } else {
+      onClose();
+    }
+  };
+
   // Close with escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -192,7 +227,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
 
   if (!isOpen) return null;
 
-  // Render fullscreen version
+  // Render fullscreen version with full stretch
   if (isFullscreen) {
     return (
       <FullscreenChatInterface
@@ -207,16 +242,19 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose })
         onFileUpload={handleFileUpload}
         onToggleVoice={toggleVoiceInput}
         onActionClick={handleActionClick}
-        onClose={() => setIsFullscreen(false)}
+        onClose={handleFullscreenClose}
         onMinimize={() => setIsFullscreen(false)}
       />
     );
   }
 
-  // Render minimized version
+  // Render minimized version with click-outside-to-close
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-end p-4 pointer-events-none">
-      <div className="bg-slate-900/95 backdrop-blur-xl border border-blue-500/20 rounded-2xl shadow-2xl w-96 h-[500px] pointer-events-auto animate-scale-in">
+      <div 
+        ref={chatContainerRef}
+        className="bg-slate-900/95 backdrop-blur-xl border border-blue-500/20 rounded-2xl shadow-2xl w-96 h-[500px] pointer-events-auto animate-scale-in"
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-blue-500/20">
           <div className="flex items-center gap-3">

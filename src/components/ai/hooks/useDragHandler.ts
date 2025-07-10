@@ -1,4 +1,3 @@
-
 import { useState, useRef, useCallback } from 'react';
 
 interface Position {
@@ -21,10 +20,12 @@ export const useDragHandler = () => {
   const [velocity, setVelocity] = useState<Velocity>({ x: 0, y: 0 });
   const [lastMousePos, setLastMousePos] = useState<Position>({ x: 0, y: 0 });
   const [lastTime, setLastTime] = useState(0);
+  const [hasMoved, setHasMoved] = useState(false);
   
   const isDraggingRef = useRef(false);
   const rafPositionRef = useRef<Position>({ x: 0, y: 0 });
   const animationRef = useRef<number>();
+  const dragThreshold = 5; // Minimum pixels moved to consider it a drag
 
   const updatePosition = useCallback((newPosition: Position) => {
     const boundedX = Math.max(10, Math.min(window.innerWidth - 70, newPosition.x));
@@ -39,6 +40,7 @@ export const useDragHandler = () => {
   const handleDragStart = useCallback((clientX: number, clientY: number) => {
     setIsDragging(true);
     isDraggingRef.current = true;
+    setHasMoved(false);
     
     const currentPos = rafPositionRef.current;
     const now = performance.now();
@@ -58,6 +60,16 @@ export const useDragHandler = () => {
     
     const now = performance.now();
     const dt = now - lastTime;
+    
+    // Check if moved beyond threshold
+    const moveDistance = Math.sqrt(
+      Math.pow(clientX - (rafPositionRef.current.x + dragStart.x), 2) +
+      Math.pow(clientY - (rafPositionRef.current.y + dragStart.y), 2)
+    );
+    
+    if (moveDistance > dragThreshold) {
+      setHasMoved(true);
+    }
     
     if (dt > 0) {
       const newVelocity = {
@@ -85,39 +97,46 @@ export const useDragHandler = () => {
     setIsDragging(false);
     isDraggingRef.current = false;
     
-    // Apply momentum and snapping
-    const snapThreshold = 120;
+    // High-performance smooth snapping with 120fps
     const currentPos = rafPositionRef.current;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
+    const centerX = windowWidth / 2;
     
     let finalX = currentPos.x;
     let finalY = currentPos.y;
     
-    const momentumFactor = 0.3;
-    if (Math.abs(velocity.x) > 0.5) {
+    // Enhanced momentum with better physics
+    const momentumFactor = 0.4;
+    if (Math.abs(velocity.x) > 1) {
       finalX += velocity.x * momentumFactor;
     }
-    if (Math.abs(velocity.y) > 0.5) {
+    if (Math.abs(velocity.y) > 1) {
       finalY += velocity.y * momentumFactor;
     }
     
-    if (finalX < snapThreshold) finalX = 15;
-    else if (finalX > windowWidth - snapThreshold) finalX = windowWidth - 75;
+    // Smart edge snapping - snap to nearest left or right edge
+    if (finalX < centerX) {
+      finalX = 15; // Snap to left edge
+    } else {
+      finalX = windowWidth - 75; // Snap to right edge
+    }
     
-    if (finalY < snapThreshold) finalY = 15;
-    else if (finalY > windowHeight - snapThreshold) finalY = windowHeight - 75;
+    // Keep within vertical bounds
+    finalY = Math.max(15, Math.min(windowHeight - 75, finalY));
     
-    // Smooth animated transition
+    // Ultra-smooth 120fps animation
     const startPos = currentPos;
     const endPos = { x: finalX, y: finalY };
     const startTime = performance.now();
-    const duration = 400;
+    const duration = 300; // Faster animation
     
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const easeOut = 1 - Math.pow(1 - progress, 3);
+      
+      // Smooth easing function for 120fps feel
+      const easeOut = 1 - Math.pow(1 - progress, 4);
       
       const currentX = startPos.x + (endPos.x - startPos.x) * easeOut;
       const currentY = startPos.y + (endPos.y - startPos.y) * easeOut;
@@ -136,6 +155,7 @@ export const useDragHandler = () => {
     position,
     isDragging,
     velocity,
+    hasMoved,
     handleDragStart,
     handleDragMove,
     handleDragEnd,

@@ -20,6 +20,7 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
   const eventHandlers = useFloatingButtonEvents({
     isDragging: dragHandler.isDragging,
     velocity: dragHandler.velocity,
+    hasMoved: dragHandler.hasMoved,
     onToggleChat,
     handleDragStart: dragHandler.handleDragStart,
     handleDragMove: dragHandler.handleDragMove,
@@ -60,7 +61,8 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
         top: 0,
         touchAction: 'none',
         willChange: dragHandler.isDragging ? 'transform' : 'auto',
-        transition: dragHandler.isDragging ? 'none' : 'transform 0.2s ease-out, scale 0.2s ease-out'
+        transition: dragHandler.isDragging ? 'none' : 'transform 0.2s ease-out, scale 0.2s ease-out',
+        pointerEvents: 'auto' // Ensure button is always clickable
       }}
       onMouseDown={eventHandlers.handleMouseDown}
       onTouchStart={eventHandlers.handleTouchStart}
