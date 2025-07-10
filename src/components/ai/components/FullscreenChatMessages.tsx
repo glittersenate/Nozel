@@ -37,7 +37,7 @@ export const FullscreenChatMessages: React.FC<FullscreenChatMessagesProps> = ({
 
   return (
     <ScrollArea className="flex-1 px-6 py-4">
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="w-full space-y-6">
         {messages.map((message) => (
           <div key={message.id} className="space-y-4">
             <div className={`flex items-start gap-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>

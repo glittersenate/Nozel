@@ -35,7 +35,7 @@ export const FullscreenChatInput: React.FC<FullscreenChatInputProps> = ({
 
   return (
     <div className="border-t border-slate-700/50 p-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="w-full">
         <div className="flex items-center gap-4 bg-slate-800/60 rounded-2xl px-6 py-4 border border-slate-700/50">
           <Input
             value={inputValue}

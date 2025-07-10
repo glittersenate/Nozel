@@ -53,7 +53,7 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
         fixed z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-200
         bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700
         border-2 border-white/20 backdrop-blur-sm
-        ${dragHandler.isDragging ? 'scale-110 shadow-2xl cursor-grabbing' : 'hover:scale-105 cursor-grab'}
+        ${dragHandler.isDragging ? 'scale-110 shadow-2xl cursor-grabbing opacity-90' : 'hover:scale-105 cursor-grab'}
         ${isChatOpen ? 'rotate-180' : ''}
       `}
       style={{
@@ -62,7 +62,8 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
         touchAction: 'none',
         willChange: dragHandler.isDragging ? 'transform' : 'auto',
         transition: dragHandler.isDragging ? 'none' : 'transform 0.2s ease-out, scale 0.2s ease-out',
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        zIndex: dragHandler.isDragging ? 9999 : 50
       }}
       onMouseDown={eventHandlers.handleMouseDown}
       onTouchStart={eventHandlers.handleTouchStart}
