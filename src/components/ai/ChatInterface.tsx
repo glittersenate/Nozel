@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Send, Mic, MicOff, Maximize2, Upload, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -33,7 +32,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   isOpen, 
   onClose,
   onMaximizedClose,
-  startMinimized = false
+  startMinimized = true // Changed default to true
 }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -51,7 +50,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(!startMinimized);
+  const [isFullscreen, setIsFullscreen] = useState(false); // Always start minimized now
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -227,7 +226,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   if (!isOpen) return null;
 
-  // Render fullscreen version with full stretch
+  // Render fullscreen version
   if (isFullscreen) {
     return (
       <FullscreenChatInterface

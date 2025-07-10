@@ -5,7 +5,7 @@ import { ChatInterface } from './ChatInterface';
 
 export const MariaAI: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [wasMaximized, setWasMaximized] = useState(false);
+  const [shouldStartMinimized, setShouldStartMinimized] = useState(false);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -16,7 +16,8 @@ export const MariaAI: React.FC = () => {
   };
 
   const handleMaximizedClose = () => {
-    setWasMaximized(true);
+    // When closed from maximized, next time should open minimized
+    setShouldStartMinimized(true);
     setIsChatOpen(false);
   };
 
@@ -27,7 +28,7 @@ export const MariaAI: React.FC = () => {
         isOpen={isChatOpen} 
         onClose={closeChat}
         onMaximizedClose={handleMaximizedClose}
-        startMinimized={wasMaximized}
+        startMinimized={shouldStartMinimized}
       />
     </>
   );

@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Send, Upload, Mic, Minimize2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -66,19 +65,18 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
   }, [messages]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col w-full h-full">
-      {/* Header - Full width stretch */}
-      <div className="flex items-center justify-between p-6 border-b border-slate-700 w-full">
+    <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
         <div className="flex items-center gap-4">
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-blue-600 text-white text-lg">M</AvatarFallback>
-          </Avatar>
+          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+            <span className="text-white font-semibold text-lg">M</span>
+          </div>
           <div>
             <h1 className="text-white font-semibold text-xl">Maria AI</h1>
             <div className="flex items-center gap-2 text-slate-400">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>HR Assistant</span>
-              <span className="text-green-500">Online</span>
+              <span className="text-sm">Online</span>
             </div>
           </div>
         </div>
@@ -87,7 +85,7 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
             variant="ghost"
             size="sm"
             onClick={onMinimize}
-            className="text-slate-400 hover:text-white"
+            className="text-slate-400 hover:text-white hover:bg-slate-700/50"
           >
             <Minimize2 className="w-4 h-4" />
           </Button>
@@ -95,76 +93,74 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="text-slate-400 hover:text-white"
+            className="text-slate-400 hover:text-white hover:bg-slate-700/50"
           >
             <X className="w-4 h-4" />
           </Button>
         </div>
       </div>
 
-      {/* Messages Area - Full stretch */}
-      <ScrollArea className="flex-1 w-full">
-        <div className="w-full px-6 py-8">
-          <div className="max-w-5xl mx-auto space-y-8 w-full">
-            {messages.map((message) => (
-              <div key={message.id} className="space-y-4 w-full">
-                <div className={`flex items-start gap-4 w-full ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {message.sender === 'maria' && (
-                    <Avatar className="h-10 w-10 mt-1 flex-shrink-0">
-                      <AvatarFallback className="bg-blue-600 text-white">M</AvatarFallback>
-                    </Avatar>
-                  )}
-                  <div className={`max-w-4xl rounded-2xl px-6 py-4 ${
-                    message.sender === 'user'
-                      ? 'bg-blue-600 text-white ml-14'
-                      : 'bg-slate-800 text-slate-100 mr-14'
-                  }`}>
-                    <p className="text-base leading-relaxed">{message.text}</p>
-                    <p className="text-sm opacity-70 mt-3">
-                      {message.timestamp.toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </p>
-                  </div>
-                </div>
-                
-                {message.actions && message.actions.length > 0 && (
-                  <div className="flex flex-wrap gap-3 ml-14">
-                    {message.actions.map((action, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => onActionClick(action.action)}
-                        className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
-                      >
-                        ⚡ {action.label}
-                      </Button>
-                    ))}
-                  </div>
+      {/* Messages Area */}
+      <ScrollArea className="flex-1 px-6 py-4">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {messages.map((message) => (
+            <div key={message.id} className="space-y-4">
+              <div className={`flex items-start gap-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                {message.sender === 'maria' && (
+                  <Avatar className="h-10 w-10 mt-1 flex-shrink-0">
+                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold">M</AvatarFallback>
+                  </Avatar>
                 )}
+                <div className={`max-w-2xl rounded-2xl px-6 py-4 ${
+                  message.sender === 'user'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-slate-800/60 text-slate-100 border border-slate-700/50'
+                }`}>
+                  <p className="text-base leading-relaxed">{message.text}</p>
+                  <p className="text-sm opacity-70 mt-2">
+                    {message.timestamp.toLocaleTimeString([], { 
+                      hour: '2-digit', 
+                      minute: '2-digit' 
+                    })}
+                  </p>
+                </div>
               </div>
-            ))}
-            
-            {isTyping && (
-              <div className="flex items-start gap-4 w-full">
-                <Avatar className="h-10 w-10 mt-1 flex-shrink-0">
-                  <AvatarFallback className="bg-blue-600 text-white">M</AvatarFallback>
-                </Avatar>
-                <TypingIndicator />
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
+              
+              {message.actions && message.actions.length > 0 && (
+                <div className="flex flex-wrap gap-3 ml-14">
+                  {message.actions.map((action, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onActionClick(action.action)}
+                      className="bg-slate-800/40 border-slate-600/50 text-slate-300 hover:bg-slate-700/50 hover:text-white"
+                    >
+                      ⚡ {action.label}
+                    </Button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+          
+          {isTyping && (
+            <div className="flex items-start gap-4">
+              <Avatar className="h-10 w-10 mt-1 flex-shrink-0">
+                <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold">M</AvatarFallback>
+              </Avatar>
+              <TypingIndicator />
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
 
-      {/* Input Area - Full width stretch */}
-      <div className="border-t border-slate-700 p-6 w-full">
-        <div className="max-w-5xl mx-auto w-full">
-          <div className="flex items-center gap-4 bg-slate-800 rounded-full px-6 py-4 w-full">
+      {/* Input Area */}
+      <div className="border-t border-slate-700/50 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 bg-slate-800/60 rounded-2xl px-6 py-4 border border-slate-700/50">
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
@@ -184,7 +180,7 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
               size="sm"
               onClick={() => fileInputRef.current?.click()}
               variant="ghost"
-              className="text-slate-400 hover:text-white p-2 flex-shrink-0"
+              className="text-slate-400 hover:text-white hover:bg-slate-700/50"
             >
               <Upload className="w-5 h-5" />
             </Button>
@@ -192,7 +188,7 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
               size="sm"
               onClick={onToggleVoice}
               variant="ghost"
-              className="text-slate-400 hover:text-white p-2 flex-shrink-0"
+              className="text-slate-400 hover:text-white hover:bg-slate-700/50"
             >
               <Mic className="w-5 h-5" />
             </Button>
@@ -200,15 +196,15 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
               size="sm" 
               onClick={onSendMessage} 
               disabled={!inputValue.trim() && uploadedFiles.length === 0}
-              className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full flex-shrink-0"
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-4"
             >
               <Send className="w-5 h-5" />
             </Button>
           </div>
           
           {/* Quick Actions */}
-          <div className="mt-6 w-full">
-            <p className="text-slate-400 mb-3">Quick actions:</p>
+          <div className="mt-4">
+            <p className="text-slate-400 mb-3 text-sm">Quick actions:</p>
             <div className="flex flex-wrap gap-3">
               {quickActions.map((action) => (
                 <Button
@@ -216,7 +212,7 @@ export const FullscreenChatInterface: React.FC<FullscreenChatInterfaceProps> = (
                   variant="outline"
                   size="sm"
                   onClick={() => onActionClick(action.action)}
-                  className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
+                  className="bg-slate-800/40 border-slate-600/50 text-slate-300 hover:bg-slate-700/50 hover:text-white"
                 >
                   ⚡ {action.label}
                 </Button>

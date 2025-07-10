@@ -62,20 +62,17 @@ export const FloatingChatButton: React.FC<FloatingChatButtonProps> = ({
         touchAction: 'none',
         willChange: dragHandler.isDragging ? 'transform' : 'auto',
         transition: dragHandler.isDragging ? 'none' : 'transform 0.2s ease-out, scale 0.2s ease-out',
-        pointerEvents: 'auto' // Ensure button is always clickable
+        pointerEvents: 'auto'
       }}
       onMouseDown={eventHandlers.handleMouseDown}
       onTouchStart={eventHandlers.handleTouchStart}
       onClick={eventHandlers.handleClick}
     >
-      <div className="relative">
-        {isChatOpen ? (
-          <X className="w-6 h-6 text-white" />
-        ) : (
-          <MessageCircle className="w-6 h-6 text-white" />
-        )}
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-30 animate-pulse" />
-      </div>
+      {isChatOpen ? (
+        <X className="w-6 h-6 text-white" />
+      ) : (
+        <MessageCircle className="w-6 h-6 text-white" />
+      )}
     </Button>
   );
 };
