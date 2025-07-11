@@ -22,7 +22,7 @@ export const MariaAI: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="fixed inset-0 pointer-events-none z-50">
       <FloatingChatButton onToggleChat={toggleChat} isChatOpen={isChatOpen} />
       <ChatInterface 
         isOpen={isChatOpen} 
@@ -30,6 +30,6 @@ export const MariaAI: React.FC = () => {
         onMaximizedClose={handleMaximizedClose}
         startMinimized={shouldStartMinimized}
       />
-    </>
+    </div>
   );
 };
