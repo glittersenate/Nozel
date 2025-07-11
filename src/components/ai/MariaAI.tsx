@@ -36,44 +36,31 @@ export const MariaAI: React.FC = () => {
     animationRef: dragHandler.animationRef
   });
 
-  // Initialize position with proper transform
+  // Initialize position
   useEffect(() => {
     if (buttonRef.current) {
       const initialX = window.innerWidth - 80;
       const initialY = window.innerHeight - 120;
-      buttonRef.current.style.transform = `translate3d(${initialX}px, ${initialY}px, 0)`;
       dragHandler.rafPositionRef.current = { x: initialX, y: initialY };
     }
   }, []);
 
-  // Update transform when position changes
-  useEffect(() => {
-    if (buttonRef.current) {
-      const { x, y } = dragHandler.position;
-      buttonRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    }
-  }, [dragHandler.position]);
-
   return (
-    <div className="fixed inset-0 pointer-events-none z-50">
+    <>
       <Button
         ref={buttonRef}
         className={`
-          fixed w-14 h-14 rounded-full shadow-lg transition-all duration-200
+          fixed w-14 h-14 rounded-full shadow-lg
           bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700
           border-2 border-white/20 backdrop-blur-sm
           ${dragHandler.isDragging ? 'scale-110 shadow-2xl cursor-grabbing' : 'hover:scale-105 cursor-grab'}
           ${isChatOpen ? 'rotate-180' : ''}
         `}
         style={{
-          left: 0,
-          top: 0,
-          zIndex: dragHandler.isDragging ? 10000 : 1000,
+          transform: `translate3d(${dragHandler.position.x}px, ${dragHandler.position.y}px, 0)`,
+          zIndex: 1000,
           touchAction: 'none',
-          willChange: dragHandler.isDragging ? 'transform' : 'auto',
-          transition: dragHandler.isDragging ? 'none' : 'transform 0.2s ease-out, scale 0.2s ease-out',
-          pointerEvents: 'auto',
-          position: 'fixed'
+          transition: dragHandler.isDragging ? 'none' : 'transform 0.2s ease-out, scale 0.2s ease-out'
         }}
         onMouseDown={eventHandlers.handleMouseDown}
         onTouchStart={eventHandlers.handleTouchStart}
@@ -92,6 +79,6 @@ export const MariaAI: React.FC = () => {
         onMaximizedClose={handleMaximizedClose}
         startMinimized={shouldStartMinimized}
       />
-    </div>
+    </>
   );
 };
