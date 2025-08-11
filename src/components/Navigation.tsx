@@ -6,14 +6,23 @@ import { Link, useLocation } from 'react-router-dom';
 const navigationItems = [
   { icon: Home, label: 'Dashboard', href: '/' },
   { icon: Users, label: 'Employees', href: '/employees' },
-  { icon: Clock, label: 'Time Tracking', href: '/time-tracking' },
+  // { icon: Clock, label: 'Time Tracking', href: '/time-tracking' }, // Hidden temporarily
   { icon: DollarSign, label: 'Payroll', href: '/payroll' },
   { icon: Calendar, label: 'Leave', href: '/leave' },
-  { icon: Star, label: 'Performance', href: '/performance' },
+  // { icon: Star, label: 'Performance', href: '/performance' }, // Hidden temporarily
   { icon: FileText, label: 'Reports', href: '/reports' },
-  { icon: BarChart3, label: 'Analytics', href: '/analytics' },
+  // { icon: BarChart3, label: 'Analytics', href: '/analytics' }, // Hidden temporarily
   { icon: Settings, label: 'Settings', href: '/settings' },
 ];
+
+// Note: The following pages are temporarily hidden from navigation but still accessible via direct URL:
+// - Time Tracking (/time-tracking)
+// - Performance (/performance) 
+// - Analytics (/analytics)
+// - Executive Command Center (/executive)
+// - Integrations (/integrations)
+// - Benefits (/benefits)
+// - Experimental (/experimental)
 
 const Navigation = () => {
   const location = useLocation();
