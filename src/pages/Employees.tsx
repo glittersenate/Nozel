@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EmployeeTable from '@/components/employees/EmployeeTable';
 import EmployeeFilterDrawer from '@/components/employees/EmployeeFilterDrawer';
 import AddEmployeeDialog from '@/components/employees/AddEmployeeDialog';
@@ -12,11 +12,13 @@ import { Employee } from '@/types/employee';
 export default function Employees() {
   const { 
     employees, 
+    sortConfig,
     addEmployee, 
     updateEmployee, 
     deleteEmployee, 
     bulkDeleteEmployees, 
-    bulkUpdateStatus 
+    bulkUpdateStatus,
+    sortEmployees
   } = useEmployees();
 
   const { 
@@ -78,20 +80,13 @@ export default function Employees() {
     console.log('Viewing employee:', employee);
   };
 
-  const handleSelectEmployee = (id: string, selected: boolean) => {
-    if (selected) {
-      setSelectedEmployees(prev => [...prev, id]);
-    } else {
-      setSelectedEmployees(prev => prev.filter(empId => empId !== id));
-    }
+  const handleSort = (key: keyof Employee) => {
+    sortEmployees(key);
   };
 
-  const handleSelectAll = (selected: boolean) => {
-    if (selected) {
-      setSelectedEmployees(filteredEmployees.map(emp => emp.id));
-    } else {
-      setSelectedEmployees([]);
-    }
+  const handleFilterStateChange = (state: { departments: string[]; statuses: ('active' | 'inactive')[] }) => {
+    updateFilter('departments', state.departments);
+    updateFilter('statuses', state.statuses);
   };
 
   return (
@@ -128,10 +123,7 @@ export default function Employees() {
               onOpenChange={setFilterDrawerOpen}
               allDepartments={allDepartments}
               filterState={filters}
-              setFilterState={(state) => {
-                updateFilter('departments', state.departments);
-                updateFilter('statuses', state.statuses);
-              }}
+              setFilterState={handleFilterStateChange}
               onClear={clearFilters}
             />
           </div>
@@ -142,10 +134,10 @@ export default function Employees() {
           onDeleteEmployee={handleDeleteEmployee}
           onEditEmployee={handleEditEmployee}
           onViewEmployee={handleViewEmployee}
-          onSelectEmployee={handleSelectEmployee}
-          onSelectAll={handleSelectAll}
-          selectedEmployees={selectedEmployees}
-          sortConfig={null}
+          sortConfig={sortConfig}
+          onSort={handleSort}
+          selectedIds={selectedEmployees}
+          onSelectionChange={setSelectedEmployees}
         />
       </div>
     </div>
