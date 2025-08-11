@@ -1,193 +1,134 @@
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { ComplianceIssueChart } from '@/components/compliance/ComplianceIssueChart';
-import { RecentComplianceChecks } from '@/components/compliance/RecentComplianceChecks';
-import { 
-  Shield, 
-  CheckCircle, 
-  AlertTriangle, 
-  Clock, 
-  FileText,
-  Users,
-  AlertCircle,
-  TrendingUp
-} from 'lucide-react';
+import React from "react";
+import { Shield, Zap, AlertTriangle, Globe } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import ComplianceIssueChart from "@/components/compliance/ComplianceIssueChart";
+import RecentComplianceChecks from "@/components/compliance/RecentComplianceChecks";
 
-export default function Compliance() {
-  const complianceMetrics = [
-    { label: 'Overall Compliance Score', value: 92, color: 'text-green-600' },
-    { label: 'Active Policies', value: 24, color: 'text-blue-600' },
-    { label: 'Pending Reviews', value: 3, color: 'text-yellow-600' },
-    { label: 'Critical Issues', value: 0, color: 'text-red-600' }
-  ];
+// Mock compliance data
+const complianceStats = [
+  { label: "States Monitored", value: "50", icon: <Globe className="w-5 h-5 text-blue-400" /> },
+  { label: "Issues Detected", value: "2", icon: <AlertTriangle className="w-5 h-5 text-yellow-400" /> },
+  { label: "Critical Alerts", value: "1", icon: <Zap className="w-5 h-5 text-red-400" /> },
+  { label: "Last Audit", value: "3h ago", icon: <Shield className="w-5 h-5 text-green-400" /> },
+];
 
-  const recentAudits = [
-    { name: 'GDPR Compliance Review', date: '2024-03-01', status: 'completed', score: 95 },
-    { name: 'Data Security Audit', date: '2024-02-28', status: 'completed', score: 88 },
-    { name: 'Employee Privacy Check', date: '2024-02-25', status: 'in-progress', score: null },
-    { name: 'Payroll Compliance', date: '2024-02-20', status: 'completed', score: 92 }
-  ];
+const complianceFeed = [
+  { time: "10:18 AM", type: "critical", description: "Minimum wage law change flagged in California. Manual review needed." },
+  { time: "09:44 AM", type: "info", description: "New overtime rules synced for New York." },
+  { time: "08:05 AM", type: "warning", description: "Missing payroll tax update in Texas." },
+  { time: "Yesterday", type: "info", description: "All state compliance checks passed." },
+];
 
-  const complianceAreas = [
-    { 
-      name: 'Data Privacy (GDPR)', 
-      status: 'compliant', 
-      lastCheck: '2024-03-01',
-      score: 95
-    },
-    { 
-      name: 'Employment Law', 
-      status: 'compliant', 
-      lastCheck: '2024-02-28',
-      score: 88
-    },
-    { 
-      name: 'Health & Safety', 
-      status: 'review-needed', 
-      lastCheck: '2024-02-15',
-      score: 75
-    },
-    { 
-      name: 'Financial Reporting', 
-      status: 'compliant', 
-      lastCheck: '2024-03-05',
-      score: 92
-    }
-  ];
+const stateCoverage = [
+  "California", "Texas", "New York", "Florida", "Illinois", "Pennsylvania", "Ohio", "Georgia", "North Carolina", "Michigan"
+];
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'compliant':
-        return 'bg-green-500';
-      case 'review-needed':
-        return 'bg-yellow-500';
-      case 'non-compliant':
-        return 'bg-red-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'compliant':
-        return <CheckCircle className="w-4 h-4" />;
-      case 'review-needed':
-        return <AlertTriangle className="w-4 h-4" />;
-      case 'non-compliant':
-        return <AlertCircle className="w-4 h-4" />;
-      default:
-        return <Clock className="w-4 h-4" />;
-    }
-  };
-
+const Compliance: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">AI Compliance Management</h1>
-          <p className="text-muted-foreground">Monitor and maintain regulatory compliance across all HR processes</p>
+    <div className="min-h-screen w-full flex bg-background">
+      <div className="container mx-auto py-5 px-4">
+        {/* Header Section */}
+        <div className="mb-6">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl">
+              <Shield className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-1 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent leading-tight tracking-tight">
+                AI Compliance HQ
+              </h1>
+              <p className="text-muted-foreground text-base sm:text-lg opacity-80">
+                Live payroll compliance monitoring across all 50 states.
+              </p>
+            </div>
+          </div>
+
+          {/* Compliance Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {complianceStats.map((stat, i) => (
+              <Card
+                key={stat.label}
+                className="glass-dark border-0 shadow-lg rounded-2xl hover:scale-105 transition-transform duration-300"
+              >
+                <CardContent className="flex flex-row items-center gap-4 px-5 py-4">
+                  <div className="p-2 bg-gradient-to-br from-blue-600 to-purple-500 rounded-xl">
+                    {stat.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xl font-bold text-foreground truncate">{stat.value}</div>
+                    <div className="text-xs text-muted-foreground truncate">{stat.label}</div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
-        {/* Compliance Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {complianceMetrics.map((metric, index) => (
-            <Card key={index}>
+        {/* Main Content Grid */}
+        <div className="space-y-6">
+          {/* Charts Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ComplianceIssueChart />
+            <RecentComplianceChecks />
+          </div>
+
+          {/* Real-Time Alerts and States Coverage */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Real-Time Compliance Alerts */}
+            <Card className="glass-dark rounded-2xl border-0 shadow-lg">
               <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">{metric.label}</p>
-                    <p className={`text-2xl font-bold ${metric.color}`}>{metric.value}{metric.label.includes('Score') ? '%' : ''}</p>
-                  </div>
-                  <div className="p-2 bg-muted rounded-lg">
-                    {metric.label.includes('Score') && <TrendingUp className="w-6 h-6 text-green-600" />}
-                    {metric.label.includes('Policies') && <FileText className="w-6 h-6 text-blue-600" />}
-                    {metric.label.includes('Pending') && <Clock className="w-6 h-6 text-yellow-600" />}
-                    {metric.label.includes('Issues') && <Shield className="w-6 h-6 text-red-600" />}
-                  </div>
+                <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                  <AlertTriangle className="w-6 h-6 text-yellow-400" />
+                  Real-Time Compliance Alerts
+                </h2>
+                <div className="space-y-3">
+                  {complianceFeed.map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg hover:bg-slate-800/50 transition-colors">
+                      <span className={`rounded-full h-3 w-3 mt-1.5 flex-shrink-0 ${
+                        item.type === "critical"
+                          ? "bg-red-500 animate-pulse"
+                          : item.type === "warning"
+                          ? "bg-yellow-400"
+                          : "bg-blue-400"
+                      }`}/>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-blue-100 font-medium text-sm leading-relaxed">{item.description}</p>
+                        <span className="text-xs text-blue-300/70 mt-1 block">{item.time}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <ComplianceIssueChart />
-          <RecentComplianceChecks />
-        </div>
-
-        {/* Compliance Areas */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="w-5 h-5" />
-                Compliance Areas
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {complianceAreas.map((area, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Badge className={getStatusColor(area.status)}>
-                        {getStatusIcon(area.status)}
-                      </Badge>
-                      <div>
-                        <p className="font-medium">{area.name}</p>
-                        <p className="text-sm text-muted-foreground">Last checked: {area.lastCheck}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium">{area.score}%</p>
-                      <Progress value={area.score} className="w-20 h-2" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5" />
-                Recent Audits
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentAudits.map((audit, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Users className="w-5 h-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">{audit.name}</p>
-                        <p className="text-sm text-muted-foreground">{audit.date}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {audit.score && (
-                        <span className="text-sm font-medium">{audit.score}%</span>
-                      )}
-                      <Badge 
-                        variant={audit.status === 'completed' ? 'default' : 'secondary'}
-                        className={audit.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'}
-                      >
-                        {audit.status}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+            
+            {/* US State Coverage */}
+            <Card className="glass-dark rounded-2xl border-0 shadow-lg">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Globe className="w-6 h-6 text-blue-400" />
+                  States Monitored
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {stateCoverage.map(state => (
+                    <span
+                      key={state}
+                      className="bg-gradient-to-br from-blue-700 via-blue-400/70 to-purple-500/70 text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-md hover:scale-105 transition-transform duration-200"
+                    >
+                      {state}
+                    </span>
+                  ))}
+                  <span className="text-sm text-blue-300 font-medium opacity-50 ml-2 self-center">
+                    +40 more states
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Compliance;

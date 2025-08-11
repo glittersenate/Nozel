@@ -1,145 +1,171 @@
 
-import React, { useState, useEffect } from 'react';
-import EmployeeTable from '@/components/employees/EmployeeTable';
-import EmployeeFilterDrawer from '@/components/employees/EmployeeFilterDrawer';
-import AddEmployeeDialog from '@/components/employees/AddEmployeeDialog';
-import BulkActions from '@/components/employees/BulkActions';
-import EmployeeUploadDialog from '@/components/employees/EmployeeUploadDialog';
-import { useEmployees } from '@/hooks/useEmployees';
-import { useEmployeeFilters } from '@/hooks/useEmployeeFilters';
-import { Employee } from '@/types/employee';
+import React, { useState } from "react";
+import EmployeeTable from "@/components/employees/EmployeeTable";
+import AddEmployeeDialog from "@/components/employees/AddEmployeeDialog";
+import BulkActions from "@/components/employees/BulkActions";
+import EmployeeFilterDrawer from "@/components/employees/EmployeeFilterDrawer";
+import EmployeeProfileModal from "@/components/EmployeeProfileModal";
+import EditEmployeeDialog from "@/components/employees/EditEmployeeDialog";
+import { useEmployees } from "@/hooks/useEmployees";
+import { Employee } from "@/types/employee";
+import { Plus, Filter, Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import EmployeeUploadDialog from "@/components/employees/EmployeeUploadDialog";
 
-export default function Employees() {
-  const { 
-    employees, 
+const Employees = () => {
+  const {
+    employees,
     sortConfig,
-    addEmployee, 
-    updateEmployee, 
-    deleteEmployee, 
-    bulkDeleteEmployees, 
+    addEmployee,
+    updateEmployee,
+    deleteEmployee,
+    bulkDeleteEmployees,
     bulkUpdateStatus,
     sortEmployees
   } = useEmployees();
 
-  const { 
-    filters, 
-    filteredEmployees, 
-    updateFilter, 
-    clearFilters, 
-    activeFilterCount 
-  } = useEmployeeFilters(employees);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [showFilterDrawer, setShowFilterDrawer] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [filterState, setFilterState] = useState({ departments: [], statuses: [] });
 
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
-  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
-  const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
+  const allDepartments = Array.from(new Set(employees.map(emp => emp.department)));
 
-  // Get all unique departments for filter
-  const allDepartments = [...new Set(employees.map(emp => emp.department))];
-
-  const handleAddEmployee = (employeeData: Omit<Employee, 'id'>) => {
-    addEmployee(employeeData);
-    setAddDialogOpen(false);
-  };
-
-  const handleImportEmployees = (employeeList: Omit<Employee, 'id'>[]) => {
-    employeeList.forEach(emp => addEmployee(emp));
-    setUploadDialogOpen(false);
-  };
-
-  const handleBulkDelete = () => {
-    bulkDeleteEmployees(selectedEmployees);
-    setSelectedEmployees([]);
-  };
-
-  const handleBulkStatusChange = (status: 'active' | 'inactive') => {
-    bulkUpdateStatus(selectedEmployees, status);
-    setSelectedEmployees([]);
-  };
-
-  const handleBulkExport = () => {
-    // Implementation for bulk export
-    console.log('Exporting selected employees:', selectedEmployees);
-  };
-
-  const handleBulkEmail = () => {
-    // Implementation for bulk email
-    console.log('Sending email to selected employees:', selectedEmployees);
-  };
-
-  const handleDeleteEmployee = (id: string) => {
-    deleteEmployee(id);
+  const handleViewEmployee = (employee: Employee) => {
+    setSelectedEmployee(employee);
+    setShowProfileModal(true);
   };
 
   const handleEditEmployee = (employee: Employee) => {
-    updateEmployee(employee.id, employee);
+    setSelectedEmployee(employee);
+    setShowEditDialog(true);
   };
 
-  const handleViewEmployee = (employee: Employee) => {
-    // Implementation for viewing employee details
-    console.log('Viewing employee:', employee);
+  const handleBulkEmail = () => {
+    console.log('Sending email to:', selectedIds);
   };
 
-  const handleSort = (key: keyof Employee) => {
-    sortEmployees(key);
+  const handleBulkExport = () => {
+    console.log('Exporting employees:', selectedIds);
   };
 
-  const handleFilterStateChange = (state: { departments: string[]; statuses: ('active' | 'inactive')[] }) => {
-    updateFilter('departments', state.departments);
-    updateFilter('statuses', state.statuses);
+  // Handler to add multiple employees at once
+  const handleImportEmployees = (importedEmployees: Omit<Employee, "id">[]) => {
+    importedEmployees.forEach(emp => addEmployee(emp));
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Employee Management</h1>
-          <p className="text-muted-foreground">Manage your workforce and employee information</p>
+      <div className="container mx-auto py-5 px-2 sm:px-4 md:px-8 max-w-full">
+        <div className="mb-6 mt-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-0">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-1">Employee Management</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">Manage your workforce and employee information</p>
+          </div>
+        </div>
+        
+        <div className="flex flex-col xs:flex-row gap-2 xs:gap-4 mb-4 w-full">
+          <Button
+            onClick={() => setShowAddDialog(true)}
+            className="w-full xs:w-auto bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Employee
+          </Button>
+          <Button
+            onClick={() => setShowFilterDrawer(true)}
+            variant="outline"
+            className="w-full xs:w-auto border-blue-600 text-blue-300 hover:bg-blue-600/10"
+          >
+            <Filter className="w-4 h-4 mr-2" />
+            Filter
+          </Button>
+          <Button
+            onClick={() => setShowUploadDialog(true)}
+            variant="outline"
+            className="w-full xs:w-auto border-blue-600 text-blue-300 hover:bg-blue-600/10"
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            Upload
+          </Button>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="flex gap-2">
-            <AddEmployeeDialog 
-              open={addDialogOpen}
-              onOpenChange={setAddDialogOpen}
-              onAddEmployee={handleAddEmployee}
-            />
-            <EmployeeUploadDialog 
-              open={uploadDialogOpen}
-              onOpenChange={setUploadDialogOpen}
-              onImport={handleImportEmployees}
-            />
-          </div>
-          <div className="flex gap-2 sm:ml-auto">
-            <BulkActions 
-              selectedCount={selectedEmployees.length}
-              onBulkDelete={handleBulkDelete}
-              onBulkStatusChange={handleBulkStatusChange}
+        {selectedIds.length > 0 && (
+          <div className="mb-4">
+            <BulkActions
+              selectedCount={selectedIds.length}
+              onBulkDelete={() => {
+                bulkDeleteEmployees(selectedIds);
+                setSelectedIds([]);
+              }}
+              onBulkStatusChange={(status) => {
+                bulkUpdateStatus(selectedIds, status);
+                setSelectedIds([]);
+              }}
               onBulkExport={handleBulkExport}
               onBulkEmail={handleBulkEmail}
             />
-            <EmployeeFilterDrawer 
-              open={filterDrawerOpen}
-              onOpenChange={setFilterDrawerOpen}
-              allDepartments={allDepartments}
-              filterState={filters}
-              setFilterState={handleFilterStateChange}
-              onClear={clearFilters}
-            />
           </div>
+        )}
+
+        {/* Responsive Table Wrapper */}
+        <div className="w-full overflow-x-auto rounded-xl">
+          <EmployeeTable
+            employees={employees}
+            onDeleteEmployee={deleteEmployee}
+            onEditEmployee={handleEditEmployee}
+            onViewEmployee={handleViewEmployee}
+            sortConfig={sortConfig}
+            onSort={sortEmployees}
+            selectedIds={selectedIds}
+            onSelectionChange={setSelectedIds}
+          />
         </div>
 
-        <EmployeeTable 
-          employees={filteredEmployees}
-          onDeleteEmployee={handleDeleteEmployee}
-          onEditEmployee={handleEditEmployee}
-          onViewEmployee={handleViewEmployee}
-          sortConfig={sortConfig}
-          onSort={handleSort}
-          selectedIds={selectedEmployees}
-          onSelectionChange={setSelectedEmployees}
+        <AddEmployeeDialog
+          open={showAddDialog}
+          onOpenChange={setShowAddDialog}
+          onAddEmployee={addEmployee}
+        />
+
+        <EmployeeUploadDialog
+          open={showUploadDialog}
+          onOpenChange={setShowUploadDialog}
+          onImport={handleImportEmployees}
+        />
+
+        <EmployeeFilterDrawer
+          open={showFilterDrawer}
+          onOpenChange={setShowFilterDrawer}
+          allDepartments={allDepartments}
+          filterState={filterState}
+          setFilterState={setFilterState}
+          onClear={() => setFilterState({ departments: [], statuses: [] })}
+        />
+
+        <EmployeeProfileModal
+          employee={selectedEmployee}
+          open={showProfileModal}
+          onOpenChange={setShowProfileModal}
+        />
+
+        <EditEmployeeDialog
+          open={showEditDialog}
+          onOpenChange={setShowEditDialog}
+          employee={selectedEmployee}
+          onUpdateEmployee={(updatedEmployee) => {
+            updateEmployee(updatedEmployee);
+            setShowEditDialog(false);
+            setSelectedEmployee(null);
+          }}
         />
       </div>
     </div>
   );
-}
+};
+
+export default Employees;
