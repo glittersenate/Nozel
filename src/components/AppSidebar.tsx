@@ -18,19 +18,28 @@ import {
 const navigationItems = [
   { title: 'Dashboard', url: '/', icon: Home },
   { title: 'Employees', url: '/employees', icon: Users },
-  { title: 'Time Tracking', url: '/time-tracking', icon: Clock },
+  // { title: 'Time Tracking', url: '/time-tracking', icon: Clock }, // Hidden temporarily
   { title: 'Payroll', url: '/payroll', icon: DollarSign },
   { title: 'Leave', url: '/leave', icon: Calendar },
-  { title: 'Benefits', url: '/benefits', icon: Gift },
-  { title: 'Performance', url: '/performance', icon: Star },
+  // { title: 'Benefits', url: '/benefits', icon: Gift }, // Hidden temporarily
+  // { title: 'Performance', url: '/performance', icon: Star }, // Hidden temporarily
   { title: 'Reports', url: '/reports', icon: FileText },
-  { title: 'Analytics', url: '/analytics', icon: BarChart3 },
-  { title: 'Executive', url: '/executive', icon: Shield },
+  // { title: 'Analytics', url: '/analytics', icon: BarChart3 }, // Hidden temporarily
+  // { title: 'Executive', url: '/executive', icon: Shield }, // Hidden temporarily
   { title: 'AI Compliance', url: '/compliance', icon: Shield },
-  { title: 'Integrations', url: '/integrations', icon: Settings },
+  // { title: 'Integrations', url: '/integrations', icon: Settings }, // Hidden temporarily
   { title: 'Settings', url: '/settings', icon: Settings },
-  { title: 'Experimental', url: '/experimental', icon: FlaskConical },
+  // { title: 'Experimental', url: '/experimental', icon: FlaskConical }, // Hidden temporarily
 ];
+
+// Note: The following pages are temporarily hidden from navigation but still accessible via direct URL:
+// - Time Tracking (/time-tracking)
+// - Benefits (/benefits)
+// - Performance (/performance) 
+// - Analytics (/analytics)
+// - Executive Command Center (/executive)
+// - Integrations (/integrations)
+// - Experimental (/experimental)
 
 export function AppSidebar() {
   const location = useLocation();
