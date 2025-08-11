@@ -1,14 +1,17 @@
 
 import React from 'react';
-import { EnhancedStatsCards } from '@/components/dashboard/EnhancedStatsCards';
-import { SalaryChart } from '@/components/dashboard/SalaryChart';
-import { DepartmentChart } from '@/components/dashboard/DepartmentChart';
-import { RecentActivity } from '@/components/dashboard/RecentActivity';
-import { PredictiveInsights } from '@/components/dashboard/PredictiveInsights';
-import { LiveActivityFeed } from '@/components/dashboard/LiveActivityFeed';
-import { RealTimeMetrics } from '@/components/dashboard/RealTimeMetrics';
+import EnhancedStatsCards from '@/components/dashboard/EnhancedStatsCards';
+import SalaryChart from '@/components/dashboard/SalaryChart';
+import DepartmentChart from '@/components/dashboard/DepartmentChart';
+import RecentActivity from '@/components/dashboard/RecentActivity';
+import PredictiveInsights from '@/components/dashboard/PredictiveInsights';
+import LiveActivityFeed from '@/components/dashboard/LiveActivityFeed';
+import RealTimeMetrics from '@/components/dashboard/RealTimeMetrics';
+import { useEmployees } from '@/hooks/useEmployees';
 
 export default function Index() {
+  const { employees } = useEmployees();
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto py-8">
@@ -18,7 +21,7 @@ export default function Index() {
         </div>
 
         <div className="space-y-8">
-          <EnhancedStatsCards />
+          <EnhancedStatsCards employees={employees} />
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <SalaryChart />
@@ -30,7 +33,7 @@ export default function Index() {
               <RecentActivity />
             </div>
             <div className="space-y-6">
-              <PredictiveInsights />
+              <PredictiveInsights employees={employees} />
             </div>
           </div>
           

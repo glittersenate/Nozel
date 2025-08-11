@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { EmployeeTable } from '@/components/employees/EmployeeTable';
-import { EmployeeFilterDrawer } from '@/components/employees/EmployeeFilterDrawer';
-import { AddEmployeeDialog } from '@/components/employees/AddEmployeeDialog';
-import { BulkActions } from '@/components/employees/BulkActions';
-import { EmployeeUploadDialog } from '@/components/employees/EmployeeUploadDialog';
+import EmployeeTable from '@/components/employees/EmployeeTable';
+import EmployeeFilterDrawer from '@/components/employees/EmployeeFilterDrawer';
+import AddEmployeeDialog from '@/components/employees/AddEmployeeDialog';
+import BulkActions from '@/components/employees/BulkActions';
+import EmployeeUploadDialog from '@/components/employees/EmployeeUploadDialog';
 
 export default function Employees() {
   return (
