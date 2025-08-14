@@ -1,15 +1,8 @@
-
 import React, { useState } from "react";
 import { Layout } from "@/components/Layout";
 import EnhancedStatsCards from "@/components/dashboard/EnhancedStatsCards";
 import RealTimeMetrics from "@/components/dashboard/RealTimeMetrics";
-import LiveActivityFeed from "@/components/dashboard/LiveActivityFeed";
-import DepartmentChart from "@/components/dashboard/DepartmentChart";
-import SalaryChart from "@/components/dashboard/SalaryChart";
-import { AIInsightsModule } from "@/components/dashboard/AIInsightsModule";
-import { RealTimeStatusIndicators } from "@/components/dashboard/RealTimeStatusIndicators";
 import { InteractivePayrollChart } from "@/components/dashboard/InteractivePayrollChart";
-import { PredictiveInsights } from "@/components/dashboard/PredictiveInsights";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useRealTimeData } from "@/hooks/useRealTimeData";
 import { Button } from "@/components/ui/button";
@@ -113,25 +106,29 @@ const Index = () => {
         <div className="space-y-7">
           <RealTimeMetrics metrics={metrics} />
 
-          {/* Oracle View - Predictive Insights */}
-          <PredictiveInsights employees={employees} />
+          {/* Oracle View - Predictive Insights - COMMENTED OUT FOR BACKEND INTEGRATION */}
+          {/* <PredictiveInsights employees={employees} /> */}
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Live Activity Feed and System Status - COMMENTED OUT FOR BACKEND INTEGRATION */}
+          {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <LiveActivityFeed activities={metrics.activityFeed} />
             </div>
             <RealTimeStatusIndicators />
-          </div>
+          </div> */}
 
+          {/* Payroll Chart - Keep this one as it might be useful */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <InteractivePayrollChart />
-            <AIInsightsModule employees={employees} isLive={false} />
+            {/* AI Insights - COMMENTED OUT FOR BACKEND INTEGRATION */}
+            {/* <AIInsightsModule employees={employees} isLive={false} /> */}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Department Distribution and Salary Charts - COMMENTED OUT FOR BACKEND INTEGRATION */}
+          {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <DepartmentChart employees={employees} />
             <SalaryChart employees={employees} />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
